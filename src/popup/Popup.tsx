@@ -54,6 +54,7 @@ export function Popup() {
     <div style={{
       width: 280,
       padding: 20,
+      boxSizing: 'border-box',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       background: '#0d1117',
       color: '#e6e6e6',
@@ -123,6 +124,7 @@ export function Popup() {
             autoFocus
             style={{
               width: '100%',
+              boxSizing: 'border-box',
               background: '#161b22',
               border: `1px solid ${passwordError ? '#e74c3c' : '#333'}`,
               borderRadius: 6,
@@ -143,6 +145,7 @@ export function Popup() {
         onClick={openOptions}
         style={{
           width: '100%',
+          boxSizing: 'border-box',
           background: 'transparent',
           color: '#888',
           border: '1px solid #333',
