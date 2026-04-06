@@ -59,7 +59,8 @@ export function Popup() {
   return (
     <div className="box-border w-[280px] bg-bg p-5 font-sans text-text">
       <div className="mb-4 flex items-center gap-2 text-base font-bold text-primary">
-        🛡️ BlockThem
+        <img src="/icons/icon-48.png" alt="" className="h-5 w-5" />
+        BlockThem
       </div>
 
       <div className="mb-3 flex items-center justify-between rounded-lg bg-surface px-4 py-3">

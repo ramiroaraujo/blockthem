@@ -33,7 +33,7 @@ export function PasswordGate({
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-bg">
       <div className="max-w-xs p-10 text-center">
-        <div className="mb-4 text-5xl">🔒</div>
+        <div className="mb-4"><img src="/icons/icon-128.png" alt="" className="mx-auto h-16 w-16" /></div>
         <h1 className="mb-2 text-xl">BlockThem Settings</h1>
         <p className="mb-6 text-[13px] text-text-muted">
           Enter your password to access settings

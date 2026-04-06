@@ -22,7 +22,8 @@ export function Sidebar({
   return (
     <div className="flex w-[220px] shrink-0 flex-col border-r border-border bg-sidebar py-5">
       <div className="mb-4 flex items-center gap-2 px-5 text-lg font-bold text-primary">
-        🛡️ BlockThem
+        <img src="/icons/icon-48.png" alt="" className="h-6 w-6" />
+        BlockThem
       </div>
 
       {/* Blocking toggle */}
