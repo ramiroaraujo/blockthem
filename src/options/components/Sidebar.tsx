@@ -29,7 +29,7 @@ export function Sidebar({
     }}>
       <div style={{
         padding: '0 20px',
-        marginBottom: 32,
+        marginBottom: 16,
         fontSize: 18,
         fontWeight: 'bold',
         color: 'var(--color-primary)',
@@ -38,6 +38,47 @@ export function Sidebar({
         gap: 8,
       }}>
         🛡️ BlockThem
+      </div>
+
+      {/* Blocking toggle — right below the title */}
+      <div style={{ padding: '0 20px', marginBottom: 24 }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '8px 12px',
+            background: 'var(--color-surface)',
+            borderRadius: 8,
+            fontSize: 12,
+            color: 'var(--color-text-secondary)',
+          }}
+        >
+          <span>Blocking {blockingEnabled ? 'ON' : 'OFF'}</span>
+          <div
+            onClick={onToggleBlocking}
+            style={{
+              width: 36,
+              height: 20,
+              borderRadius: 10,
+              background: blockingEnabled ? 'var(--color-primary)' : 'var(--color-border)',
+              position: 'relative',
+              cursor: 'pointer',
+              transition: 'background 0.2s',
+            }}
+          >
+            <div style={{
+              width: 16,
+              height: 16,
+              borderRadius: '50%',
+              background: blockingEnabled ? 'white' : '#666',
+              position: 'absolute',
+              top: 2,
+              left: blockingEnabled ? 18 : 2,
+              transition: 'left 0.2s',
+            }} />
+          </div>
+        </div>
       </div>
 
       <nav style={{ flex: 1 }}>
@@ -64,41 +105,6 @@ export function Sidebar({
           </button>
         ))}
       </nav>
-
-      <div style={{ padding: '0 20px' }}>
-        <label style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 10,
-          fontSize: 13,
-          color: 'var(--color-text-secondary)',
-          cursor: 'pointer',
-        }}>
-          <div
-            onClick={onToggleBlocking}
-            style={{
-              width: 40,
-              height: 22,
-              borderRadius: 11,
-              background: blockingEnabled ? 'var(--color-primary)' : 'var(--color-border)',
-              position: 'relative',
-              transition: 'background 0.2s',
-            }}
-          >
-            <div style={{
-              width: 18,
-              height: 18,
-              borderRadius: '50%',
-              background: 'white',
-              position: 'absolute',
-              top: 2,
-              left: blockingEnabled ? 20 : 2,
-              transition: 'left 0.2s',
-            }} />
-          </div>
-          Blocking {blockingEnabled ? 'ON' : 'OFF'}
-        </label>
-      </div>
     </div>
   )
 }

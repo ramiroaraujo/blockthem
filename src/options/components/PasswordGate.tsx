@@ -31,6 +31,7 @@ export function PasswordGate({ passwordHash, passwordSalt, onUnlock }: PasswordG
       alignItems: 'center',
       justifyContent: 'center',
       minHeight: '100vh',
+      width: '100%',
       background: 'var(--color-bg)',
     }}>
       <div style={{ textAlign: 'center', maxWidth: 320, padding: 40 }}>

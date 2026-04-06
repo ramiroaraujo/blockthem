@@ -7,80 +7,52 @@ interface PasswordPageProps {
   onUpdateState: (updates: Partial<StorageState>) => void
 }
 
-export function PasswordPage({ state, onUpdateState }: PasswordPageProps) {
-  const isEnabled = state.passwordHash !== null
+type DialogMode = 'set' | 'change' | 'disable' | null
+
+function PasswordDialog({
+  mode,
+  passwordHash,
+  passwordSalt,
+  onConfirm,
+  onClose,
+}: {
+  mode: 'set' | 'change' | 'disable'
+  passwordHash: string | null
+  passwordSalt: string | null
+  onConfirm: (hash: string | null, salt: string | null) => void
+  onClose: () => void
+}) {
   const [currentPwd, setCurrentPwd] = useState('')
   const [newPwd, setNewPwd] = useState('')
   const [confirmPwd, setConfirmPwd] = useState('')
-  const [message, setMessage] = useState('')
   const [error, setError] = useState('')
 
-  const toggleEnabled = async () => {
-    if (isEnabled) {
-      // Disable — require current password
-      if (!currentPwd) {
-        setError('Enter your current password to disable')
-        return
-      }
-      const valid = await verifyPassword(currentPwd, state.passwordHash!, state.passwordSalt!)
-      if (!valid) {
-        setError('Incorrect password')
-        return
-      }
-      onUpdateState({ passwordHash: null, passwordSalt: null })
-      setCurrentPwd('')
-      setMessage('Password protection disabled')
-      setError('')
-    } else {
-      // Enable — require new password
-      if (!newPwd) {
-        setError('Enter a new password')
-        return
-      }
-      if (newPwd !== confirmPwd) {
-        setError('Passwords do not match')
-        return
-      }
-      const salt = generateSalt()
-      const hash = await hashPassword(newPwd, salt)
-      onUpdateState({ passwordHash: hash, passwordSalt: salt })
-      setNewPwd('')
-      setConfirmPwd('')
-      setMessage('Password protection enabled')
-      setError('')
-    }
-  }
-
-  const handleChangePassword = async () => {
-    setMessage('')
+  const handleSubmit = async () => {
     setError('')
 
-    if (!currentPwd) {
-      setError('Enter your current password')
+    if (mode === 'disable') {
+      if (!currentPwd) { setError('Enter your current password'); return }
+      const valid = await verifyPassword(currentPwd, passwordHash!, passwordSalt!)
+      if (!valid) { setError('Incorrect password'); return }
+      onConfirm(null, null)
       return
     }
-    const valid = await verifyPassword(currentPwd, state.passwordHash!, state.passwordSalt!)
-    if (!valid) {
-      setError('Incorrect current password')
-      return
+
+    if (mode === 'change') {
+      if (!currentPwd) { setError('Enter your current password'); return }
+      const valid = await verifyPassword(currentPwd, passwordHash!, passwordSalt!)
+      if (!valid) { setError('Incorrect password'); return }
     }
-    if (!newPwd) {
-      setError('Enter a new password')
-      return
-    }
-    if (newPwd !== confirmPwd) {
-      setError('Passwords do not match')
-      return
-    }
+
+    if (!newPwd) { setError('Enter a new password'); return }
+    if (newPwd !== confirmPwd) { setError('Passwords do not match'); return }
 
     const salt = generateSalt()
     const hash = await hashPassword(newPwd, salt)
-    onUpdateState({ passwordHash: hash, passwordSalt: salt })
-    setCurrentPwd('')
-    setNewPwd('')
-    setConfirmPwd('')
-    setMessage('Password updated successfully')
+    onConfirm(hash, salt)
   }
+
+  const title = mode === 'set' ? 'Set Password' : mode === 'change' ? 'Change Password' : 'Disable Password Protection'
 
   const inputStyle: React.CSSProperties = {
     width: '100%',
@@ -90,6 +62,132 @@ export function PasswordPage({ state, onUpdateState }: PasswordPageProps) {
     padding: '10px 12px',
     color: 'var(--color-text)',
     fontSize: 13,
+  }
+
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        background: 'rgba(0,0,0,0.6)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1000,
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          background: 'var(--color-sidebar)',
+          borderRadius: 12,
+          padding: 24,
+          width: 400,
+        }}
+      >
+        <h2 style={{ fontSize: 16, marginBottom: 20 }}>{title}</h2>
+
+        {(mode === 'change' || mode === 'disable') && (
+          <div style={{ marginBottom: 12 }}>
+            <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 4 }}>Current password</div>
+            <input
+              type="password"
+              value={currentPwd}
+              onChange={(e) => { setCurrentPwd(e.target.value); setError('') }}
+              onKeyDown={(e) => e.key === 'Enter' && (mode === 'disable' ? handleSubmit() : undefined)}
+              autoFocus
+              style={inputStyle}
+            />
+          </div>
+        )}
+
+        {(mode === 'set' || mode === 'change') && (
+          <>
+            <div style={{ marginBottom: 12 }}>
+              <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 4 }}>New password</div>
+              <input
+                type="password"
+                value={newPwd}
+                onChange={(e) => { setNewPwd(e.target.value); setError('') }}
+                autoFocus={mode === 'set'}
+                style={inputStyle}
+              />
+            </div>
+            <div style={{ marginBottom: 12 }}>
+              <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 4 }}>Confirm password</div>
+              <input
+                type="password"
+                value={confirmPwd}
+                onChange={(e) => { setConfirmPwd(e.target.value); setError('') }}
+                onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+                style={inputStyle}
+              />
+            </div>
+          </>
+        )}
+
+        {error && (
+          <div style={{ color: '#e74c3c', fontSize: 12, marginBottom: 12 }}>{error}</div>
+        )}
+
+        <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 20 }}>
+          <button
+            onClick={onClose}
+            style={{
+              background: 'transparent',
+              color: 'var(--color-text-secondary)',
+              border: '1px solid var(--color-border)',
+              padding: '8px 16px',
+              borderRadius: 6,
+              fontSize: 13,
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleSubmit}
+            style={{
+              background: mode === 'disable' ? '#e74c3c' : 'var(--color-primary)',
+              color: 'white',
+              border: 'none',
+              padding: '8px 16px',
+              borderRadius: 6,
+              fontSize: 13,
+            }}
+          >
+            {mode === 'disable' ? 'Disable' : mode === 'change' ? 'Update Password' : 'Set Password'}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function PasswordPage({ state, onUpdateState }: PasswordPageProps) {
+  const isEnabled = state.passwordHash !== null
+  const [dialogMode, setDialogMode] = useState<DialogMode>(null)
+  const [message, setMessage] = useState('')
+
+  const handleToggle = () => {
+    setMessage('')
+    if (isEnabled) {
+      setDialogMode('disable')
+    } else {
+      setDialogMode('set')
+    }
+  }
+
+  const handleDialogConfirm = (hash: string | null, salt: string | null) => {
+    onUpdateState({ passwordHash: hash, passwordSalt: salt })
+    if (hash === null) {
+      setMessage('Password protection disabled')
+    } else if (dialogMode === 'set') {
+      setMessage('Password protection enabled')
+    } else {
+      setMessage('Password updated successfully')
+    }
+    setDialogMode(null)
   }
 
   return (
@@ -116,7 +214,7 @@ export function PasswordPage({ state, onUpdateState }: PasswordPageProps) {
           </div>
         </div>
         <div
-          onClick={toggleEnabled}
+          onClick={handleToggle}
           style={{
             width: 40,
             height: 22,
@@ -141,55 +239,55 @@ export function PasswordPage({ state, onUpdateState }: PasswordPageProps) {
         </div>
       </div>
 
-      {/* Set new password (when not enabled) */}
-      {!isEnabled && (
-        <div style={{ background: 'var(--color-surface)', borderRadius: 8, padding: 16 }}>
-          <div style={{ fontSize: 13, marginBottom: 12 }}>Set a password</div>
-          <div style={{ marginBottom: 12 }}>
-            <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 4 }}>New password</div>
-            <input type="password" value={newPwd} onChange={(e) => setNewPwd(e.target.value)} style={inputStyle} />
-          </div>
-          <div style={{ marginBottom: 12 }}>
-            <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 4 }}>Confirm password</div>
-            <input type="password" value={confirmPwd} onChange={(e) => setConfirmPwd(e.target.value)} style={inputStyle} />
-          </div>
-        </div>
-      )}
-
-      {/* Change password (when enabled) */}
+      {/* Change password button (when enabled) */}
       {isEnabled && (
-        <div style={{ background: 'var(--color-surface)', borderRadius: 8, padding: 16 }}>
-          <div style={{ fontSize: 13, marginBottom: 12 }}>Change password</div>
-          <div style={{ marginBottom: 12 }}>
-            <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 4 }}>Current password</div>
-            <input type="password" value={currentPwd} onChange={(e) => setCurrentPwd(e.target.value)} style={inputStyle} />
-          </div>
-          <div style={{ marginBottom: 12 }}>
-            <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 4 }}>New password</div>
-            <input type="password" value={newPwd} onChange={(e) => setNewPwd(e.target.value)} style={inputStyle} />
-          </div>
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 4 }}>Confirm new password</div>
-            <input type="password" value={confirmPwd} onChange={(e) => setConfirmPwd(e.target.value)} style={inputStyle} />
-          </div>
-          <button
-            onClick={handleChangePassword}
-            style={{
-              background: 'var(--color-primary)',
-              color: 'white',
-              border: 'none',
-              padding: '8px 16px',
-              borderRadius: 6,
-              fontSize: 13,
-            }}
-          >
-            Update Password
-          </button>
+        <button
+          onClick={() => { setMessage(''); setDialogMode('change') }}
+          style={{
+            background: 'var(--color-surface)',
+            color: 'var(--color-text-secondary)',
+            border: '1px solid var(--color-border)',
+            padding: '10px 16px',
+            borderRadius: 6,
+            fontSize: 13,
+          }}
+        >
+          Change Password
+        </button>
+      )}
+
+      {!isEnabled && !message && (
+        <div style={{
+          padding: 24,
+          textAlign: 'center',
+          color: 'var(--color-text-muted)',
+          fontSize: 14,
+        }}>
+          No password set. Enable the toggle above to protect your settings.
         </div>
       )}
 
-      {error && <div style={{ color: '#e74c3c', fontSize: 12, marginTop: 12 }}>{error}</div>}
-      {message && <div style={{ color: '#2ecc71', fontSize: 12, marginTop: 12 }}>{message}</div>}
+      {message && (
+        <div style={{ color: '#2ecc71', fontSize: 12, marginTop: 12 }}>{message}</div>
+      )}
+
+      <p style={{
+        fontSize: 11,
+        color: 'var(--color-text-muted)',
+        marginTop: 24,
+      }}>
+        Forgot password? Reset by reinstalling the extension.
+      </p>
+
+      {dialogMode && (
+        <PasswordDialog
+          mode={dialogMode}
+          passwordHash={state.passwordHash}
+          passwordSalt={state.passwordSalt}
+          onConfirm={handleDialogConfirm}
+          onClose={() => setDialogMode(null)}
+        />
+      )}
     </div>
   )
 }

@@ -174,7 +174,11 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
       </div>
 
       {showAddModal && (
-        <AddRuleModal onAdd={addRule} onClose={() => setShowAddModal(false)} />
+        <AddRuleModal
+          existingPatterns={state.rules.map((r) => r.pattern)}
+          onAdd={addRule}
+          onClose={() => setShowAddModal(false)}
+        />
       )}
     </div>
   )

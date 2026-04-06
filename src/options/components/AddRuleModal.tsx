@@ -3,14 +3,16 @@ import type { BlockRule, Schedule } from '../../shared/types'
 import { ScheduleEditor } from './ScheduleEditor'
 
 interface AddRuleModalProps {
+  existingPatterns: string[]
   onAdd: (rule: Omit<BlockRule, 'id' | 'createdAt'>) => void
   onClose: () => void
 }
 
-export function AddRuleModal({ onAdd, onClose }: AddRuleModalProps) {
+export function AddRuleModal({ existingPatterns, onAdd, onClose }: AddRuleModalProps) {
   const [type, setType] = useState<'url' | 'regex'>('url')
   const [pattern, setPattern] = useState('')
   const [useCustomSchedule, setUseCustomSchedule] = useState(false)
+  const [error, setError] = useState('')
   const [schedule, setSchedule] = useState<Schedule>({
     days: [1, 2, 3, 4, 5],
     startTime: '09:00',
@@ -18,9 +20,14 @@ export function AddRuleModal({ onAdd, onClose }: AddRuleModalProps) {
   })
 
   const handleSubmit = () => {
-    if (!pattern.trim()) return
+    const trimmed = pattern.trim()
+    if (!trimmed) return
+    if (existingPatterns.includes(trimmed)) {
+      setError('This pattern is already in your block list')
+      return
+    }
     onAdd({
-      pattern: pattern.trim(),
+      pattern: trimmed,
       type,
       enabled: true,
       schedule: useCustomSchedule ? schedule : null,
@@ -86,18 +93,23 @@ export function AddRuleModal({ onAdd, onClose }: AddRuleModalProps) {
           <input
             type="text"
             value={pattern}
-            onChange={(e) => setPattern(e.target.value)}
+            onChange={(e) => { setPattern(e.target.value); setError('') }}
+            onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
             placeholder={type === 'url' ? 'e.g. facebook.com' : 'e.g. .*social.*'}
+            autoFocus
             style={{
               width: '100%',
               background: 'var(--color-bg)',
-              border: '1px solid var(--color-border)',
+              border: `1px solid ${error ? '#e74c3c' : 'var(--color-border)'}`,
               borderRadius: 6,
               padding: '10px 12px',
               color: 'var(--color-text)',
               fontSize: 13,
             }}
           />
+          {error && (
+            <div style={{ color: '#e74c3c', fontSize: 11, marginTop: 4 }}>{error}</div>
+          )}
         </div>
 
         {/* Custom schedule toggle */}
