@@ -50,8 +50,7 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
   };
 
   const handleExport = () => {
-    const { passwordHash: _ph, passwordSalt: _ps, ...exportData } = state;
-    const blob = new Blob([JSON.stringify(exportData, null, 2)], {
+    const blob = new Blob([JSON.stringify({ rules: state.rules }, null, 2)], {
       type: 'application/json',
     });
     const url = URL.createObjectURL(blob);
@@ -71,16 +70,9 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
       if (!file) return;
       const text = await file.text();
       try {
-        const data = JSON.parse(text) as Partial<StorageState>;
+        const data = JSON.parse(text) as { rules?: BlockRule[] };
         if (Array.isArray(data.rules)) {
-          onUpdateState({
-            rules: data.rules,
-            globalSchedule: data.globalSchedule ?? state.globalSchedule,
-            blockingEnabled: data.blockingEnabled ?? state.blockingEnabled,
-            blockAdultSites: data.blockAdultSites ?? state.blockAdultSites,
-            blockGamblingSites:
-              data.blockGamblingSites ?? state.blockGamblingSites,
-          });
+          onUpdateState({ rules: data.rules });
         }
       } catch {
         alert('Invalid JSON file');
@@ -132,12 +124,28 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
         </div>
       </div>
 
-      <button
-        onClick={() => setShowAddModal(true)}
-        className="mb-6 rounded-md border-none bg-primary px-5 py-2.5 text-[13px] text-white"
-      >
-        + Add to Block List
-      </button>
+      <div className="mb-6 flex items-center justify-between gap-2">
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="rounded-md border-none bg-primary px-5 py-2.5 text-[13px] text-white"
+        >
+          + Add to Block List
+        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={handleExport}
+            className="rounded-md border border-border bg-surface px-4 py-2 text-[13px] text-text-secondary"
+          >
+            ↑ Export Rules
+          </button>
+          <button
+            onClick={handleImport}
+            className="rounded-md border border-border bg-surface px-4 py-2 text-[13px] text-text-secondary"
+          >
+            ↓ Import Rules
+          </button>
+        </div>
+      </div>
 
       {state.rules.length === 0 ? (
         <div className="p-10 text-center text-sm text-text-muted">
@@ -217,21 +225,6 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
           })}
         </div>
       )}
-
-      <div className="mt-6 flex gap-2">
-        <button
-          onClick={handleExport}
-          className="rounded-md border border-border bg-surface px-4 py-2 text-[13px] text-text-secondary"
-        >
-          ↑ Export
-        </button>
-        <button
-          onClick={handleImport}
-          className="rounded-md border border-border bg-surface px-4 py-2 text-[13px] text-text-secondary"
-        >
-          ↓ Import
-        </button>
-      </div>
 
       {(showAddModal || editingRule) && (
         <AddRuleModal
