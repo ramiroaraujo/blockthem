@@ -22,6 +22,7 @@
   /* Semantic */
   --color-error: #e74c3c;
   --color-success: #2ecc71;
+  --color-warning: #f39c12;
 
   /* Overlay */
   --color-overlay: rgba(0, 0, 0, 0.6);

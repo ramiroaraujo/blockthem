@@ -1,3 +1,4 @@
+import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
@@ -10,4 +11,11 @@ export default defineConfig({
     react(),
     crx({ manifest }),
   ],
+  build: {
+    rollupOptions: {
+      input: {
+        blocked: resolve(__dirname, 'src/blocked/index.html'),
+      },
+    },
+  },
 })

@@ -4,6 +4,7 @@ import type { BlockRule, StorageState } from '../shared/types';
 import { ToggleSwitch } from '../shared/components/ToggleSwitch';
 import { t } from '../shared/i18n';
 import { verifyPassword } from '../shared/password';
+import { isScheduleActive } from '../shared/schedule';
 import { getState, setState } from '../shared/storage';
 import { DEFAULT_STATE } from '../shared/types';
 
@@ -117,6 +118,11 @@ export function Popup() {
     state.blockGamblingSites && t('popup_category_gambling'),
   ].filter(Boolean);
 
+  const pausedBySchedule =
+    state.blockingEnabled &&
+    state.scheduleEnabled &&
+    !isScheduleActive(state.globalSchedule);
+
   return (
     <div className="box-border w-[280px] bg-bg p-5 font-sans text-text">
       <div className="mb-4 flex items-center gap-2 text-base font-bold text-primary">
@@ -140,10 +146,23 @@ export function Popup() {
             {state.blockingEnabled
               ? t('popup_blocking_on')
               : t('popup_blocking_off')}
+            {pausedBySchedule && (
+              <span className="ml-1 text-warning">
+                · {t('popup_paused_label')}
+              </span>
+            )}
           </div>
-          <div className="mt-0.5 text-[11px] text-text-muted">
-            {ruleCountLabel}
-            {categoryLabels.length > 0 && ` · ${categoryLabels.join(', ')}`}
+          <div className="mt-0.5 text-[11px]">
+            {pausedBySchedule ? (
+              <span className="text-warning">
+                {t('popup_paused_outside_schedule')}
+              </span>
+            ) : (
+              <span className="text-text-muted">
+                {ruleCountLabel}
+                {categoryLabels.length > 0 && ` · ${categoryLabels.join(', ')}`}
+              </span>
+            )}
           </div>
         </div>
         <ToggleSwitch enabled={state.blockingEnabled} onClick={handleToggle} />

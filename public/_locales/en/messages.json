@@ -27,6 +27,14 @@
     "message": "Blocking is OFF",
     "description": "Status line in the popup when blocking is disabled"
   },
+  "popup_paused_label": {
+    "message": "Paused",
+    "description": "Inline badge in the popup when blocking is on but paused by the global schedule"
+  },
+  "popup_paused_outside_schedule": {
+    "message": "Outside schedule window",
+    "description": "Subtitle in the popup explaining why blocking is paused"
+  },
   "popup_rule_count_one": {
     "message": "1 rule",
     "description": "Singular rule count in the popup status line"
@@ -401,36 +409,6 @@
   "blocked_heading": {
     "message": "This site is blocked",
     "description": "Main heading on the blocked page"
-  },
-  "blocked_category_adult": {
-    "message": "adult content",
-    "description": "Long label for the adult category on the blocked page"
-  },
-  "blocked_category_gambling": {
-    "message": "gambling",
-    "description": "Long label for the gambling category on the blocked page"
-  },
-  "blocked_by_category": {
-    "message": "This site is blocked ($1 category)",
-    "description": "Info line on the blocked page when blocked by a category. $1 is the category name.",
-    "placeholders": {
-      "1": { "content": "$1", "example": "adult content" }
-    }
-  },
-  "blocked_by_rule": {
-    "message": "$1 is on your block list",
-    "description": "Info line on the blocked page when blocked by a user rule. $1 is the matched pattern.",
-    "placeholders": {
-      "1": { "content": "$1", "example": "facebook.com" }
-    }
-  },
-  "blocked_generic": {
-    "message": "This site is on your block list",
-    "description": "Generic info line on the blocked page when no rule context is available"
-  },
-  "blocked_matched_rule": {
-    "message": "Matched rule:",
-    "description": "Label on the blocked page before the matched rule pattern"
   },
 
   "schemas_invalid_regex": {

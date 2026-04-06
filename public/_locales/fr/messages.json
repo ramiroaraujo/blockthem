@@ -21,6 +21,12 @@
   "popup_blocking_off": {
     "message": "Blocage DÉSACTIVÉ"
   },
+  "popup_paused_label": {
+    "message": "En pause"
+  },
+  "popup_paused_outside_schedule": {
+    "message": "Hors de la plage horaire"
+  },
   "popup_rule_count_one": {
     "message": "1 règle"
   },
@@ -308,30 +314,6 @@
   },
   "blocked_heading": {
     "message": "Ce site est bloqué"
-  },
-  "blocked_category_adult": {
-    "message": "contenu pour adultes"
-  },
-  "blocked_category_gambling": {
-    "message": "jeux d’argent"
-  },
-  "blocked_by_category": {
-    "message": "Ce site est bloqué (catégorie $1)",
-    "placeholders": {
-      "1": { "content": "$1", "example": "contenu pour adultes" }
-    }
-  },
-  "blocked_by_rule": {
-    "message": "$1 figure dans votre liste de blocage",
-    "placeholders": {
-      "1": { "content": "$1", "example": "facebook.com" }
-    }
-  },
-  "blocked_generic": {
-    "message": "Ce site figure dans votre liste de blocage"
-  },
-  "blocked_matched_rule": {
-    "message": "Règle correspondante :"
   },
 
   "schemas_invalid_regex": {

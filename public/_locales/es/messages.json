@@ -21,6 +21,12 @@
   "popup_blocking_off": {
     "message": "Bloqueo DESACTIVADO"
   },
+  "popup_paused_label": {
+    "message": "En pausa"
+  },
+  "popup_paused_outside_schedule": {
+    "message": "Fuera del horario programado"
+  },
   "popup_rule_count_one": {
     "message": "1 regla"
   },
@@ -308,30 +314,6 @@
   },
   "blocked_heading": {
     "message": "Este sitio está bloqueado"
-  },
-  "blocked_category_adult": {
-    "message": "contenido para adultos"
-  },
-  "blocked_category_gambling": {
-    "message": "apuestas"
-  },
-  "blocked_by_category": {
-    "message": "Este sitio está bloqueado (categoría $1)",
-    "placeholders": {
-      "1": { "content": "$1", "example": "contenido para adultos" }
-    }
-  },
-  "blocked_by_rule": {
-    "message": "$1 está en tu lista de bloqueo",
-    "placeholders": {
-      "1": { "content": "$1", "example": "facebook.com" }
-    }
-  },
-  "blocked_generic": {
-    "message": "Este sitio está en tu lista de bloqueo"
-  },
-  "blocked_matched_rule": {
-    "message": "Regla coincidente:"
   },
 
   "schemas_invalid_regex": {
