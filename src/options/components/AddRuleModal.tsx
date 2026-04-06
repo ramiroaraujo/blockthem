@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { BlockRule, Schedule } from '../../shared/types'
+import { validateRulePattern } from '../../shared/schemas'
 import { ScheduleEditor } from './ScheduleEditor'
 
 interface AddRuleModalProps {
@@ -24,6 +25,11 @@ export function AddRuleModal({ existingPatterns, onAdd, onClose }: AddRuleModalP
     if (!trimmed) return
     if (existingPatterns.includes(trimmed)) {
       setError('This pattern is already in your block list')
+      return
+    }
+    const patternError = validateRulePattern(trimmed, type)
+    if (patternError) {
+      setError(patternError)
       return
     }
     onAdd({

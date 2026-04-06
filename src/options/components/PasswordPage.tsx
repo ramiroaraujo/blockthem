@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { StorageState } from '../../shared/types'
 import { hashPassword, verifyPassword, generateSalt } from '../../shared/password'
+import { PasswordSchema } from '../../shared/schemas'
 
 interface PasswordPageProps {
   state: StorageState
@@ -45,6 +46,8 @@ function PasswordDialog({
     }
 
     if (!newPwd) { setError('Enter a new password'); return }
+    const pwdResult = PasswordSchema.safeParse(newPwd)
+    if (!pwdResult.success) { setError(pwdResult.error.issues[0].message); return }
     if (newPwd !== confirmPwd) { setError('Passwords do not match'); return }
 
     const salt = generateSalt()
@@ -77,8 +80,9 @@ function PasswordDialog({
         zIndex: 1000,
       }}
     >
-      <div
+      <form
         onClick={(e) => e.stopPropagation()}
+        onSubmit={(e) => { e.preventDefault(); handleSubmit() }}
         style={{
           background: 'var(--color-sidebar)',
           borderRadius: 12,
@@ -95,7 +99,6 @@ function PasswordDialog({
               type="password"
               value={currentPwd}
               onChange={(e) => { setCurrentPwd(e.target.value); setError('') }}
-              onKeyDown={(e) => e.key === 'Enter' && (mode === 'disable' ? handleSubmit() : undefined)}
               autoFocus
               style={inputStyle}
             />
@@ -120,7 +123,6 @@ function PasswordDialog({
                 type="password"
                 value={confirmPwd}
                 onChange={(e) => { setConfirmPwd(e.target.value); setError('') }}
-                onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
                 style={inputStyle}
               />
             </div>
@@ -133,6 +135,7 @@ function PasswordDialog({
 
         <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 20 }}>
           <button
+            type="button"
             onClick={onClose}
             style={{
               background: 'transparent',
@@ -146,7 +149,7 @@ function PasswordDialog({
             Cancel
           </button>
           <button
-            onClick={handleSubmit}
+            type="submit"
             style={{
               background: mode === 'disable' ? '#e74c3c' : 'var(--color-primary)',
               color: 'white',
@@ -159,7 +162,7 @@ function PasswordDialog({
             {mode === 'disable' ? 'Disable' : mode === 'change' ? 'Update Password' : 'Set Password'}
           </button>
         </div>
-      </div>
+      </form>
     </div>
   )
 }
@@ -270,14 +273,6 @@ export function PasswordPage({ state, onUpdateState }: PasswordPageProps) {
       {message && (
         <div style={{ color: '#2ecc71', fontSize: 12, marginTop: 12 }}>{message}</div>
       )}
-
-      <p style={{
-        fontSize: 11,
-        color: 'var(--color-text-muted)',
-        marginTop: 24,
-      }}>
-        Forgot password? Reset by reinstalling the extension.
-      </p>
 
       {dialogMode && (
         <PasswordDialog
