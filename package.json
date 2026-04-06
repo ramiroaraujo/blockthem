@@ -16,7 +16,8 @@
     "format": "prettier --check src/",
     "format:fix": "prettier --write src/",
     "typecheck": "tsc --noEmit",
-    "release": "bash scripts/release.sh"
+    "release": "bash scripts/release.sh",
+    "zip": "pnpm build && cd dist && zip -r ../blockthem.zip . && cd .. && echo 'Created blockthem.zip'"
   },
   "keywords": [
     "chrome-extension",
