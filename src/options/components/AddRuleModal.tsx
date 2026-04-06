@@ -1,0 +1,173 @@
+import { useState } from 'react'
+import type { BlockRule, Schedule } from '../../shared/types'
+import { ScheduleEditor } from './ScheduleEditor'
+
+interface AddRuleModalProps {
+  onAdd: (rule: Omit<BlockRule, 'id' | 'createdAt'>) => void
+  onClose: () => void
+}
+
+export function AddRuleModal({ onAdd, onClose }: AddRuleModalProps) {
+  const [type, setType] = useState<'url' | 'regex'>('url')
+  const [pattern, setPattern] = useState('')
+  const [useCustomSchedule, setUseCustomSchedule] = useState(false)
+  const [schedule, setSchedule] = useState<Schedule>({
+    days: [1, 2, 3, 4, 5],
+    startTime: '09:00',
+    endTime: '17:00',
+  })
+
+  const handleSubmit = () => {
+    if (!pattern.trim()) return
+    onAdd({
+      pattern: pattern.trim(),
+      type,
+      enabled: true,
+      schedule: useCustomSchedule ? schedule : null,
+    })
+  }
+
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        background: 'rgba(0,0,0,0.6)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1000,
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          background: 'var(--color-sidebar)',
+          borderRadius: 12,
+          padding: 24,
+          width: 440,
+          maxHeight: '80vh',
+          overflowY: 'auto',
+        }}
+      >
+        <h2 style={{ fontSize: 16, marginBottom: 20 }}>Add Block Rule</h2>
+
+        {/* Type selector */}
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginBottom: 6 }}>Type</div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            {(['url', 'regex'] as const).map((t) => (
+              <button
+                key={t}
+                onClick={() => setType(t)}
+                style={{
+                  flex: 1,
+                  padding: 8,
+                  border: type === t ? 'none' : '1px solid var(--color-border)',
+                  borderRadius: 6,
+                  background: type === t ? 'var(--color-primary)' : 'var(--color-surface)',
+                  color: type === t ? 'white' : 'var(--color-text-secondary)',
+                  fontSize: 13,
+                  textTransform: 'uppercase',
+                }}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Pattern input */}
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginBottom: 6 }}>
+            {type === 'url' ? 'URL to block' : 'Regex pattern'}
+          </div>
+          <input
+            type="text"
+            value={pattern}
+            onChange={(e) => setPattern(e.target.value)}
+            placeholder={type === 'url' ? 'e.g. facebook.com' : 'e.g. .*social.*'}
+            style={{
+              width: '100%',
+              background: 'var(--color-bg)',
+              border: '1px solid var(--color-border)',
+              borderRadius: 6,
+              padding: '10px 12px',
+              color: 'var(--color-text)',
+              fontSize: 13,
+            }}
+          />
+        </div>
+
+        {/* Custom schedule toggle */}
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>Custom schedule</div>
+            <div
+              onClick={() => setUseCustomSchedule(!useCustomSchedule)}
+              style={{
+                width: 36,
+                height: 20,
+                borderRadius: 10,
+                background: useCustomSchedule ? 'var(--color-primary)' : 'var(--color-border)',
+                position: 'relative',
+                cursor: 'pointer',
+              }}
+            >
+              <div style={{
+                width: 16,
+                height: 16,
+                borderRadius: '50%',
+                background: useCustomSchedule ? 'white' : '#666',
+                position: 'absolute',
+                top: 2,
+                left: useCustomSchedule ? 18 : 2,
+                transition: 'left 0.2s',
+              }} />
+            </div>
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 4 }}>
+            Uses global schedule when off
+          </div>
+        </div>
+
+        {useCustomSchedule && (
+          <div style={{ marginBottom: 16 }}>
+            <ScheduleEditor schedule={schedule} onChange={setSchedule} />
+          </div>
+        )}
+
+        {/* Buttons */}
+        <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 20 }}>
+          <button
+            onClick={onClose}
+            style={{
+              background: 'transparent',
+              color: 'var(--color-text-secondary)',
+              border: '1px solid var(--color-border)',
+              padding: '8px 16px',
+              borderRadius: 6,
+              fontSize: 13,
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleSubmit}
+            style={{
+              background: 'var(--color-primary)',
+              color: 'white',
+              border: 'none',
+              padding: '8px 16px',
+              borderRadius: 6,
+              fontSize: 13,
+            }}
+          >
+            Add Rule
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}

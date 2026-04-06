@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Sidebar } from './components/Sidebar'
+import { BlockList } from './components/BlockList'
 import { getState, setState, onStateChange } from '../shared/storage'
 import type { StorageState } from '../shared/types'
 import { DEFAULT_STATE } from '../shared/types'
@@ -39,12 +40,7 @@ export function App() {
       />
       <main style={{ flex: 1, padding: 32, overflowY: 'auto' }}>
         {activePage === 'blocklist' && (
-          <div>
-            <h1 style={{ fontSize: 24, marginBottom: 4 }}>Block List</h1>
-            <p style={{ color: 'var(--color-text-muted)', fontSize: 14 }}>
-              Block sites permanently or by schedule
-            </p>
-          </div>
+          <BlockList state={state} onUpdateState={updateState} />
         )}
         {activePage === 'schedule' && (
           <div>
