@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Sidebar } from './components/Sidebar'
 import { BlockList } from './components/BlockList'
 import { SchedulePage } from './components/SchedulePage'
+import { PasswordPage } from './components/PasswordPage'
+import { PasswordGate } from './components/PasswordGate'
 import { getState, setState, onStateChange } from '../shared/storage'
 import type { StorageState } from '../shared/types'
 import { DEFAULT_STATE } from '../shared/types'
@@ -10,6 +12,7 @@ export function App() {
   const [state, setLocalState] = useState<StorageState>(DEFAULT_STATE)
   const [activePage, setActivePage] = useState('blocklist')
   const [loaded, setLoaded] = useState(false)
+  const [unlocked, setUnlocked] = useState(false)
 
   useEffect(() => {
     getState().then((s) => {
@@ -29,6 +32,16 @@ export function App() {
 
   if (!loaded) return null
 
+  if (loaded && state.passwordHash && state.passwordSalt && !unlocked) {
+    return (
+      <PasswordGate
+        passwordHash={state.passwordHash}
+        passwordSalt={state.passwordSalt}
+        onUnlock={() => setUnlocked(true)}
+      />
+    )
+  }
+
   return (
     <>
       <Sidebar
@@ -47,12 +60,7 @@ export function App() {
           <SchedulePage state={state} onUpdateState={updateState} />
         )}
         {activePage === 'password' && (
-          <div>
-            <h1 style={{ fontSize: 24, marginBottom: 4 }}>Password Protection</h1>
-            <p style={{ color: 'var(--color-text-muted)', fontSize: 14 }}>
-              Protect all settings with a password
-            </p>
-          </div>
+          <PasswordPage state={state} onUpdateState={updateState} />
         )}
       </main>
     </>
