@@ -19,6 +19,7 @@ export function App() {
     void getState().then((s) => {
       setLocalState(s);
       setLoaded(true);
+      if (!s.passwordHash) setUnlocked(true);
     });
     onStateChange((newState) => {
       setLocalState(newState);
