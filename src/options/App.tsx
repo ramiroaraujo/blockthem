@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Sidebar } from './components/Sidebar'
 import { BlockList } from './components/BlockList'
+import { SchedulePage } from './components/SchedulePage'
 import { getState, setState, onStateChange } from '../shared/storage'
 import type { StorageState } from '../shared/types'
 import { DEFAULT_STATE } from '../shared/types'
@@ -43,12 +44,7 @@ export function App() {
           <BlockList state={state} onUpdateState={updateState} />
         )}
         {activePage === 'schedule' && (
-          <div>
-            <h1 style={{ fontSize: 24, marginBottom: 4 }}>Global Schedule</h1>
-            <p style={{ color: 'var(--color-text-muted)', fontSize: 14 }}>
-              Applies to all rules without a custom schedule
-            </p>
-          </div>
+          <SchedulePage state={state} onUpdateState={updateState} />
         )}
         {activePage === 'password' && (
           <div>
