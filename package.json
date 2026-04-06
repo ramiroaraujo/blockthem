@@ -1,7 +1,7 @@
 {
   "name": "blockthem",
   "version": "1.0.0",
-  "description": "",
+  "description": "Block distracting websites with URL/regex rules and scheduling",
   "main": "index.js",
   "directories": {
     "doc": "docs"
@@ -17,9 +17,9 @@
     "format:fix": "prettier --write src/",
     "typecheck": "tsc --noEmit"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["chrome-extension", "website-blocker", "productivity"],
+  "author": "Ramiro Araujo",
+  "license": "GPL-3.0-only",
   "type": "module",
   "dependencies": {
     "react": "^19.2.4",
