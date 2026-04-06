@@ -2,7 +2,7 @@
 
 A Chrome extension that blocks distracting websites with URL and regex rules, flexible scheduling, and optional password protection.
 
-![Popup](screenshots/popup.png)
+![Popup](docs/popup.png)
 
 ## Features
 
@@ -16,7 +16,7 @@ A Chrome extension that blocks distracting websites with URL and regex rules, fl
 
 | Block List | Schedule | Password Protection |
 |:---:|:---:|:---:|
-| ![Block List](screenshots/block-list.png) | ![Schedule](screenshots/schedule.png) | ![Password Protection](screenshots/password-protection.png) |
+| ![Block List](docs/block-list.png) | ![Schedule](docs/schedule.png) | ![Password Protection](docs/password-protection.png) |
 
 ## Installation
 
