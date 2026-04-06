@@ -45,7 +45,11 @@ function PasswordDialog({
         setError('Password not set');
         return;
       }
-      const valid = await verifyPassword(currentPwd, passwordHash, passwordSalt);
+      const valid = await verifyPassword(
+        currentPwd,
+        passwordHash,
+        passwordSalt,
+      );
       if (!valid) {
         setError('Incorrect password');
         return;

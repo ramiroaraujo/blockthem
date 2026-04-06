@@ -5,9 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Site Blocked — BlockThem</title>
     <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
       body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         background: #0d1117;
         color: #e6e6e6;
         display: flex;
@@ -15,10 +20,24 @@
         justify-content: center;
         min-height: 100vh;
       }
-      .container { text-align: center; padding: 40px; }
-      .shield { font-size: 64px; margin-bottom: 16px; }
-      h1 { font-size: 28px; font-weight: 600; margin-bottom: 8px; }
-      .info { font-size: 14px; color: #666; margin-bottom: 24px; }
+      .container {
+        text-align: center;
+        padding: 40px;
+      }
+      .shield {
+        font-size: 64px;
+        margin-bottom: 16px;
+      }
+      h1 {
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .info {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 24px;
+      }
       .rule-info {
         display: none;
         background: #161b22;
@@ -29,12 +48,16 @@
         color: #888;
         margin-bottom: 24px;
       }
-      .rule-info .pattern { color: #6c5ce7; }
+      .rule-info .pattern {
+        color: #6c5ce7;
+      }
     </style>
   </head>
   <body>
     <div class="container">
-      <div class="shield"><img src="/icons/icon-128.png" alt="" width="64" height="64" /></div>
+      <div class="shield">
+        <img src="/icons/icon-128.png" alt="" width="64" height="64" />
+      </div>
       <h1>This site is blocked</h1>
       <p class="info" id="info"></p>
       <div class="rule-info" id="rule-info"></div>

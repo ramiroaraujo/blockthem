@@ -1,9 +1,6 @@
 import type { BlockRule } from './types';
 
-export function matchesBlockRule(
-  url: string,
-  rule: BlockRule,
-): boolean {
+export function matchesBlockRule(url: string, rule: BlockRule): boolean {
   if (rule.type === 'url') {
     return url.includes(rule.pattern);
   }

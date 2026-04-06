@@ -1,6 +1,6 @@
 import type { Schedule, StorageState } from '../../shared/types';
-import { formatSchedule } from '../../shared/schedule';
 import { ToggleSwitch } from '../../shared/components/ToggleSwitch';
+import { formatSchedule } from '../../shared/schedule';
 import { ScheduleEditor } from './ScheduleEditor';
 
 interface SchedulePageProps {

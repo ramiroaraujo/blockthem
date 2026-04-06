@@ -4,7 +4,10 @@ import type { BlockRule } from './types';
 import { buildDNRRules, matchesBlockRule } from './rules';
 
 describe('matchesBlockRule', () => {
-  const makeRule = (pattern: string, type: 'url' | 'regex' = 'url'): BlockRule => ({
+  const makeRule = (
+    pattern: string,
+    type: 'url' | 'regex' = 'url',
+  ): BlockRule => ({
     id: 'r1',
     pattern,
     type,
@@ -14,20 +17,33 @@ describe('matchesBlockRule', () => {
   });
 
   it('matches URL pattern anywhere in the URL', () => {
-    expect(matchesBlockRule('https://x.com/home', makeRule('x.com'))).toBe(true);
-    expect(matchesBlockRule('https://www.x.com/', makeRule('x.com'))).toBe(true);
+    expect(matchesBlockRule('https://x.com/home', makeRule('x.com'))).toBe(
+      true,
+    );
+    expect(matchesBlockRule('https://www.x.com/', makeRule('x.com'))).toBe(
+      true,
+    );
   });
 
   it('does not match unrelated URLs', () => {
-    expect(matchesBlockRule('https://example.com', makeRule('x.com'))).toBe(false);
+    expect(matchesBlockRule('https://example.com', makeRule('x.com'))).toBe(
+      false,
+    );
   });
 
   it('matches regex patterns', () => {
-    expect(matchesBlockRule('https://www.reddit.com/r/test', makeRule('.*reddit\\.com.*', 'regex'))).toBe(true);
+    expect(
+      matchesBlockRule(
+        'https://www.reddit.com/r/test',
+        makeRule('.*reddit\\.com.*', 'regex'),
+      ),
+    ).toBe(true);
   });
 
   it('returns false for invalid regex', () => {
-    expect(matchesBlockRule('https://x.com', makeRule('[invalid', 'regex'))).toBe(false);
+    expect(
+      matchesBlockRule('https://x.com', makeRule('[invalid', 'regex')),
+    ).toBe(false);
   });
 });
 

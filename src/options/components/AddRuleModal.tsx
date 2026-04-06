@@ -106,9 +106,7 @@ export function AddRuleModal({
               error ? 'border-error' : 'border-border'
             }`}
           />
-          {error && (
-            <div className="mt-1 text-[11px] text-error">{error}</div>
-          )}
+          {error && <div className="mt-1 text-[11px] text-error">{error}</div>}
         </div>
 
         {/* Custom schedule toggle */}
