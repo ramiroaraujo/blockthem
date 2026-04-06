@@ -2,7 +2,7 @@ import { DEFAULT_STATE, type StorageState } from './types'
 
 export async function getState(): Promise<StorageState> {
   const result = await chrome.storage.local.get('state')
-  return result.state ?? { ...DEFAULT_STATE }
+  return (result as { state?: StorageState }).state ?? { ...DEFAULT_STATE }
 }
 
 export async function setState(state: StorageState): Promise<void> {
@@ -15,8 +15,8 @@ export function onStateChange(
   chrome.storage.onChanged.addListener((changes, areaName) => {
     if (areaName !== 'local' || !changes.state) return
     callback(
-      changes.state.newValue ?? { ...DEFAULT_STATE },
-      changes.state.oldValue ?? { ...DEFAULT_STATE }
+      (changes.state.newValue as StorageState) ?? { ...DEFAULT_STATE },
+      (changes.state.oldValue as StorageState) ?? { ...DEFAULT_STATE }
     )
   })
 }
