@@ -15,11 +15,3 @@ if (rulePattern) {
 } else if (infoEl) {
   infoEl.textContent = 'This site is on your block list';
 }
-
-document.getElementById('back-btn')?.addEventListener('click', () => {
-  if (history.length > 1) {
-    history.back();
-  } else {
-    window.close();
-  }
-});
