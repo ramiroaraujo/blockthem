@@ -74,7 +74,7 @@ export function Popup() {
   const isExtensionPage = tabUrl.startsWith(chrome.runtime.getURL(''));
   const alreadyBlocked =
     currentDomain !== null &&
-    state.rules.some((r) => r.pattern === currentDomain);
+    state.rules.some((r) => r.type === 'url' && tabUrl.includes(r.pattern));
   const canBlock =
     isHttp && !isExtensionPage && currentDomain !== null && !alreadyBlocked;
 
