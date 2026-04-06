@@ -1,35 +1,36 @@
-import { useEffect, useState } from 'react'
-import { Sidebar } from './components/Sidebar'
-import { BlockList } from './components/BlockList'
-import { SchedulePage } from './components/SchedulePage'
-import { PasswordPage } from './components/PasswordPage'
-import { PasswordGate } from './components/PasswordGate'
-import { getState, updateState, onStateChange } from '../shared/storage'
-import type { StorageState } from '../shared/types'
-import { DEFAULT_STATE } from '../shared/types'
+import { useEffect, useState } from 'react';
+
+import type { StorageState } from '../shared/types';
+import { getState, onStateChange, updateState } from '../shared/storage';
+import { DEFAULT_STATE } from '../shared/types';
+import { BlockList } from './components/BlockList';
+import { PasswordGate } from './components/PasswordGate';
+import { PasswordPage } from './components/PasswordPage';
+import { SchedulePage } from './components/SchedulePage';
+import { Sidebar } from './components/Sidebar';
 
 export function App() {
-  const [state, setLocalState] = useState<StorageState>(DEFAULT_STATE)
-  const [activePage, setActivePage] = useState('blocklist')
-  const [loaded, setLoaded] = useState(false)
-  const [unlocked, setUnlocked] = useState(false)
+  const [state, setLocalState] = useState<StorageState>(DEFAULT_STATE);
+  const [activePage, setActivePage] = useState('blocklist');
+  const [loaded, setLoaded] = useState(false);
+  const [unlocked, setUnlocked] = useState(false);
 
   useEffect(() => {
-    getState().then((s) => {
-      setLocalState(s)
-      setLoaded(true)
-    })
+    void getState().then((s) => {
+      setLocalState(s);
+      setLoaded(true);
+    });
     onStateChange((newState) => {
-      setLocalState(newState)
-    })
-  }, [])
+      setLocalState(newState);
+    });
+  }, []);
 
   const handleUpdateState = async (updates: Partial<StorageState>) => {
-    const newState = await updateState(updates)
-    setLocalState(newState)
-  }
+    const newState = await updateState(updates);
+    setLocalState(newState);
+  };
 
-  if (!loaded) return null
+  if (!loaded) return null;
 
   if (loaded && state.passwordHash && state.passwordSalt && !unlocked) {
     return (
@@ -38,7 +39,7 @@ export function App() {
         passwordSalt={state.passwordSalt}
         onUnlock={() => setUnlocked(true)}
       />
-    )
+    );
   }
 
   return (
@@ -63,5 +64,5 @@ export function App() {
         )}
       </main>
     </>
-  )
+  );
 }

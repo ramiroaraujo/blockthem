@@ -1,14 +1,19 @@
-import { useState } from 'react'
-import type { StorageState } from '../../shared/types'
-import { hashPassword, verifyPassword, generateSalt } from '../../shared/password'
-import { PasswordSchema } from '../../shared/schemas'
+import { useState } from 'react';
+
+import type { StorageState } from '../../shared/types';
+import {
+  generateSalt,
+  hashPassword,
+  verifyPassword,
+} from '../../shared/password';
+import { PasswordSchema } from '../../shared/schemas';
 
 interface PasswordPageProps {
-  state: StorageState
-  onUpdateState: (updates: Partial<StorageState>) => void
+  state: StorageState;
+  onUpdateState: (updates: Partial<StorageState>) => void;
 }
 
-type DialogMode = 'set' | 'change' | 'disable' | null
+type DialogMode = 'set' | 'change' | 'disable' | null;
 
 function PasswordDialog({
   mode,
@@ -17,45 +22,81 @@ function PasswordDialog({
   onConfirm,
   onClose,
 }: {
-  mode: 'set' | 'change' | 'disable'
-  passwordHash: string | null
-  passwordSalt: string | null
-  onConfirm: (hash: string | null, salt: string | null) => void
-  onClose: () => void
+  mode: 'set' | 'change' | 'disable';
+  passwordHash: string | null;
+  passwordSalt: string | null;
+  onConfirm: (hash: string | null, salt: string | null) => void;
+  onClose: () => void;
 }) {
-  const [currentPwd, setCurrentPwd] = useState('')
-  const [newPwd, setNewPwd] = useState('')
-  const [confirmPwd, setConfirmPwd] = useState('')
-  const [error, setError] = useState('')
+  const [currentPwd, setCurrentPwd] = useState('');
+  const [newPwd, setNewPwd] = useState('');
+  const [confirmPwd, setConfirmPwd] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = async () => {
-    setError('')
+    setError('');
 
     if (mode === 'disable') {
-      if (!currentPwd) { setError('Enter your current password'); return }
-      const valid = await verifyPassword(currentPwd, passwordHash!, passwordSalt!)
-      if (!valid) { setError('Incorrect password'); return }
-      onConfirm(null, null)
-      return
+      if (!currentPwd) {
+        setError('Enter your current password');
+        return;
+      }
+      if (!passwordHash || !passwordSalt) return;
+      const valid = await verifyPassword(
+        currentPwd,
+        passwordHash,
+        passwordSalt,
+      );
+      if (!valid) {
+        setError('Incorrect password');
+        return;
+      }
+      onConfirm(null, null);
+      return;
     }
 
     if (mode === 'change') {
-      if (!currentPwd) { setError('Enter your current password'); return }
-      const valid = await verifyPassword(currentPwd, passwordHash!, passwordSalt!)
-      if (!valid) { setError('Incorrect password'); return }
+      if (!currentPwd) {
+        setError('Enter your current password');
+        return;
+      }
+      if (!passwordHash || !passwordSalt) return;
+      const valid = await verifyPassword(
+        currentPwd,
+        passwordHash,
+        passwordSalt,
+      );
+      if (!valid) {
+        setError('Incorrect password');
+        return;
+      }
     }
 
-    if (!newPwd) { setError('Enter a new password'); return }
-    const pwdResult = PasswordSchema.safeParse(newPwd)
-    if (!pwdResult.success) { setError(pwdResult.error.issues[0].message); return }
-    if (newPwd !== confirmPwd) { setError('Passwords do not match'); return }
+    if (!newPwd) {
+      setError('Enter a new password');
+      return;
+    }
+    const pwdResult = PasswordSchema.safeParse(newPwd);
+    if (!pwdResult.success) {
+      setError(pwdResult.error.issues[0].message);
+      return;
+    }
+    if (newPwd !== confirmPwd) {
+      setError('Passwords do not match');
+      return;
+    }
 
-    const salt = generateSalt()
-    const hash = await hashPassword(newPwd, salt)
-    onConfirm(hash, salt)
-  }
+    const salt = generateSalt();
+    const hash = await hashPassword(newPwd, salt);
+    onConfirm(hash, salt);
+  };
 
-  const title = mode === 'set' ? 'Set Password' : mode === 'change' ? 'Change Password' : 'Disable Password Protection'
+  const title =
+    mode === 'set'
+      ? 'Set Password'
+      : mode === 'change'
+        ? 'Change Password'
+        : 'Disable Password Protection';
 
   const inputStyle: React.CSSProperties = {
     width: '100%',
@@ -65,7 +106,7 @@ function PasswordDialog({
     padding: '10px 12px',
     color: 'var(--color-text)',
     fontSize: 13,
-  }
+  };
 
   return (
     <div
@@ -82,7 +123,10 @@ function PasswordDialog({
     >
       <form
         onClick={(e) => e.stopPropagation()}
-        onSubmit={(e) => { e.preventDefault(); handleSubmit() }}
+        onSubmit={(e) => {
+          e.preventDefault();
+          void handleSubmit();
+        }}
         style={{
           background: 'var(--color-sidebar)',
           borderRadius: 12,
@@ -94,11 +138,22 @@ function PasswordDialog({
 
         {(mode === 'change' || mode === 'disable') && (
           <div style={{ marginBottom: 12 }}>
-            <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 4 }}>Current password</div>
+            <div
+              style={{
+                fontSize: 11,
+                color: 'var(--color-text-secondary)',
+                marginBottom: 4,
+              }}
+            >
+              Current password
+            </div>
             <input
               type="password"
               value={currentPwd}
-              onChange={(e) => { setCurrentPwd(e.target.value); setError('') }}
+              onChange={(e) => {
+                setCurrentPwd(e.target.value);
+                setError('');
+              }}
               autoFocus
               style={inputStyle}
             />
@@ -108,21 +163,43 @@ function PasswordDialog({
         {(mode === 'set' || mode === 'change') && (
           <>
             <div style={{ marginBottom: 12 }}>
-              <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 4 }}>New password</div>
+              <div
+                style={{
+                  fontSize: 11,
+                  color: 'var(--color-text-secondary)',
+                  marginBottom: 4,
+                }}
+              >
+                New password
+              </div>
               <input
                 type="password"
                 value={newPwd}
-                onChange={(e) => { setNewPwd(e.target.value); setError('') }}
+                onChange={(e) => {
+                  setNewPwd(e.target.value);
+                  setError('');
+                }}
                 autoFocus={mode === 'set'}
                 style={inputStyle}
               />
             </div>
             <div style={{ marginBottom: 12 }}>
-              <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 4 }}>Confirm password</div>
+              <div
+                style={{
+                  fontSize: 11,
+                  color: 'var(--color-text-secondary)',
+                  marginBottom: 4,
+                }}
+              >
+                Confirm password
+              </div>
               <input
                 type="password"
                 value={confirmPwd}
-                onChange={(e) => { setConfirmPwd(e.target.value); setError('') }}
+                onChange={(e) => {
+                  setConfirmPwd(e.target.value);
+                  setError('');
+                }}
                 style={inputStyle}
               />
             </div>
@@ -130,10 +207,19 @@ function PasswordDialog({
         )}
 
         {error && (
-          <div style={{ color: '#e74c3c', fontSize: 12, marginBottom: 12 }}>{error}</div>
+          <div style={{ color: '#e74c3c', fontSize: 12, marginBottom: 12 }}>
+            {error}
+          </div>
         )}
 
-        <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 20 }}>
+        <div
+          style={{
+            display: 'flex',
+            gap: 8,
+            justifyContent: 'flex-end',
+            marginTop: 20,
+          }}
+        >
           <button
             type="button"
             onClick={onClose}
@@ -151,7 +237,8 @@ function PasswordDialog({
           <button
             type="submit"
             style={{
-              background: mode === 'disable' ? '#e74c3c' : 'var(--color-primary)',
+              background:
+                mode === 'disable' ? '#e74c3c' : 'var(--color-primary)',
               color: 'white',
               border: 'none',
               padding: '8px 16px',
@@ -159,60 +246,78 @@ function PasswordDialog({
               fontSize: 13,
             }}
           >
-            {mode === 'disable' ? 'Disable' : mode === 'change' ? 'Update Password' : 'Set Password'}
+            {mode === 'disable'
+              ? 'Disable'
+              : mode === 'change'
+                ? 'Update Password'
+                : 'Set Password'}
           </button>
         </div>
       </form>
     </div>
-  )
+  );
 }
 
 export function PasswordPage({ state, onUpdateState }: PasswordPageProps) {
-  const isEnabled = state.passwordHash !== null
-  const [dialogMode, setDialogMode] = useState<DialogMode>(null)
-  const [message, setMessage] = useState('')
+  const isEnabled = state.passwordHash !== null;
+  const [dialogMode, setDialogMode] = useState<DialogMode>(null);
+  const [message, setMessage] = useState('');
 
   const handleToggle = () => {
-    setMessage('')
+    setMessage('');
     if (isEnabled) {
-      setDialogMode('disable')
+      setDialogMode('disable');
     } else {
-      setDialogMode('set')
+      setDialogMode('set');
     }
-  }
+  };
 
   const handleDialogConfirm = (hash: string | null, salt: string | null) => {
-    onUpdateState({ passwordHash: hash, passwordSalt: salt })
+    onUpdateState({ passwordHash: hash, passwordSalt: salt });
     if (hash === null) {
-      setMessage('Password protection disabled')
+      setMessage('Password protection disabled');
     } else if (dialogMode === 'set') {
-      setMessage('Password protection enabled')
+      setMessage('Password protection enabled');
     } else {
-      setMessage('Password updated successfully')
+      setMessage('Password updated successfully');
     }
-    setDialogMode(null)
-  }
+    setDialogMode(null);
+  };
 
   return (
     <div style={{ maxWidth: 500 }}>
       <h1 style={{ fontSize: 24, marginBottom: 4 }}>Password Protection</h1>
-      <p style={{ color: 'var(--color-text-muted)', fontSize: 14, marginBottom: 24 }}>
+      <p
+        style={{
+          color: 'var(--color-text-muted)',
+          fontSize: 14,
+          marginBottom: 24,
+        }}
+      >
         Protect all settings with a password
       </p>
 
       {/* Enable toggle */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '12px 16px',
-        background: 'var(--color-surface)',
-        borderRadius: 8,
-        marginBottom: 24,
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '12px 16px',
+          background: 'var(--color-surface)',
+          borderRadius: 8,
+          marginBottom: 24,
+        }}
+      >
         <div>
           <div style={{ fontSize: 13 }}>Enable password protection</div>
-          <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 2 }}>
+          <div
+            style={{
+              fontSize: 11,
+              color: 'var(--color-text-muted)',
+              marginTop: 2,
+            }}
+          >
             Requires password to access settings and toggle blocking
           </div>
         </div>
@@ -222,30 +327,37 @@ export function PasswordPage({ state, onUpdateState }: PasswordPageProps) {
             width: 40,
             height: 22,
             borderRadius: 11,
-            background: isEnabled ? 'var(--color-primary)' : 'var(--color-border)',
+            background: isEnabled
+              ? 'var(--color-primary)'
+              : 'var(--color-border)',
             position: 'relative',
             cursor: 'pointer',
             transition: 'background 0.2s',
             flexShrink: 0,
           }}
         >
-          <div style={{
-            width: 18,
-            height: 18,
-            borderRadius: '50%',
-            background: isEnabled ? 'white' : '#666',
-            position: 'absolute',
-            top: 2,
-            left: isEnabled ? 20 : 2,
-            transition: 'left 0.2s',
-          }} />
+          <div
+            style={{
+              width: 18,
+              height: 18,
+              borderRadius: '50%',
+              background: isEnabled ? 'white' : '#666',
+              position: 'absolute',
+              top: 2,
+              left: isEnabled ? 20 : 2,
+              transition: 'left 0.2s',
+            }}
+          />
         </div>
       </div>
 
       {/* Change password button (when enabled) */}
       {isEnabled && (
         <button
-          onClick={() => { setMessage(''); setDialogMode('change') }}
+          onClick={() => {
+            setMessage('');
+            setDialogMode('change');
+          }}
           style={{
             background: 'var(--color-surface)',
             color: 'var(--color-text-secondary)',
@@ -260,18 +372,22 @@ export function PasswordPage({ state, onUpdateState }: PasswordPageProps) {
       )}
 
       {!isEnabled && !message && (
-        <div style={{
-          padding: 24,
-          textAlign: 'center',
-          color: 'var(--color-text-muted)',
-          fontSize: 14,
-        }}>
+        <div
+          style={{
+            padding: 24,
+            textAlign: 'center',
+            color: 'var(--color-text-muted)',
+            fontSize: 14,
+          }}
+        >
           No password set. Enable the toggle above to protect your settings.
         </div>
       )}
 
       {message && (
-        <div style={{ color: '#2ecc71', fontSize: 12, marginTop: 12 }}>{message}</div>
+        <div style={{ color: '#2ecc71', fontSize: 12, marginTop: 12 }}>
+          {message}
+        </div>
       )}
 
       {dialogMode && (
@@ -284,5 +400,5 @@ export function PasswordPage({ state, onUpdateState }: PasswordPageProps) {
         />
       )}
     </div>
-  )
+  );
 }

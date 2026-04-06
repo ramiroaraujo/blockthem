@@ -1,13 +1,13 @@
-import type { BlockRule } from './types'
+import type { BlockRule } from './types';
 
 export function buildDNRRules(
   rules: BlockRule[],
-  extensionId: string
+  _extensionId: string,
 ): chrome.declarativeNetRequest.Rule[] {
-  const enabledRules = rules.filter((r) => r.enabled)
+  const enabledRules = rules.filter((r) => r.enabled);
   return enabledRules.map((rule, index) => {
-    const ruleParam = encodeURIComponent(rule.pattern)
-    const redirectPath = `/src/blocked/index.html?rule=${ruleParam}&type=${rule.type}`
+    const ruleParam = encodeURIComponent(rule.pattern);
+    const redirectPath = `/src/blocked/index.html?rule=${ruleParam}&type=${rule.type}`;
 
     const dnrRule: chrome.declarativeNetRequest.Rule = {
       id: index + 1,
@@ -21,14 +21,14 @@ export function buildDNRRules(
           'main_frame' as chrome.declarativeNetRequest.ResourceType,
         ],
       },
-    }
+    };
 
     if (rule.type === 'url') {
-      dnrRule.condition.urlFilter = `*${rule.pattern}*`
+      dnrRule.condition.urlFilter = `*${rule.pattern}*`;
     } else {
-      dnrRule.condition.regexFilter = rule.pattern
+      dnrRule.condition.regexFilter = rule.pattern;
     }
 
-    return dnrRule
-  })
+    return dnrRule;
+  });
 }

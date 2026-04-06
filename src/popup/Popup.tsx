@@ -1,93 +1,109 @@
-import { useEffect, useState } from 'react'
-import { getState, updateState, onStateChange } from '../shared/storage'
-import { verifyPassword } from '../shared/password'
-import type { StorageState } from '../shared/types'
-import { DEFAULT_STATE } from '../shared/types'
+import { useEffect, useState } from 'react';
+
+import type { StorageState } from '../shared/types';
+import { verifyPassword } from '../shared/password';
+import { getState, onStateChange, updateState } from '../shared/storage';
+import { DEFAULT_STATE } from '../shared/types';
 
 export function Popup() {
-  const [state, setLocalState] = useState<StorageState>(DEFAULT_STATE)
-  const [loaded, setLoaded] = useState(false)
-  const [showPasswordInput, setShowPasswordInput] = useState(false)
-  const [password, setPassword] = useState('')
-  const [passwordError, setPasswordError] = useState('')
+  const [state, setLocalState] = useState<StorageState>(DEFAULT_STATE);
+  const [loaded, setLoaded] = useState(false);
+  const [showPasswordInput, setShowPasswordInput] = useState(false);
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   useEffect(() => {
-    getState().then((s) => {
-      setLocalState(s)
-      setLoaded(true)
-    })
+    void getState().then((s) => {
+      setLocalState(s);
+      setLoaded(true);
+    });
     onStateChange((newState) => {
-      setLocalState(newState)
-    })
-  }, [])
+      setLocalState(newState);
+    });
+  }, []);
 
   const handleToggle = async () => {
     if (state.passwordHash && state.passwordSalt) {
-      setShowPasswordInput(true)
-      return
+      setShowPasswordInput(true);
+      return;
     }
-    await doToggle()
-  }
+    await doToggle();
+  };
 
   const doToggle = async () => {
-    const newState = await updateState({ blockingEnabled: !state.blockingEnabled })
-    setLocalState(newState)
-    setShowPasswordInput(false)
-    setPassword('')
-  }
+    const newState = await updateState({
+      blockingEnabled: !state.blockingEnabled,
+    });
+    setLocalState(newState);
+    setShowPasswordInput(false);
+    setPassword('');
+  };
 
   const handlePasswordSubmit = async () => {
-    const valid = await verifyPassword(password, state.passwordHash!, state.passwordSalt!)
+    if (!state.passwordHash || !state.passwordSalt) return;
+    const valid = await verifyPassword(
+      password,
+      state.passwordHash,
+      state.passwordSalt,
+    );
     if (valid) {
-      await doToggle()
+      await doToggle();
     } else {
-      setPasswordError('Wrong password')
-      setPassword('')
+      setPasswordError('Wrong password');
+      setPassword('');
     }
-  }
+  };
 
   const openOptions = () => {
-    chrome.runtime.openOptionsPage()
-  }
+    void chrome.runtime.openOptionsPage();
+  };
 
-  if (!loaded) return null
+  if (!loaded) return null;
 
   return (
-    <div style={{
-      width: 280,
-      padding: 20,
-      boxSizing: 'border-box',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-      background: '#0d1117',
-      color: '#e6e6e6',
-    }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 8,
-        marginBottom: 16,
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#6c5ce7',
-      }}>
+    <div
+      style={{
+        width: 280,
+        padding: 20,
+        boxSizing: 'border-box',
+        fontFamily:
+          '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        background: '#0d1117',
+        color: '#e6e6e6',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          marginBottom: 16,
+          fontSize: 16,
+          fontWeight: 'bold',
+          color: '#6c5ce7',
+        }}
+      >
         🛡️ BlockThem
       </div>
 
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '12px 16px',
-        background: '#161b22',
-        borderRadius: 8,
-        marginBottom: 12,
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '12px 16px',
+          background: '#161b22',
+          borderRadius: 8,
+          marginBottom: 12,
+        }}
+      >
         <div>
           <div style={{ fontSize: 13 }}>
             Blocking is {state.blockingEnabled ? 'ON' : 'OFF'}
           </div>
           <div style={{ fontSize: 11, color: '#666', marginTop: 2 }}>
-            {state.rules.length} rule{state.rules.length !== 1 ? 's' : ''} configured
+            {state.rules.length} rule{state.rules.length !== 1 ? 's' : ''}{' '}
+            configured
           </div>
         </div>
         <div
@@ -102,16 +118,18 @@ export function Popup() {
             transition: 'background 0.2s',
           }}
         >
-          <div style={{
-            width: 18,
-            height: 18,
-            borderRadius: '50%',
-            background: state.blockingEnabled ? 'white' : '#666',
-            position: 'absolute',
-            top: 2,
-            left: state.blockingEnabled ? 20 : 2,
-            transition: 'left 0.2s',
-          }} />
+          <div
+            style={{
+              width: 18,
+              height: 18,
+              borderRadius: '50%',
+              background: state.blockingEnabled ? 'white' : '#666',
+              position: 'absolute',
+              top: 2,
+              left: state.blockingEnabled ? 20 : 2,
+              transition: 'left 0.2s',
+            }}
+          />
         </div>
       </div>
 
@@ -120,8 +138,11 @@ export function Popup() {
           <input
             type="password"
             value={password}
-            onChange={(e) => { setPassword(e.target.value); setPasswordError('') }}
-            onKeyDown={(e) => e.key === 'Enter' && handlePasswordSubmit()}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setPasswordError('');
+            }}
+            onKeyDown={(e) => e.key === 'Enter' && void handlePasswordSubmit()}
             placeholder="Enter password to toggle"
             autoFocus
             style={{
@@ -138,7 +159,9 @@ export function Popup() {
             }}
           />
           {passwordError && (
-            <div style={{ color: '#e74c3c', fontSize: 11 }}>{passwordError}</div>
+            <div style={{ color: '#e74c3c', fontSize: 11 }}>
+              {passwordError}
+            </div>
           )}
         </div>
       )}
@@ -161,5 +184,5 @@ export function Popup() {
         Open Settings
       </button>
     </div>
-  )
+  );
 }

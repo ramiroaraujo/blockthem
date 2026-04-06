@@ -1,50 +1,66 @@
-import { useState } from 'react'
-import { verifyPassword } from '../../shared/password'
+import { useState } from 'react';
+
+import { verifyPassword } from '../../shared/password';
 
 interface PasswordGateProps {
-  passwordHash: string
-  passwordSalt: string
-  onUnlock: () => void
+  passwordHash: string;
+  passwordSalt: string;
+  onUnlock: () => void;
 }
 
-export function PasswordGate({ passwordHash, passwordSalt, onUnlock }: PasswordGateProps) {
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+export function PasswordGate({
+  passwordHash,
+  passwordSalt,
+  onUnlock,
+}: PasswordGateProps) {
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleUnlock = async () => {
-    const valid = await verifyPassword(password, passwordHash, passwordSalt)
+    const valid = await verifyPassword(password, passwordHash, passwordSalt);
     if (valid) {
-      onUnlock()
+      onUnlock();
     } else {
-      setError('Incorrect password')
-      setPassword('')
+      setError('Incorrect password');
+      setPassword('');
     }
-  }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') handleUnlock()
-  }
+    if (e.key === 'Enter') void handleUnlock();
+  };
 
   return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '100vh',
-      width: '100%',
-      background: 'var(--color-bg)',
-    }}>
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        width: '100%',
+        background: 'var(--color-bg)',
+      }}
+    >
       <div style={{ textAlign: 'center', maxWidth: 320, padding: 40 }}>
         <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
         <h1 style={{ fontSize: 20, marginBottom: 8 }}>BlockThem Settings</h1>
-        <p style={{ fontSize: 13, color: 'var(--color-text-muted)', marginBottom: 24 }}>
+        <p
+          style={{
+            fontSize: 13,
+            color: 'var(--color-text-muted)',
+            marginBottom: 24,
+          }}
+        >
           Enter your password to access settings
         </p>
 
         <input
           type="password"
           value={password}
-          onChange={(e) => { setPassword(e.target.value); setError('') }}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setError('');
+          }}
           onKeyDown={handleKeyDown}
           placeholder="Password"
           autoFocus
@@ -82,5 +98,5 @@ export function PasswordGate({ passwordHash, passwordSalt, onUnlock }: PasswordG
         </button>
       </div>
     </div>
-  )
+  );
 }
