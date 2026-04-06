@@ -7,20 +7,11 @@ interface SchedulePageProps {
   onUpdateState: (updates: Partial<StorageState>) => void
 }
 
-const DEFAULT_SCHEDULE: Schedule = {
-  days: [1, 2, 3, 4, 5],
-  startTime: '09:00',
-  endTime: '17:00',
-}
-
 export function SchedulePage({ state, onUpdateState }: SchedulePageProps) {
-  const enabled = state.globalSchedule !== null
-  const schedule = state.globalSchedule ?? DEFAULT_SCHEDULE
+  const enabled = state.scheduleEnabled
 
   const toggleEnabled = () => {
-    onUpdateState({
-      globalSchedule: enabled ? null : { ...DEFAULT_SCHEDULE },
-    })
+    onUpdateState({ scheduleEnabled: !enabled })
   }
 
   const updateSchedule = (newSchedule: Schedule) => {
@@ -72,7 +63,7 @@ export function SchedulePage({ state, onUpdateState }: SchedulePageProps) {
 
       {enabled && (
         <>
-          <ScheduleEditor schedule={schedule} onChange={updateSchedule} />
+          <ScheduleEditor schedule={state.globalSchedule} onChange={updateSchedule} />
 
           {/* Summary */}
           <div style={{
@@ -86,7 +77,7 @@ export function SchedulePage({ state, onUpdateState }: SchedulePageProps) {
               Schedule summary
             </div>
             <div style={{ fontSize: 13, marginTop: 4 }}>
-              Blocking {formatSchedule(schedule)}
+              Blocking {formatSchedule(state.globalSchedule)}
             </div>
           </div>
         </>

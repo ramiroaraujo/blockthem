@@ -11,14 +11,14 @@ function getActiveRules(state: StorageState): BlockRule[] {
   return state.rules.filter((rule) => {
     if (!rule.enabled) return false
 
-    const schedule = rule.schedule ?? state.globalSchedule
+    const schedule = rule.schedule ?? (state.scheduleEnabled ? state.globalSchedule : null)
     if (!schedule) return true // No schedule = always active
 
     return isScheduleActive(schedule)
   })
 }
 
-async function syncRules(): Promise<void> {
+async function syncRulesInternal(): Promise<void> {
   const state = await getState()
   const activeRules = getActiveRules(state)
   const extensionId = chrome.runtime.id
@@ -31,6 +31,14 @@ async function syncRules(): Promise<void> {
     removeRuleIds,
     addRules: newRules,
   })
+}
+
+let syncChain: Promise<void> = Promise.resolve()
+
+function syncRules(): void {
+  syncChain = syncChain
+    .then(() => syncRulesInternal())
+    .catch((err) => console.error('[BlockThem] syncRules error:', err))
 }
 
 // Sync rules on startup
