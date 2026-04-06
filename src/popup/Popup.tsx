@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getState, setState } from '../shared/storage'
+import { getState, updateState, onStateChange } from '../shared/storage'
 import { verifyPassword } from '../shared/password'
 import type { StorageState } from '../shared/types'
 import { DEFAULT_STATE } from '../shared/types'
@@ -16,6 +16,9 @@ export function Popup() {
       setLocalState(s)
       setLoaded(true)
     })
+    onStateChange((newState) => {
+      setLocalState(newState)
+    })
   }, [])
 
   const handleToggle = async () => {
@@ -27,9 +30,8 @@ export function Popup() {
   }
 
   const doToggle = async () => {
-    const newState = { ...state, blockingEnabled: !state.blockingEnabled }
+    const newState = await updateState({ blockingEnabled: !state.blockingEnabled })
     setLocalState(newState)
-    await setState(newState)
     setShowPasswordInput(false)
     setPassword('')
   }

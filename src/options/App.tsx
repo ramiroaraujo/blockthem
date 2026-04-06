@@ -4,7 +4,7 @@ import { BlockList } from './components/BlockList'
 import { SchedulePage } from './components/SchedulePage'
 import { PasswordPage } from './components/PasswordPage'
 import { PasswordGate } from './components/PasswordGate'
-import { getState, setState, onStateChange } from '../shared/storage'
+import { getState, updateState, onStateChange } from '../shared/storage'
 import type { StorageState } from '../shared/types'
 import { DEFAULT_STATE } from '../shared/types'
 
@@ -24,10 +24,9 @@ export function App() {
     })
   }, [])
 
-  const updateState = async (updates: Partial<StorageState>) => {
-    const newState = { ...state, ...updates }
+  const handleUpdateState = async (updates: Partial<StorageState>) => {
+    const newState = await updateState(updates)
     setLocalState(newState)
-    await setState(newState)
   }
 
   if (!loaded) return null
@@ -49,18 +48,18 @@ export function App() {
         onNavigate={setActivePage}
         blockingEnabled={state.blockingEnabled}
         onToggleBlocking={() =>
-          updateState({ blockingEnabled: !state.blockingEnabled })
+          handleUpdateState({ blockingEnabled: !state.blockingEnabled })
         }
       />
       <main style={{ flex: 1, padding: 32, overflowY: 'auto' }}>
         {activePage === 'blocklist' && (
-          <BlockList state={state} onUpdateState={updateState} />
+          <BlockList state={state} onUpdateState={handleUpdateState} />
         )}
         {activePage === 'schedule' && (
-          <SchedulePage state={state} onUpdateState={updateState} />
+          <SchedulePage state={state} onUpdateState={handleUpdateState} />
         )}
         {activePage === 'password' && (
-          <PasswordPage state={state} onUpdateState={updateState} />
+          <PasswordPage state={state} onUpdateState={handleUpdateState} />
         )}
       </main>
     </>

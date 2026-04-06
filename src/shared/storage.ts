@@ -2,11 +2,35 @@ import { DEFAULT_STATE, type StorageState } from './types'
 
 export async function getState(): Promise<StorageState> {
   const result = await chrome.storage.local.get('state')
-  return (result as { state?: StorageState }).state ?? { ...DEFAULT_STATE }
+  const raw = (result as { state?: Record<string, unknown> }).state
+  if (!raw) return { ...DEFAULT_STATE }
+
+  // Migration: convert old null-based schedule to enabled-flag approach
+  if (!('scheduleEnabled' in raw)) {
+    return {
+      ...DEFAULT_STATE,
+      ...(raw as Partial<StorageState>),
+      scheduleEnabled: raw.globalSchedule !== null && raw.globalSchedule !== undefined,
+      globalSchedule:
+        (raw.globalSchedule as StorageState['globalSchedule'] | null) ??
+        DEFAULT_STATE.globalSchedule,
+    }
+  }
+
+  return raw as unknown as StorageState
 }
 
 export async function setState(state: StorageState): Promise<void> {
   await chrome.storage.local.set({ state })
+}
+
+export async function updateState(
+  updates: Partial<StorageState>
+): Promise<StorageState> {
+  const current = await getState()
+  const merged = { ...current, ...updates }
+  await setState(merged)
+  return merged
 }
 
 export function onStateChange(
