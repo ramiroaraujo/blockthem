@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "BlockThem",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Block distracting websites with URL/regex rules and scheduling",
   "permissions": [
     "storage",
