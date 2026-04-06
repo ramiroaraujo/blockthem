@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import type { BlockRule, StorageState } from '../../shared/types'
 import { formatSchedule } from '../../shared/schedule'
+import { ImportDataSchema } from '../../shared/schemas'
 import { AddRuleModal } from './AddRuleModal'
 
 interface BlockListProps {
@@ -10,6 +11,29 @@ interface BlockListProps {
 
 export function BlockList({ state, onUpdateState }: BlockListProps) {
   const [showAddModal, setShowAddModal] = useState(false)
+  const [confirmingId, setConfirmingId] = useState<string | null>(null)
+  const confirmTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const resetConfirm = useCallback(() => {
+    setConfirmingId(null)
+    if (confirmTimeoutRef.current) {
+      clearTimeout(confirmTimeoutRef.current)
+      confirmTimeoutRef.current = null
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!confirmingId) return
+    const handleClick = () => resetConfirm()
+    document.addEventListener('click', handleClick)
+    return () => document.removeEventListener('click', handleClick)
+  }, [confirmingId, resetConfirm])
+
+  useEffect(() => {
+    return () => {
+      if (confirmTimeoutRef.current) clearTimeout(confirmTimeoutRef.current)
+    }
+  }, [])
 
   const addRule = (ruleData: Omit<BlockRule, 'id' | 'createdAt'>) => {
     const newRule: BlockRule = {
@@ -48,12 +72,17 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
       const text = await file.text()
       try {
         const data = JSON.parse(text)
-        if (Array.isArray(data.rules)) {
+        const parsed = ImportDataSchema.safeParse(data)
+        if (parsed.success) {
           onUpdateState({
-            rules: data.rules,
-            globalSchedule: data.globalSchedule ?? state.globalSchedule,
-            blockingEnabled: data.blockingEnabled ?? state.blockingEnabled,
+            rules: parsed.data.rules,
+            globalSchedule: parsed.data.globalSchedule ?? state.globalSchedule,
+            scheduleEnabled: parsed.data.scheduleEnabled ?? state.scheduleEnabled,
+            blockingEnabled: parsed.data.blockingEnabled ?? state.blockingEnabled,
           })
+        } else {
+          const issue = parsed.error.issues[0]
+          alert(`Import failed: ${issue.path.join('.')} — ${issue.message}`)
         }
       } catch {
         alert('Invalid JSON file')
@@ -102,45 +131,85 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
           <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginBottom: 8 }}>
             Blocked Items ({state.rules.length})
           </div>
-          {state.rules.map((rule) => (
-            <div
-              key={rule.id}
-              style={{
-                background: 'var(--color-surface)',
-                borderRadius: 8,
-                padding: '12px 16px',
-                marginBottom: 8,
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <div>
-                <div style={{ fontSize: 13 }}>{rule.pattern}</div>
-                <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 2 }}>
-                  {rule.type.toUpperCase()}
-                  {rule.schedule
-                    ? ` · ${formatSchedule(rule.schedule)}`
-                    : state.globalSchedule
-                      ? ' · Global schedule'
-                      : ''}
-                </div>
-              </div>
-              <button
-                onClick={() => deleteRule(rule.id)}
+          {state.rules.map((rule) => {
+            const isConfirming = confirmingId === rule.id
+            return (
+              <div
+                key={rule.id}
                 style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'var(--color-text-muted)',
-                  fontSize: 16,
-                  cursor: 'pointer',
-                  padding: '4px 8px',
+                  background: 'var(--color-surface)',
+                  borderRadius: 8,
+                  padding: '12px 16px',
+                  marginBottom: 8,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
                 }}
               >
-                🗑
-              </button>
-            </div>
-          ))}
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <div style={{ fontSize: 13 }}>{rule.pattern}</div>
+                  <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 2 }}>
+                    {rule.type.toUpperCase()}
+                    {rule.schedule
+                      ? ` · ${formatSchedule(rule.schedule)}`
+                      : state.scheduleEnabled
+                        ? ' · Global schedule'
+                        : ''}
+                  </div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      if (isConfirming) return
+                      setConfirmingId(rule.id)
+                      if (confirmTimeoutRef.current) clearTimeout(confirmTimeoutRef.current)
+                      confirmTimeoutRef.current = setTimeout(() => setConfirmingId(null), 3000)
+                    }}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--color-text-muted)',
+                      fontSize: 16,
+                      cursor: 'pointer',
+                      padding: '4px 8px',
+                    }}
+                  >
+                    🗑
+                  </button>
+                  <div
+                    style={{
+                      overflow: 'hidden',
+                      width: isConfirming ? 80 : 0,
+                      opacity: isConfirming ? 1 : 0,
+                      transition: 'width 0.25s ease, opacity 0.2s ease',
+                    }}
+                  >
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        deleteRule(rule.id)
+                        resetConfirm()
+                      }}
+                      style={{
+                        background: '#e74c3c',
+                        color: 'white',
+                        border: 'none',
+                        padding: '6px 14px',
+                        borderRadius: 4,
+                        fontSize: 12,
+                        fontWeight: 'bold',
+                        cursor: 'pointer',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      Confirm
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
         </div>
       )}
 
