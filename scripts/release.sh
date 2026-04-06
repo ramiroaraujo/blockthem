@@ -37,7 +37,8 @@ for (const file of ['package.json', 'manifest.json']) {
 }
 "
 
-# Build
+# Generate rulesets and build
+pnpm generate-rulesets
 pnpm build
 
 # Create zip

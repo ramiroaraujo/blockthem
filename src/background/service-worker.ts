@@ -22,6 +22,22 @@ function getActiveRules(state: StorageState): BlockRule[] {
   });
 }
 
+async function syncStaticRulesets(state: StorageState): Promise<void> {
+  const enableRulesetIds: string[] = [];
+  const disableRulesetIds: string[] = [];
+
+  const adultEnabled = state.blockingEnabled && state.blockAdultSites;
+  const gamblingEnabled = state.blockingEnabled && state.blockGamblingSites;
+
+  (adultEnabled ? enableRulesetIds : disableRulesetIds).push('adult');
+  (gamblingEnabled ? enableRulesetIds : disableRulesetIds).push('gambling');
+
+  await chrome.declarativeNetRequest.updateEnabledRulesets({
+    enableRulesetIds,
+    disableRulesetIds,
+  });
+}
+
 async function syncRulesInternal(): Promise<void> {
   const state = await getState();
   const activeRules = getActiveRules(state);
@@ -36,6 +52,8 @@ async function syncRulesInternal(): Promise<void> {
     removeRuleIds,
     addRules: newRules,
   });
+
+  await syncStaticRulesets(state);
 }
 
 let syncChain: Promise<void> = Promise.resolve();
@@ -54,7 +72,7 @@ function getBlockedUrl(rule: BlockRule): string {
 }
 
 function checkAndBlock(tabId: number, url: string): void {
-  if (!url || !url.startsWith('http')) return;
+  if (!url?.startsWith('http')) return;
 
   // Don't block our own block page
   const extensionOrigin = chrome.runtime.getURL('');
@@ -62,7 +80,7 @@ function checkAndBlock(tabId: number, url: string): void {
 
   for (const rule of cachedActiveRules) {
     if (matchesBlockRule(url, rule)) {
-      chrome.tabs.update(tabId, { url: getBlockedUrl(rule) });
+      void chrome.tabs.update(tabId, { url: getBlockedUrl(rule) });
       return;
     }
   }

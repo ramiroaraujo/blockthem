@@ -19,7 +19,7 @@ export async function getState(): Promise<StorageState> {
     };
   }
 
-  return raw as unknown as StorageState;
+  return { ...DEFAULT_STATE, ...(raw as unknown as StorageState) };
 }
 
 export async function setState(state: StorageState): Promise<void> {

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import type { BlockRule, StorageState } from '../../shared/types';
+import { ToggleSwitch } from '../../shared/components/ToggleSwitch';
 import { formatSchedule } from '../../shared/schedule';
 import { AddRuleModal } from './AddRuleModal';
 
@@ -12,7 +13,9 @@ interface BlockListProps {
 export function BlockList({ state, onUpdateState }: BlockListProps) {
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingRule, setEditingRule] = useState<BlockRule | null>(null);
-  const [confirmingDeleteId, setConfirmingDeleteId] = useState<string | null>(null);
+  const [confirmingDeleteId, setConfirmingDeleteId] = useState<string | null>(
+    null,
+  );
 
   const addRule = (ruleData: Omit<BlockRule, 'id' | 'createdAt'>) => {
     const newRule: BlockRule = {
@@ -47,7 +50,7 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
   };
 
   const handleExport = () => {
-    const { passwordHash, passwordSalt, ...exportData } = state;
+    const { passwordHash: _ph, passwordSalt: _ps, ...exportData } = state;
     const blob = new Blob([JSON.stringify(exportData, null, 2)], {
       type: 'application/json',
     });
@@ -68,12 +71,15 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
       if (!file) return;
       const text = await file.text();
       try {
-        const data = JSON.parse(text);
+        const data = JSON.parse(text) as Partial<StorageState>;
         if (Array.isArray(data.rules)) {
           onUpdateState({
             rules: data.rules,
             globalSchedule: data.globalSchedule ?? state.globalSchedule,
             blockingEnabled: data.blockingEnabled ?? state.blockingEnabled,
+            blockAdultSites: data.blockAdultSites ?? state.blockAdultSites,
+            blockGamblingSites:
+              data.blockGamblingSites ?? state.blockGamblingSites,
           });
         }
       } catch {
@@ -91,6 +97,38 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
           <p className="text-sm text-text-muted">
             Block sites permanently or by schedule
           </p>
+        </div>
+      </div>
+
+      <div className="mb-6">
+        <div className="mb-2 text-xs text-text-secondary">Category Filters</div>
+        <div className="mb-2 flex items-center justify-between rounded-lg bg-surface px-4 py-3">
+          <div>
+            <div className="text-[13px]">Block adult sites</div>
+            <div className="mt-0.5 text-[11px] text-text-muted">
+              ~77K sites from community blocklist
+            </div>
+          </div>
+          <ToggleSwitch
+            enabled={state.blockAdultSites}
+            onClick={() =>
+              onUpdateState({ blockAdultSites: !state.blockAdultSites })
+            }
+          />
+        </div>
+        <div className="flex items-center justify-between rounded-lg bg-surface px-4 py-3">
+          <div>
+            <div className="text-[13px]">Block gambling sites</div>
+            <div className="mt-0.5 text-[11px] text-text-muted">
+              ~6K sites from community blocklist
+            </div>
+          </div>
+          <ToggleSwitch
+            enabled={state.blockGamblingSites}
+            onClick={() =>
+              onUpdateState({ blockGamblingSites: !state.blockGamblingSites })
+            }
+          />
         </div>
       </div>
 
@@ -158,7 +196,10 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
                   </button>
                   <div
                     className="overflow-hidden transition-all duration-200"
-                    style={{ width: isConfirming ? 76 : 0, opacity: isConfirming ? 1 : 0 }}
+                    style={{
+                      width: isConfirming ? 76 : 0,
+                      opacity: isConfirming ? 1 : 0,
+                    }}
                   >
                     <button
                       onClick={(e) => {

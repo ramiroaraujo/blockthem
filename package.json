@@ -16,6 +16,7 @@
     "format": "prettier --check src/",
     "format:fix": "prettier --write src/",
     "typecheck": "tsc --noEmit",
+    "generate-rulesets": "npx tsx scripts/generate-rulesets.ts",
     "release": "bash scripts/release.sh",
     "zip": "pnpm build && cd dist && zip -r ../blockthem.zip . && cd .. && echo 'Created blockthem.zip'"
   },
@@ -51,6 +52,7 @@
     "prettier": "^3.8.1",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.2.2",
+    "tsx": "^4.21.0",
     "typescript": "^6.0.2",
     "typescript-eslint": "^8.58.0",
     "vite": "^8.0.5",

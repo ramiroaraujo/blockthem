@@ -20,6 +20,8 @@ export interface StorageState {
   blockingEnabled: boolean;
   passwordHash: string | null;
   passwordSalt: string | null;
+  blockAdultSites: boolean;
+  blockGamblingSites: boolean;
 }
 
 export const DEFAULT_STATE: StorageState = {
@@ -33,4 +35,6 @@ export const DEFAULT_STATE: StorageState = {
   blockingEnabled: true,
   passwordHash: null,
   passwordSalt: null,
+  blockAdultSites: false,
+  blockGamblingSites: false,
 };

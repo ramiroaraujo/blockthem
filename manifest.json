@@ -30,6 +30,12 @@
     "48": "icons/icon-48.png",
     "128": "icons/icon-128.png"
   },
+  "declarative_net_request": {
+    "rule_resources": [
+      { "id": "adult", "enabled": false, "path": "rulesets/adult.json" },
+      { "id": "gambling", "enabled": false, "path": "rulesets/gambling.json" }
+    ]
+  },
   "web_accessible_resources": [
     {
       "resources": [

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import { getState, setState } from '../shared/storage';
+import type { StorageState } from '../shared/types';
 import { ToggleSwitch } from '../shared/components/ToggleSwitch';
 import { verifyPassword } from '../shared/password';
-import type { StorageState } from '../shared/types';
+import { getState, setState } from '../shared/storage';
 import { DEFAULT_STATE } from '../shared/types';
 
 export function Popup() {
@@ -69,14 +69,12 @@ export function Popup() {
             Blocking is {state.blockingEnabled ? 'ON' : 'OFF'}
           </div>
           <div className="mt-0.5 text-[11px] text-text-muted">
-            {state.rules.length} rule{state.rules.length !== 1 ? 's' : ''}{' '}
-            configured
+            {state.rules.length} rule{state.rules.length !== 1 ? 's' : ''}
+            {(state.blockAdultSites || state.blockGamblingSites) &&
+              ` · ${[state.blockAdultSites && 'adult', state.blockGamblingSites && 'gambling'].filter(Boolean).join(', ')}`}
           </div>
         </div>
-        <ToggleSwitch
-          enabled={state.blockingEnabled}
-          onClick={handleToggle}
-        />
+        <ToggleSwitch enabled={state.blockingEnabled} onClick={handleToggle} />
       </div>
 
       {showPasswordInput && (
