@@ -1,6 +1,6 @@
+import type { Schedule } from '../../shared/types';
 import { t } from '../../shared/i18n';
 import { dayNarrow } from '../../shared/schedule';
-import type { Schedule } from '../../shared/types';
 
 interface ScheduleEditorProps {
   schedule: Schedule;

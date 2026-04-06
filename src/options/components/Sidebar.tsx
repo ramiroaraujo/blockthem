@@ -1,6 +1,6 @@
+import type { MessageKey } from '../../shared/i18n';
 import { ToggleSwitch } from '../../shared/components/ToggleSwitch';
 import { t } from '../../shared/i18n';
-import type { MessageKey } from '../../shared/i18n';
 
 interface SidebarProps {
   activePage: string;

@@ -1,5 +1,5 @@
-import { getUILocale, t } from './i18n';
 import type { Schedule } from './types';
+import { getUILocale, t } from './i18n';
 
 function parseTime(time: string): number {
   const [h, m] = time.split(':').map(Number);

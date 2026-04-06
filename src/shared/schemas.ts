@@ -46,7 +46,9 @@ export const ImportDataSchema = z.object({
   blockingEnabled: z.boolean().optional(),
 });
 
-export const PasswordSchema = z.string().min(6, t('schemas_password_min_length'));
+export const PasswordSchema = z
+  .string()
+  .min(6, t('schemas_password_min_length'));
 
 export function validateRulePattern(
   pattern: string,
