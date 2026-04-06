@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "BlockThem",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Block distracting websites with URL/regex rules and scheduling",
   "permissions": [
     "storage",
@@ -10,7 +10,9 @@
     "alarms",
     "webNavigation"
   ],
-  "host_permissions": ["<all_urls>"],
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "background": {
     "service_worker": "src/background/service-worker.ts"
   },
@@ -30,8 +32,12 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["src/blocked/index.html"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "src/blocked/index.html"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ]
 }
