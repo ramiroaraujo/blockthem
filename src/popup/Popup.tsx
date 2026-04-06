@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import type { BlockRule, StorageState } from '../shared/types';
 import { ToggleSwitch } from '../shared/components/ToggleSwitch';
+import { t } from '../shared/i18n';
 import { verifyPassword } from '../shared/password';
 import { getState, setState } from '../shared/storage';
 import { DEFAULT_STATE } from '../shared/types';
@@ -59,7 +60,7 @@ export function Popup() {
     if (valid) {
       await doToggle();
     } else {
-      setPasswordError('Wrong password');
+      setPasswordError(t('popup_password_wrong'));
       setPassword('');
     }
   };
@@ -86,6 +87,7 @@ export function Popup() {
       type: 'url',
       enabled: true,
       schedule: null,
+      // eslint-disable-next-line react-hooks/purity -- Date.now() is fine inside an event handler
       createdAt: Date.now(),
     };
     const newState: StorageState = {
@@ -105,6 +107,16 @@ export function Popup() {
 
   if (!loaded) return null;
 
+  const ruleCountLabel =
+    state.rules.length === 1
+      ? t('popup_rule_count_one')
+      : t('popup_rule_count_other', [state.rules.length.toString()]);
+
+  const categoryLabels = [
+    state.blockAdultSites && t('popup_category_adult'),
+    state.blockGamblingSites && t('popup_category_gambling'),
+  ].filter(Boolean);
+
   return (
     <div className="box-border w-[280px] bg-bg p-5 font-sans text-text">
       <div className="mb-4 flex items-center gap-2 text-base font-bold text-primary">
@@ -116,21 +128,22 @@ export function Popup() {
         <button
           onClick={handleBlockThis}
           className="mb-3 box-border w-full rounded-md border-none bg-primary px-4 py-2.5 font-inherit text-[13px] font-semibold text-white"
-          title={`Block ${currentDomain}`}
+          title={t('popup_block_this_title', [currentDomain])}
         >
-          Block This
+          {t('popup_block_this')}
         </button>
       )}
 
       <div className="mb-3 flex items-center justify-between rounded-lg bg-surface px-4 py-3">
         <div>
           <div className="text-[13px]">
-            Blocking is {state.blockingEnabled ? 'ON' : 'OFF'}
+            {state.blockingEnabled
+              ? t('popup_blocking_on')
+              : t('popup_blocking_off')}
           </div>
           <div className="mt-0.5 text-[11px] text-text-muted">
-            {state.rules.length} rule{state.rules.length !== 1 ? 's' : ''}
-            {(state.blockAdultSites || state.blockGamblingSites) &&
-              ` · ${[state.blockAdultSites && 'adult', state.blockGamblingSites && 'gambling'].filter(Boolean).join(', ')}`}
+            {ruleCountLabel}
+            {categoryLabels.length > 0 && ` · ${categoryLabels.join(', ')}`}
           </div>
         </div>
         <ToggleSwitch enabled={state.blockingEnabled} onClick={handleToggle} />
@@ -146,7 +159,7 @@ export function Popup() {
               setPasswordError('');
             }}
             onKeyDown={(e) => e.key === 'Enter' && handlePasswordSubmit()}
-            placeholder="Enter password to toggle"
+            placeholder={t('popup_password_placeholder')}
             autoFocus
             className={`mb-2 box-border w-full rounded-md border bg-surface px-2.5 py-2 font-inherit text-xs text-text ${
               passwordError ? 'border-error' : 'border-border'
@@ -162,7 +175,7 @@ export function Popup() {
         onClick={openOptions}
         className="box-border w-full rounded-md border border-border bg-transparent px-4 py-2 font-inherit text-xs text-text-secondary"
       >
-        Open Settings
+        {t('popup_open_settings')}
       </button>
     </div>
   );

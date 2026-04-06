@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import type { BlockRule, StorageState } from '../../shared/types';
 import { ToggleSwitch } from '../../shared/components/ToggleSwitch';
+import { t } from '../../shared/i18n';
 import { formatSchedule } from '../../shared/schedule';
 import { AddRuleModal } from './AddRuleModal';
 
@@ -75,7 +76,7 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
           onUpdateState({ rules: data.rules });
         }
       } catch {
-        alert('Invalid JSON file');
+        alert(t('blocklist_invalid_json'));
       }
     };
     input.click();
@@ -85,20 +86,20 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
     <div>
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <h1 className="mb-1 text-2xl">Block List</h1>
-          <p className="text-sm text-text-muted">
-            Block sites permanently or by schedule
-          </p>
+          <h1 className="mb-1 text-2xl">{t('blocklist_title')}</h1>
+          <p className="text-sm text-text-muted">{t('blocklist_subtitle')}</p>
         </div>
       </div>
 
       <div className="mb-6">
-        <div className="mb-2 text-xs text-text-secondary">Category Filters</div>
+        <div className="mb-2 text-xs text-text-secondary">
+          {t('blocklist_category_filters')}
+        </div>
         <div className="mb-2 flex items-center justify-between rounded-lg bg-surface px-4 py-3">
           <div>
-            <div className="text-[13px]">Block adult sites</div>
+            <div className="text-[13px]">{t('blocklist_block_adult')}</div>
             <div className="mt-0.5 text-[11px] text-text-muted">
-              ~77K sites from community blocklist
+              {t('blocklist_block_adult_meta')}
             </div>
           </div>
           <ToggleSwitch
@@ -110,9 +111,9 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
         </div>
         <div className="flex items-center justify-between rounded-lg bg-surface px-4 py-3">
           <div>
-            <div className="text-[13px]">Block gambling sites</div>
+            <div className="text-[13px]">{t('blocklist_block_gambling')}</div>
             <div className="mt-0.5 text-[11px] text-text-muted">
-              ~6K sites from community blocklist
+              {t('blocklist_block_gambling_meta')}
             </div>
           </div>
           <ToggleSwitch
@@ -129,32 +130,32 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
           onClick={() => setShowAddModal(true)}
           className="rounded-md border-none bg-primary px-5 py-2.5 text-[13px] text-white"
         >
-          + Add to Block List
+          {t('blocklist_add')}
         </button>
         <div className="flex gap-2">
           <button
             onClick={handleExport}
             className="rounded-md border border-border bg-surface px-4 py-2 text-[13px] text-text-secondary"
           >
-            ↑ Export Rules
+            {t('blocklist_export')}
           </button>
           <button
             onClick={handleImport}
             className="rounded-md border border-border bg-surface px-4 py-2 text-[13px] text-text-secondary"
           >
-            ↓ Import Rules
+            {t('blocklist_import')}
           </button>
         </div>
       </div>
 
       {state.rules.length === 0 ? (
         <div className="p-10 text-center text-sm text-text-muted">
-          No blocked sites yet. Add a URL or regex pattern to get started.
+          {t('blocklist_empty')}
         </div>
       ) : (
         <div>
           <div className="mb-2 text-xs text-text-secondary">
-            Blocked Items ({state.rules.length})
+            {t('blocklist_items_header', [state.rules.length.toString()])}
           </div>
           {state.rules.map((rule) => {
             const isConfirming = confirmingDeleteId === rule.id;
@@ -177,7 +178,7 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
                     {rule.schedule
                       ? ` · ${formatSchedule(rule.schedule)}`
                       : state.globalSchedule
-                        ? ' · Global schedule'
+                        ? ` · ${t('blocklist_global_schedule')}`
                         : ''}
                   </div>
                 </div>
@@ -188,7 +189,7 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
                       setEditingRule(rule);
                     }}
                     className="border-none bg-transparent p-1 px-2 text-base text-text-muted"
-                    title="Edit rule"
+                    title={t('blocklist_edit_rule')}
                   >
                     ✏️
                   </button>
@@ -198,7 +199,7 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
                       setConfirmingDeleteId(isConfirming ? null : rule.id);
                     }}
                     className="border-none bg-transparent p-1 px-2 text-base text-text-muted"
-                    title="Delete rule"
+                    title={t('blocklist_delete_rule')}
                   >
                     🗑
                   </button>
@@ -216,7 +217,7 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
                       }}
                       className="whitespace-nowrap rounded-md border-none bg-error px-3 py-1 text-xs text-white"
                     >
-                      Confirm
+                      {t('blocklist_confirm_delete')}
                     </button>
                   </div>
                 </div>

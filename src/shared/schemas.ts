@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { t } from './i18n';
+
 export const ScheduleSchema = z.object({
   days: z.array(z.number().int().min(0).max(6)).min(1),
   startTime: z.string().regex(/^\d{2}:\d{2}$/),
@@ -15,7 +17,7 @@ const safeRegex = z.string().refine(
       return false;
     }
   },
-  { message: 'Invalid regex pattern' },
+  { message: t('schemas_invalid_regex') },
 );
 
 export const BlockRuleSchema = z
@@ -34,7 +36,7 @@ export const BlockRuleSchema = z
       }
       return true;
     },
-    { message: 'Regex rule has an invalid pattern' },
+    { message: t('schemas_regex_rule_invalid') },
   );
 
 export const ImportDataSchema = z.object({
@@ -44,15 +46,13 @@ export const ImportDataSchema = z.object({
   blockingEnabled: z.boolean().optional(),
 });
 
-export const PasswordSchema = z
-  .string()
-  .min(6, 'Password must be at least 6 characters');
+export const PasswordSchema = z.string().min(6, t('schemas_password_min_length'));
 
 export function validateRulePattern(
   pattern: string,
   type: 'url' | 'regex',
 ): string | null {
-  if (!pattern.trim()) return 'Pattern is required';
+  if (!pattern.trim()) return t('schemas_pattern_required');
   if (type === 'regex') {
     const result = safeRegex.safeParse(pattern);
     if (!result.success) return result.error.issues[0].message;

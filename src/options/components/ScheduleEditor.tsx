@@ -1,3 +1,5 @@
+import { t } from '../../shared/i18n';
+import { dayNarrow } from '../../shared/schedule';
 import type { Schedule } from '../../shared/types';
 
 interface ScheduleEditorProps {
@@ -5,7 +7,7 @@ interface ScheduleEditorProps {
   onChange: (schedule: Schedule) => void;
 }
 
-const DAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+const DAY_INDICES = [0, 1, 2, 3, 4, 5, 6];
 
 export function ScheduleEditor({ schedule, onChange }: ScheduleEditorProps) {
   const toggleDay = (day: number) => {
@@ -18,9 +20,11 @@ export function ScheduleEditor({ schedule, onChange }: ScheduleEditorProps) {
   return (
     <div>
       <div className="mb-4">
-        <div className="mb-2 text-xs text-text-secondary">Active days</div>
+        <div className="mb-2 text-xs text-text-secondary">
+          {t('schedule_editor_active_days')}
+        </div>
         <div className="flex gap-1.5">
-          {DAYS.map((label, i) => (
+          {DAY_INDICES.map((i) => (
             <button
               key={i}
               onClick={() => toggleDay(i)}
@@ -30,7 +34,7 @@ export function ScheduleEditor({ schedule, onChange }: ScheduleEditorProps) {
                   : 'border border-border bg-surface text-text-muted'
               }`}
             >
-              {label}
+              {dayNarrow(i)}
             </button>
           ))}
         </div>
@@ -38,7 +42,9 @@ export function ScheduleEditor({ schedule, onChange }: ScheduleEditorProps) {
 
       <div className="flex gap-4">
         <div className="flex-1">
-          <div className="mb-1.5 text-xs text-text-secondary">Start time</div>
+          <div className="mb-1.5 text-xs text-text-secondary">
+            {t('schedule_editor_start_time')}
+          </div>
           <input
             type="time"
             value={schedule.startTime}
@@ -49,7 +55,9 @@ export function ScheduleEditor({ schedule, onChange }: ScheduleEditorProps) {
           />
         </div>
         <div className="flex-1">
-          <div className="mb-1.5 text-xs text-text-secondary">End time</div>
+          <div className="mb-1.5 text-xs text-text-secondary">
+            {t('schedule_editor_end_time')}
+          </div>
           <input
             type="time"
             value={schedule.endTime}

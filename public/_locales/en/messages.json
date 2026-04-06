@@ -1,0 +1,456 @@
+{
+  "extension_name": {
+    "message": "BlockThem",
+    "description": "Extension name shown in Chrome Web Store and chrome://extensions"
+  },
+  "extension_description": {
+    "message": "Block distracting websites with URL/regex rules and scheduling",
+    "description": "Extension description shown in Chrome Web Store and chrome://extensions"
+  },
+
+  "popup_block_this": {
+    "message": "Block This",
+    "description": "Popup button to one-click-block the current tab's domain"
+  },
+  "popup_block_this_title": {
+    "message": "Block $1",
+    "description": "Tooltip on the Block This button. $1 is the current domain.",
+    "placeholders": {
+      "1": { "content": "$1", "example": "facebook.com" }
+    }
+  },
+  "popup_blocking_on": {
+    "message": "Blocking is ON",
+    "description": "Status line in the popup when blocking is enabled"
+  },
+  "popup_blocking_off": {
+    "message": "Blocking is OFF",
+    "description": "Status line in the popup when blocking is disabled"
+  },
+  "popup_rule_count_one": {
+    "message": "1 rule",
+    "description": "Singular rule count in the popup status line"
+  },
+  "popup_rule_count_other": {
+    "message": "$1 rules",
+    "description": "Plural rule count in the popup status line. $1 is the count.",
+    "placeholders": {
+      "1": { "content": "$1", "example": "5" }
+    }
+  },
+  "popup_category_adult": {
+    "message": "adult",
+    "description": "Short label for the adult category in the popup status line"
+  },
+  "popup_category_gambling": {
+    "message": "gambling",
+    "description": "Short label for the gambling category in the popup status line"
+  },
+  "popup_password_placeholder": {
+    "message": "Enter password to toggle",
+    "description": "Placeholder for the password input in the popup"
+  },
+  "popup_password_wrong": {
+    "message": "Wrong password",
+    "description": "Error shown in the popup when the entered password is incorrect"
+  },
+  "popup_open_settings": {
+    "message": "Open Settings",
+    "description": "Popup button that opens the options page"
+  },
+
+  "sidebar_blocking_on": {
+    "message": "Blocking ON",
+    "description": "Status pill in the options sidebar when blocking is enabled"
+  },
+  "sidebar_blocking_off": {
+    "message": "Blocking OFF",
+    "description": "Status pill in the options sidebar when blocking is disabled"
+  },
+  "nav_block_list": {
+    "message": "Block List",
+    "description": "Sidebar nav item for the block list page"
+  },
+  "nav_schedule": {
+    "message": "Schedule",
+    "description": "Sidebar nav item for the schedule page"
+  },
+  "nav_password": {
+    "message": "Password",
+    "description": "Sidebar nav item for the password page"
+  },
+
+  "blocklist_title": {
+    "message": "Block List",
+    "description": "Heading on the block list page"
+  },
+  "blocklist_subtitle": {
+    "message": "Block sites permanently or by schedule",
+    "description": "Subheading on the block list page"
+  },
+  "blocklist_category_filters": {
+    "message": "Category Filters",
+    "description": "Section header for the bundled category blocklists"
+  },
+  "blocklist_block_adult": {
+    "message": "Block adult sites",
+    "description": "Toggle label for the adult category blocklist"
+  },
+  "blocklist_block_adult_meta": {
+    "message": "~77K sites from community blocklist",
+    "description": "Helper text under the Block adult sites toggle"
+  },
+  "blocklist_block_gambling": {
+    "message": "Block gambling sites",
+    "description": "Toggle label for the gambling category blocklist"
+  },
+  "blocklist_block_gambling_meta": {
+    "message": "~6K sites from community blocklist",
+    "description": "Helper text under the Block gambling sites toggle"
+  },
+  "blocklist_add": {
+    "message": "+ Add to Block List",
+    "description": "Primary button to open the add-rule modal"
+  },
+  "blocklist_export": {
+    "message": "↑ Export Rules",
+    "description": "Button to export rules as JSON"
+  },
+  "blocklist_import": {
+    "message": "↓ Import Rules",
+    "description": "Button to import rules from JSON"
+  },
+  "blocklist_empty": {
+    "message": "No blocked sites yet. Add a URL or regex pattern to get started.",
+    "description": "Empty state shown when there are no rules"
+  },
+  "blocklist_items_header": {
+    "message": "Blocked Items ($1)",
+    "description": "Header above the list of rules. $1 is the count.",
+    "placeholders": {
+      "1": { "content": "$1", "example": "5" }
+    }
+  },
+  "blocklist_global_schedule": {
+    "message": "Global schedule",
+    "description": "Label shown on a rule that uses the global schedule"
+  },
+  "blocklist_edit_rule": {
+    "message": "Edit rule",
+    "description": "Tooltip for the edit-rule pencil button"
+  },
+  "blocklist_delete_rule": {
+    "message": "Delete rule",
+    "description": "Tooltip for the delete-rule trash button"
+  },
+  "blocklist_confirm_delete": {
+    "message": "Confirm",
+    "description": "Confirmation button for deleting a rule"
+  },
+  "blocklist_invalid_json": {
+    "message": "Invalid JSON file",
+    "description": "Alert shown when the imported JSON file is malformed"
+  },
+
+  "addrule_title_add": {
+    "message": "Add Block Rule",
+    "description": "Title of the modal when adding a new rule"
+  },
+  "addrule_title_edit": {
+    "message": "Edit Block Rule",
+    "description": "Title of the modal when editing an existing rule"
+  },
+  "addrule_type_label": {
+    "message": "Type",
+    "description": "Label above the URL/regex type selector"
+  },
+  "addrule_type_url": {
+    "message": "URL",
+    "description": "Button label for the URL rule type"
+  },
+  "addrule_type_regex": {
+    "message": "REGEX",
+    "description": "Button label for the regex rule type"
+  },
+  "addrule_pattern_label_url": {
+    "message": "URL to block",
+    "description": "Field label when adding a URL rule"
+  },
+  "addrule_pattern_label_regex": {
+    "message": "Regex pattern",
+    "description": "Field label when adding a regex rule"
+  },
+  "addrule_pattern_placeholder_url": {
+    "message": "e.g. facebook.com",
+    "description": "Placeholder text for the URL pattern field"
+  },
+  "addrule_pattern_placeholder_regex": {
+    "message": "e.g. .*social.*",
+    "description": "Placeholder text for the regex pattern field"
+  },
+  "addrule_custom_schedule": {
+    "message": "Custom schedule",
+    "description": "Toggle label for using a per-rule schedule"
+  },
+  "addrule_custom_schedule_helper": {
+    "message": "Uses global schedule when off",
+    "description": "Helper text under the Custom schedule toggle"
+  },
+  "addrule_duplicate": {
+    "message": "This pattern is already in your block list",
+    "description": "Validation error when trying to add a duplicate pattern"
+  },
+  "addrule_cancel": {
+    "message": "Cancel",
+    "description": "Cancel button in the add-rule modal"
+  },
+  "addrule_save_add": {
+    "message": "Add Rule",
+    "description": "Submit button when adding a new rule"
+  },
+  "addrule_save_edit": {
+    "message": "Save Changes",
+    "description": "Submit button when editing an existing rule"
+  },
+
+  "schedule_editor_active_days": {
+    "message": "Active days",
+    "description": "Label for the day-of-week toggles in the schedule editor"
+  },
+  "schedule_editor_start_time": {
+    "message": "Start time",
+    "description": "Label for the start time field in the schedule editor"
+  },
+  "schedule_editor_end_time": {
+    "message": "End time",
+    "description": "Label for the end time field in the schedule editor"
+  },
+
+  "schedule_title": {
+    "message": "Global Schedule",
+    "description": "Heading on the schedule page"
+  },
+  "schedule_subtitle": {
+    "message": "Applies to all rules without a custom schedule",
+    "description": "Subheading on the schedule page"
+  },
+  "schedule_enable": {
+    "message": "Enable global schedule",
+    "description": "Toggle label for enabling the global schedule"
+  },
+  "schedule_summary_label": {
+    "message": "Schedule summary",
+    "description": "Section label above the schedule summary line"
+  },
+  "schedule_summary_active": {
+    "message": "Blocking $1",
+    "description": "Schedule summary line. $1 is the formatted schedule string.",
+    "placeholders": {
+      "1": { "content": "$1", "example": "Mon–Fri, 9:00 AM – 5:00 PM" }
+    }
+  },
+  "schedule_summary_empty": {
+    "message": "No global schedule — all enabled rules are always active.",
+    "description": "Shown on the schedule page when the global schedule is disabled"
+  },
+  "schedule_day_range": {
+    "message": "$1–$2",
+    "description": "Format for a consecutive day range, e.g. Mon–Fri",
+    "placeholders": {
+      "1": { "content": "$1", "example": "Mon" },
+      "2": { "content": "$2", "example": "Fri" }
+    }
+  },
+  "schedule_day_separator": {
+    "message": ", ",
+    "description": "Separator between non-consecutive day names"
+  },
+  "schedule_format": {
+    "message": "$1, $2 – $3",
+    "description": "Format for a full schedule line: days, start time – end time",
+    "placeholders": {
+      "1": { "content": "$1", "example": "Mon–Fri" },
+      "2": { "content": "$2", "example": "9:00 AM" },
+      "3": { "content": "$3", "example": "5:00 PM" }
+    }
+  },
+
+  "password_title": {
+    "message": "Password Protection",
+    "description": "Heading on the password page"
+  },
+  "password_subtitle": {
+    "message": "Protect all settings with a password",
+    "description": "Subheading on the password page"
+  },
+  "password_enable": {
+    "message": "Enable password protection",
+    "description": "Toggle label for enabling password protection"
+  },
+  "password_enable_helper": {
+    "message": "Requires password to access settings and toggle blocking",
+    "description": "Helper text under the password protection toggle"
+  },
+  "password_change_button": {
+    "message": "Change Password",
+    "description": "Button on the password page that opens the change-password dialog"
+  },
+  "password_empty": {
+    "message": "No password set. Enable the toggle above to protect your settings.",
+    "description": "Empty state on the password page"
+  },
+  "password_forgot_help": {
+    "message": "Forgot password? Reset by reinstalling the extension.",
+    "description": "Recovery instructions at the bottom of the password page"
+  },
+  "password_msg_disabled": {
+    "message": "Password protection disabled",
+    "description": "Success message after disabling password protection"
+  },
+  "password_msg_enabled": {
+    "message": "Password protection enabled",
+    "description": "Success message after enabling password protection"
+  },
+  "password_msg_updated": {
+    "message": "Password updated successfully",
+    "description": "Success message after changing the password"
+  },
+  "password_dialog_title_set": {
+    "message": "Set Password",
+    "description": "Title of the password dialog when setting a new password"
+  },
+  "password_dialog_title_change": {
+    "message": "Change Password",
+    "description": "Title of the password dialog when changing the password"
+  },
+  "password_dialog_title_disable": {
+    "message": "Disable Password Protection",
+    "description": "Title of the password dialog when disabling password protection"
+  },
+  "password_field_current": {
+    "message": "Current password",
+    "description": "Label for the current password field in the password dialog"
+  },
+  "password_field_new": {
+    "message": "New password",
+    "description": "Label for the new password field in the password dialog"
+  },
+  "password_field_confirm": {
+    "message": "Confirm password",
+    "description": "Label for the confirm password field in the password dialog"
+  },
+  "password_btn_cancel": {
+    "message": "Cancel",
+    "description": "Cancel button in the password dialog"
+  },
+  "password_btn_disable": {
+    "message": "Disable",
+    "description": "Confirm button when disabling password protection"
+  },
+  "password_btn_update": {
+    "message": "Update Password",
+    "description": "Confirm button when changing the password"
+  },
+  "password_btn_set": {
+    "message": "Set Password",
+    "description": "Confirm button when setting a new password"
+  },
+  "password_err_enter_current": {
+    "message": "Enter your current password",
+    "description": "Validation error when the current password field is empty"
+  },
+  "password_err_not_set": {
+    "message": "Password not set",
+    "description": "Error shown if the stored password hash is missing unexpectedly"
+  },
+  "password_err_incorrect": {
+    "message": "Incorrect password",
+    "description": "Validation error when the entered password is wrong"
+  },
+  "password_err_enter_new": {
+    "message": "Enter a new password",
+    "description": "Validation error when the new password field is empty"
+  },
+  "password_err_mismatch": {
+    "message": "Passwords do not match",
+    "description": "Validation error when new and confirm passwords differ"
+  },
+
+  "gate_title": {
+    "message": "BlockThem Settings",
+    "description": "Heading on the password unlock screen"
+  },
+  "gate_subtitle": {
+    "message": "Enter your password to access settings",
+    "description": "Subheading on the password unlock screen"
+  },
+  "gate_placeholder": {
+    "message": "Password",
+    "description": "Placeholder for the password input on the unlock screen"
+  },
+  "gate_unlock": {
+    "message": "Unlock",
+    "description": "Submit button on the password unlock screen"
+  },
+
+  "options_page_title": {
+    "message": "BlockThem Settings",
+    "description": "Document title for the options page"
+  },
+
+  "blocked_page_title": {
+    "message": "Site Blocked — BlockThem",
+    "description": "Browser tab title for the blocked page"
+  },
+  "blocked_heading": {
+    "message": "This site is blocked",
+    "description": "Main heading on the blocked page"
+  },
+  "blocked_category_adult": {
+    "message": "adult content",
+    "description": "Long label for the adult category on the blocked page"
+  },
+  "blocked_category_gambling": {
+    "message": "gambling",
+    "description": "Long label for the gambling category on the blocked page"
+  },
+  "blocked_by_category": {
+    "message": "This site is blocked ($1 category)",
+    "description": "Info line on the blocked page when blocked by a category. $1 is the category name.",
+    "placeholders": {
+      "1": { "content": "$1", "example": "adult content" }
+    }
+  },
+  "blocked_by_rule": {
+    "message": "$1 is on your block list",
+    "description": "Info line on the blocked page when blocked by a user rule. $1 is the matched pattern.",
+    "placeholders": {
+      "1": { "content": "$1", "example": "facebook.com" }
+    }
+  },
+  "blocked_generic": {
+    "message": "This site is on your block list",
+    "description": "Generic info line on the blocked page when no rule context is available"
+  },
+  "blocked_matched_rule": {
+    "message": "Matched rule:",
+    "description": "Label on the blocked page before the matched rule pattern"
+  },
+
+  "schemas_invalid_regex": {
+    "message": "Invalid regex pattern",
+    "description": "Validation error for an invalid regex"
+  },
+  "schemas_regex_rule_invalid": {
+    "message": "Regex rule has an invalid pattern",
+    "description": "Validation error for a regex rule whose pattern fails to compile"
+  },
+  "schemas_password_min_length": {
+    "message": "Password must be at least 6 characters",
+    "description": "Validation error for a too-short password"
+  },
+  "schemas_pattern_required": {
+    "message": "Pattern is required",
+    "description": "Validation error when the rule pattern field is empty"
+  }
+}

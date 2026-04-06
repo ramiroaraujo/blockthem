@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import { t } from '../shared/i18n';
 import type { StorageState } from '../shared/types';
 import { getState, onStateChange, updateState } from '../shared/storage';
 import { DEFAULT_STATE } from '../shared/types';
@@ -16,6 +17,8 @@ export function App() {
   const [unlocked, setUnlocked] = useState(false);
 
   useEffect(() => {
+    document.title = t('options_page_title');
+    document.documentElement.lang = chrome.i18n.getUILanguage();
     void getState().then((s) => {
       setLocalState(s);
       setLoaded(true);

@@ -1,0 +1,352 @@
+{
+  "extension_name": {
+    "message": "BlockThem"
+  },
+  "extension_description": {
+    "message": "Bloqueie sites que distraem com regras de URL/regex e horários"
+  },
+
+  "popup_block_this": {
+    "message": "Bloquear este site"
+  },
+  "popup_block_this_title": {
+    "message": "Bloquear $1",
+    "placeholders": {
+      "1": { "content": "$1", "example": "facebook.com" }
+    }
+  },
+  "popup_blocking_on": {
+    "message": "Bloqueio ATIVADO"
+  },
+  "popup_blocking_off": {
+    "message": "Bloqueio DESATIVADO"
+  },
+  "popup_rule_count_one": {
+    "message": "1 regra"
+  },
+  "popup_rule_count_other": {
+    "message": "$1 regras",
+    "placeholders": {
+      "1": { "content": "$1", "example": "5" }
+    }
+  },
+  "popup_category_adult": {
+    "message": "adulto"
+  },
+  "popup_category_gambling": {
+    "message": "apostas"
+  },
+  "popup_password_placeholder": {
+    "message": "Digite a senha"
+  },
+  "popup_password_wrong": {
+    "message": "Senha incorreta"
+  },
+  "popup_open_settings": {
+    "message": "Abrir configurações"
+  },
+
+  "sidebar_blocking_on": {
+    "message": "Bloqueio ATIVO"
+  },
+  "sidebar_blocking_off": {
+    "message": "Bloqueio INATIVO"
+  },
+  "nav_block_list": {
+    "message": "Lista de bloqueio"
+  },
+  "nav_schedule": {
+    "message": "Horário"
+  },
+  "nav_password": {
+    "message": "Senha"
+  },
+
+  "blocklist_title": {
+    "message": "Lista de bloqueio"
+  },
+  "blocklist_subtitle": {
+    "message": "Bloqueie sites permanentemente ou por horário"
+  },
+  "blocklist_category_filters": {
+    "message": "Filtros por categoria"
+  },
+  "blocklist_block_adult": {
+    "message": "Bloquear sites adultos"
+  },
+  "blocklist_block_adult_meta": {
+    "message": "~77 mil sites da lista da comunidade"
+  },
+  "blocklist_block_gambling": {
+    "message": "Bloquear sites de apostas"
+  },
+  "blocklist_block_gambling_meta": {
+    "message": "~6 mil sites da lista da comunidade"
+  },
+  "blocklist_add": {
+    "message": "+ Adicionar à lista"
+  },
+  "blocklist_export": {
+    "message": "↑ Exportar regras"
+  },
+  "blocklist_import": {
+    "message": "↓ Importar regras"
+  },
+  "blocklist_empty": {
+    "message": "Nenhum site bloqueado ainda. Adicione uma URL ou padrão regex para começar."
+  },
+  "blocklist_items_header": {
+    "message": "Itens bloqueados ($1)",
+    "placeholders": {
+      "1": { "content": "$1", "example": "5" }
+    }
+  },
+  "blocklist_global_schedule": {
+    "message": "Horário global"
+  },
+  "blocklist_edit_rule": {
+    "message": "Editar regra"
+  },
+  "blocklist_delete_rule": {
+    "message": "Excluir regra"
+  },
+  "blocklist_confirm_delete": {
+    "message": "Confirmar"
+  },
+  "blocklist_invalid_json": {
+    "message": "Arquivo JSON inválido"
+  },
+
+  "addrule_title_add": {
+    "message": "Adicionar regra de bloqueio"
+  },
+  "addrule_title_edit": {
+    "message": "Editar regra de bloqueio"
+  },
+  "addrule_type_label": {
+    "message": "Tipo"
+  },
+  "addrule_type_url": {
+    "message": "URL"
+  },
+  "addrule_type_regex": {
+    "message": "REGEX"
+  },
+  "addrule_pattern_label_url": {
+    "message": "URL para bloquear"
+  },
+  "addrule_pattern_label_regex": {
+    "message": "Padrão regex"
+  },
+  "addrule_pattern_placeholder_url": {
+    "message": "ex.: facebook.com"
+  },
+  "addrule_pattern_placeholder_regex": {
+    "message": "ex.: .*social.*"
+  },
+  "addrule_custom_schedule": {
+    "message": "Horário personalizado"
+  },
+  "addrule_custom_schedule_helper": {
+    "message": "Quando desligado, usa o horário global"
+  },
+  "addrule_duplicate": {
+    "message": "Este padrão já está na sua lista de bloqueio"
+  },
+  "addrule_cancel": {
+    "message": "Cancelar"
+  },
+  "addrule_save_add": {
+    "message": "Adicionar regra"
+  },
+  "addrule_save_edit": {
+    "message": "Salvar alterações"
+  },
+
+  "schedule_editor_active_days": {
+    "message": "Dias ativos"
+  },
+  "schedule_editor_start_time": {
+    "message": "Hora de início"
+  },
+  "schedule_editor_end_time": {
+    "message": "Hora de término"
+  },
+
+  "schedule_title": {
+    "message": "Horário global"
+  },
+  "schedule_subtitle": {
+    "message": "Aplica-se a todas as regras sem horário próprio"
+  },
+  "schedule_enable": {
+    "message": "Ativar horário global"
+  },
+  "schedule_summary_label": {
+    "message": "Resumo do horário"
+  },
+  "schedule_summary_active": {
+    "message": "Bloqueando $1",
+    "placeholders": {
+      "1": { "content": "$1", "example": "seg.–sex., 09:00 – 17:00" }
+    }
+  },
+  "schedule_summary_empty": {
+    "message": "Sem horário global — todas as regras ativas se aplicam o tempo todo."
+  },
+  "schedule_day_range": {
+    "message": "$1–$2",
+    "placeholders": {
+      "1": { "content": "$1", "example": "seg." },
+      "2": { "content": "$2", "example": "sex." }
+    }
+  },
+  "schedule_day_separator": {
+    "message": ", "
+  },
+  "schedule_format": {
+    "message": "$1, $2 – $3",
+    "placeholders": {
+      "1": { "content": "$1", "example": "seg.–sex." },
+      "2": { "content": "$2", "example": "09:00" },
+      "3": { "content": "$3", "example": "17:00" }
+    }
+  },
+
+  "password_title": {
+    "message": "Proteção por senha"
+  },
+  "password_subtitle": {
+    "message": "Proteja todas as configurações com uma senha"
+  },
+  "password_enable": {
+    "message": "Ativar proteção por senha"
+  },
+  "password_enable_helper": {
+    "message": "Exige a senha para acessar as configurações e ligar/desligar o bloqueio"
+  },
+  "password_change_button": {
+    "message": "Alterar senha"
+  },
+  "password_empty": {
+    "message": "Nenhuma senha definida. Ative a opção acima para proteger suas configurações."
+  },
+  "password_forgot_help": {
+    "message": "Esqueceu a senha? Reinstale a extensão para redefinir."
+  },
+  "password_msg_disabled": {
+    "message": "Proteção por senha desativada"
+  },
+  "password_msg_enabled": {
+    "message": "Proteção por senha ativada"
+  },
+  "password_msg_updated": {
+    "message": "Senha atualizada com sucesso"
+  },
+  "password_dialog_title_set": {
+    "message": "Definir senha"
+  },
+  "password_dialog_title_change": {
+    "message": "Alterar senha"
+  },
+  "password_dialog_title_disable": {
+    "message": "Desativar proteção por senha"
+  },
+  "password_field_current": {
+    "message": "Senha atual"
+  },
+  "password_field_new": {
+    "message": "Nova senha"
+  },
+  "password_field_confirm": {
+    "message": "Confirmar senha"
+  },
+  "password_btn_cancel": {
+    "message": "Cancelar"
+  },
+  "password_btn_disable": {
+    "message": "Desativar"
+  },
+  "password_btn_update": {
+    "message": "Atualizar senha"
+  },
+  "password_btn_set": {
+    "message": "Definir senha"
+  },
+  "password_err_enter_current": {
+    "message": "Digite sua senha atual"
+  },
+  "password_err_not_set": {
+    "message": "Nenhuma senha definida"
+  },
+  "password_err_incorrect": {
+    "message": "Senha incorreta"
+  },
+  "password_err_enter_new": {
+    "message": "Digite uma nova senha"
+  },
+  "password_err_mismatch": {
+    "message": "As senhas não coincidem"
+  },
+
+  "gate_title": {
+    "message": "Configurações do BlockThem"
+  },
+  "gate_subtitle": {
+    "message": "Digite sua senha para acessar as configurações"
+  },
+  "gate_placeholder": {
+    "message": "Senha"
+  },
+  "gate_unlock": {
+    "message": "Desbloquear"
+  },
+
+  "options_page_title": {
+    "message": "Configurações do BlockThem"
+  },
+
+  "blocked_page_title": {
+    "message": "Site bloqueado — BlockThem"
+  },
+  "blocked_heading": {
+    "message": "Este site está bloqueado"
+  },
+  "blocked_category_adult": {
+    "message": "conteúdo adulto"
+  },
+  "blocked_category_gambling": {
+    "message": "apostas"
+  },
+  "blocked_by_category": {
+    "message": "Este site está bloqueado (categoria $1)",
+    "placeholders": {
+      "1": { "content": "$1", "example": "conteúdo adulto" }
+    }
+  },
+  "blocked_by_rule": {
+    "message": "$1 está na sua lista de bloqueio",
+    "placeholders": {
+      "1": { "content": "$1", "example": "facebook.com" }
+    }
+  },
+  "blocked_generic": {
+    "message": "Este site está na sua lista de bloqueio"
+  },
+  "blocked_matched_rule": {
+    "message": "Regra correspondente:"
+  },
+
+  "schemas_invalid_regex": {
+    "message": "Padrão regex inválido"
+  },
+  "schemas_regex_rule_invalid": {
+    "message": "A regra regex tem um padrão inválido"
+  },
+  "schemas_password_min_length": {
+    "message": "A senha deve ter pelo menos 6 caracteres"
+  },
+  "schemas_pattern_required": {
+    "message": "O padrão é obrigatório"
+  }
+}

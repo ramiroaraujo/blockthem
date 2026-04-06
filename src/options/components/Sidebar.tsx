@@ -1,4 +1,6 @@
 import { ToggleSwitch } from '../../shared/components/ToggleSwitch';
+import { t } from '../../shared/i18n';
+import type { MessageKey } from '../../shared/i18n';
 
 interface SidebarProps {
   activePage: string;
@@ -7,10 +9,10 @@ interface SidebarProps {
   onToggleBlocking: () => void;
 }
 
-const NAV_ITEMS = [
-  { id: 'blocklist', label: 'Block List', icon: '🚫' },
-  { id: 'schedule', label: 'Schedule', icon: '🕐' },
-  { id: 'password', label: 'Password', icon: '🔒' },
+const NAV_ITEMS: { id: string; labelKey: MessageKey; icon: string }[] = [
+  { id: 'blocklist', labelKey: 'nav_block_list', icon: '🚫' },
+  { id: 'schedule', labelKey: 'nav_schedule', icon: '🕐' },
+  { id: 'password', labelKey: 'nav_password', icon: '🔒' },
 ];
 
 export function Sidebar({
@@ -29,7 +31,11 @@ export function Sidebar({
       {/* Blocking toggle */}
       <div className="mb-6 px-5">
         <div className="flex items-center justify-between rounded-lg bg-surface p-2 px-3 text-xs text-text-secondary">
-          <span>Blocking {blockingEnabled ? 'ON' : 'OFF'}</span>
+          <span>
+            {blockingEnabled
+              ? t('sidebar_blocking_on')
+              : t('sidebar_blocking_off')}
+          </span>
           <ToggleSwitch
             enabled={blockingEnabled}
             onClick={onToggleBlocking}
@@ -50,7 +56,7 @@ export function Sidebar({
             }`}
           >
             <span>{item.icon}</span>
-            {item.label}
+            {t(item.labelKey)}
           </button>
         ))}
       </nav>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { t } from '../../shared/i18n';
 import { verifyPassword } from '../../shared/password';
 
 interface PasswordGateProps {
@@ -21,7 +22,7 @@ export function PasswordGate({
     if (valid) {
       onUnlock();
     } else {
-      setError('Incorrect password');
+      setError(t('password_err_incorrect'));
       setPassword('');
     }
   };
@@ -36,10 +37,8 @@ export function PasswordGate({
         <div className="mb-4">
           <img src="/icons/icon-128.png" alt="" className="mx-auto h-16 w-16" />
         </div>
-        <h1 className="mb-2 text-xl">BlockThem Settings</h1>
-        <p className="mb-6 text-[13px] text-text-muted">
-          Enter your password to access settings
-        </p>
+        <h1 className="mb-2 text-xl">{t('gate_title')}</h1>
+        <p className="mb-6 text-[13px] text-text-muted">{t('gate_subtitle')}</p>
 
         <input
           type="password"
@@ -49,7 +48,7 @@ export function PasswordGate({
             setError('');
           }}
           onKeyDown={handleKeyDown}
-          placeholder="Password"
+          placeholder={t('gate_placeholder')}
           autoFocus
           className={`w-full rounded-md border bg-surface px-3 py-2.5 text-[13px] text-text ${
             error ? 'mb-2 border-error' : 'mb-4 border-border'
@@ -62,7 +61,7 @@ export function PasswordGate({
           onClick={handleUnlock}
           className="w-full rounded-md border-none bg-primary px-5 py-2.5 text-[13px] text-white"
         >
-          Unlock
+          {t('gate_unlock')}
         </button>
       </div>
     </div>
