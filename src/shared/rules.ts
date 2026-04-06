@@ -1,5 +1,19 @@
 import type { BlockRule } from './types';
 
+export function matchesBlockRule(
+  url: string,
+  rule: BlockRule,
+): boolean {
+  if (rule.type === 'url') {
+    return url.includes(rule.pattern);
+  }
+  try {
+    return new RegExp(rule.pattern).test(url);
+  } catch {
+    return false;
+  }
+}
+
 export function buildDNRRules(
   rules: BlockRule[],
   _extensionId: string,

@@ -11,6 +11,8 @@ interface BlockListProps {
 
 export function BlockList({ state, onUpdateState }: BlockListProps) {
   const [showAddModal, setShowAddModal] = useState(false);
+  const [editingRule, setEditingRule] = useState<BlockRule | null>(null);
+  const [confirmingDeleteId, setConfirmingDeleteId] = useState<string | null>(null);
 
   const addRule = (ruleData: Omit<BlockRule, 'id' | 'createdAt'>) => {
     const newRule: BlockRule = {
@@ -22,8 +24,26 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
     setShowAddModal(false);
   };
 
+  const updateRule = (ruleData: Omit<BlockRule, 'id' | 'createdAt'>) => {
+    if (!editingRule) return;
+    onUpdateState({
+      rules: state.rules.map((r) =>
+        r.id === editingRule.id
+          ? { ...ruleData, id: r.id, createdAt: r.createdAt }
+          : r,
+      ),
+    });
+    setEditingRule(null);
+  };
+
   const deleteRule = (id: string) => {
     onUpdateState({ rules: state.rules.filter((r) => r.id !== id) });
+    setConfirmingDeleteId(null);
+  };
+
+  const closeModal = () => {
+    setShowAddModal(false);
+    setEditingRule(null);
   };
 
   const handleExport = () => {
@@ -90,30 +110,70 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
           <div className="mb-2 text-xs text-text-secondary">
             Blocked Items ({state.rules.length})
           </div>
-          {state.rules.map((rule) => (
-            <div
-              key={rule.id}
-              className="mb-2 flex items-center justify-between rounded-lg bg-surface px-4 py-3"
-            >
-              <div>
-                <div className="text-[13px]">{rule.pattern}</div>
-                <div className="mt-0.5 text-[11px] text-text-muted">
-                  {rule.type.toUpperCase()}
-                  {rule.schedule
-                    ? ` · ${formatSchedule(rule.schedule)}`
-                    : state.globalSchedule
-                      ? ' · Global schedule'
-                      : ''}
+          {state.rules.map((rule) => {
+            const isConfirming = confirmingDeleteId === rule.id;
+            return (
+              <div
+                key={rule.id}
+                className="mb-2 flex items-center justify-between rounded-lg bg-surface px-4 py-3"
+                onClick={() => isConfirming && setConfirmingDeleteId(null)}
+              >
+                <div
+                  className="cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setEditingRule(rule);
+                  }}
+                >
+                  <div className="text-[13px]">{rule.pattern}</div>
+                  <div className="mt-0.5 text-[11px] text-text-muted">
+                    {rule.type.toUpperCase()}
+                    {rule.schedule
+                      ? ` · ${formatSchedule(rule.schedule)}`
+                      : state.globalSchedule
+                        ? ' · Global schedule'
+                        : ''}
+                  </div>
+                </div>
+                <div className="flex shrink-0 items-center gap-1">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setEditingRule(rule);
+                    }}
+                    className="border-none bg-transparent p-1 px-2 text-base text-text-muted"
+                    title="Edit rule"
+                  >
+                    ✏️
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setConfirmingDeleteId(isConfirming ? null : rule.id);
+                    }}
+                    className="border-none bg-transparent p-1 px-2 text-base text-text-muted"
+                    title="Delete rule"
+                  >
+                    🗑
+                  </button>
+                  <div
+                    className="overflow-hidden transition-all duration-200"
+                    style={{ width: isConfirming ? 76 : 0, opacity: isConfirming ? 1 : 0 }}
+                  >
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteRule(rule.id);
+                      }}
+                      className="whitespace-nowrap rounded-md border-none bg-error px-3 py-1 text-xs text-white"
+                    >
+                      Confirm
+                    </button>
+                  </div>
                 </div>
               </div>
-              <button
-                onClick={() => deleteRule(rule.id)}
-                className="border-none bg-transparent p-1 px-2 text-base text-text-muted"
-              >
-                🗑
-              </button>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
@@ -132,11 +192,12 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
         </button>
       </div>
 
-      {showAddModal && (
+      {(showAddModal || editingRule) && (
         <AddRuleModal
           existingPatterns={state.rules.map((r) => r.pattern)}
-          onAdd={addRule}
-          onClose={() => setShowAddModal(false)}
+          editRule={editingRule ?? undefined}
+          onAdd={editingRule ? updateRule : addRule}
+          onClose={closeModal}
         />
       )}
     </div>

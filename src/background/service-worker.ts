@@ -1,9 +1,12 @@
 import type { BlockRule, StorageState } from '../shared/types';
-import { buildDNRRules } from '../shared/rules';
+import { buildDNRRules, matchesBlockRule } from '../shared/rules';
 import { isScheduleActive } from '../shared/schedule';
 import { getState, onStateChange } from '../shared/storage';
 
 const ALARM_NAME = 'blockthem-schedule-check';
+
+// In-memory cache for fast URL checks in navigation listeners
+let cachedActiveRules: BlockRule[] = [];
 
 function getActiveRules(state: StorageState): BlockRule[] {
   if (!state.blockingEnabled) return [];
@@ -22,6 +25,7 @@ function getActiveRules(state: StorageState): BlockRule[] {
 async function syncRulesInternal(): Promise<void> {
   const state = await getState();
   const activeRules = getActiveRules(state);
+  cachedActiveRules = activeRules;
   const extensionId = chrome.runtime.id;
   const newRules = buildDNRRules(activeRules, extensionId);
 
@@ -42,6 +46,28 @@ function syncRules(): void {
     .catch((err) => console.error('[BlockThem] syncRules error:', err));
 }
 
+function getBlockedUrl(rule: BlockRule): string {
+  const ruleParam = encodeURIComponent(rule.pattern);
+  return chrome.runtime.getURL(
+    `src/blocked/index.html?rule=${ruleParam}&type=${rule.type}`,
+  );
+}
+
+function checkAndBlock(tabId: number, url: string): void {
+  if (!url || !url.startsWith('http')) return;
+
+  // Don't block our own block page
+  const extensionOrigin = chrome.runtime.getURL('');
+  if (url.startsWith(extensionOrigin)) return;
+
+  for (const rule of cachedActiveRules) {
+    if (matchesBlockRule(url, rule)) {
+      chrome.tabs.update(tabId, { url: getBlockedUrl(rule) });
+      return;
+    }
+  }
+}
+
 // Sync rules on startup
 syncRules();
 
@@ -56,5 +82,17 @@ void chrome.alarms.create(ALARM_NAME, { periodInMinutes: 1 });
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === ALARM_NAME) {
     syncRules();
+  }
+});
+
+// Fallback: catch navigations that DNR might miss (e.g. server-side redirects)
+chrome.webNavigation.onBeforeNavigate.addListener((details) => {
+  if (details.frameId !== 0) return; // Only top-level frame
+  checkAndBlock(details.tabId, details.url);
+});
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
+  if (changeInfo.url) {
+    checkAndBlock(tabId, changeInfo.url);
   }
 });
