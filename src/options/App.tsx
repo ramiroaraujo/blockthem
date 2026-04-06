@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { t } from '../shared/i18n';
 import type { StorageState } from '../shared/types';
+import { t } from '../shared/i18n';
 import { getState, onStateChange, updateState } from '../shared/storage';
 import { DEFAULT_STATE } from '../shared/types';
 import { BlockList } from './components/BlockList';
@@ -10,9 +10,19 @@ import { PasswordPage } from './components/PasswordPage';
 import { SchedulePage } from './components/SchedulePage';
 import { Sidebar } from './components/Sidebar';
 
+const PAGES = ['blocklist', 'schedule', 'password'] as const;
+type Page = (typeof PAGES)[number];
+
+function readHashPage(): Page {
+  const hash = window.location.hash.slice(1);
+  return (PAGES as readonly string[]).includes(hash)
+    ? (hash as Page)
+    : 'blocklist';
+}
+
 export function App() {
   const [state, setLocalState] = useState<StorageState>(DEFAULT_STATE);
-  const [activePage, setActivePage] = useState('blocklist');
+  const [activePage, setActivePage] = useState<Page>(readHashPage);
   const [loaded, setLoaded] = useState(false);
   const [unlocked, setUnlocked] = useState(false);
 
@@ -27,6 +37,16 @@ export function App() {
     onStateChange((newState) => {
       setLocalState(newState);
     });
+  }, []);
+
+  useEffect(() => {
+    history.replaceState(null, '', `#${activePage}`);
+  }, [activePage]);
+
+  useEffect(() => {
+    const onHashChange = () => setActivePage(readHashPage());
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
   const handleUpdateState = async (updates: Partial<StorageState>) => {
@@ -50,7 +70,7 @@ export function App() {
     <div className="flex min-h-screen">
       <Sidebar
         activePage={activePage}
-        onNavigate={setActivePage}
+        onNavigate={(page) => setActivePage(page as Page)}
         blockingEnabled={state.blockingEnabled}
         onToggleBlocking={() =>
           handleUpdateState({ blockingEnabled: !state.blockingEnabled })
