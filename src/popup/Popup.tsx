@@ -14,7 +14,7 @@ export function Popup() {
   const [passwordError, setPasswordError] = useState('');
 
   useEffect(() => {
-    getState().then((s) => {
+    void getState().then((s) => {
       setLocalState(s);
       setLoaded(true);
     });
@@ -37,10 +37,11 @@ export function Popup() {
   };
 
   const handlePasswordSubmit = async () => {
+    if (!state.passwordHash || !state.passwordSalt) return;
     const valid = await verifyPassword(
       password,
-      state.passwordHash!,
-      state.passwordSalt!,
+      state.passwordHash,
+      state.passwordSalt,
     );
     if (valid) {
       await doToggle();
@@ -51,7 +52,7 @@ export function Popup() {
   };
 
   const openOptions = () => {
-    chrome.runtime.openOptionsPage();
+    void chrome.runtime.openOptionsPage();
   };
 
   if (!loaded) return null;

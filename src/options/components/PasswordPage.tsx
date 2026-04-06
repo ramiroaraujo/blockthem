@@ -2,7 +2,11 @@ import { useState } from 'react';
 
 import type { StorageState } from '../../shared/types';
 import { ToggleSwitch } from '../../shared/components/ToggleSwitch';
-import { hashPassword, verifyPassword, generateSalt } from '../../shared/password';
+import {
+  generateSalt,
+  hashPassword,
+  verifyPassword,
+} from '../../shared/password';
 
 interface PasswordPageProps {
   state: StorageState;
@@ -32,36 +36,22 @@ function PasswordDialog({
   const handleSubmit = async () => {
     setError('');
 
-    if (mode === 'disable') {
+    if (mode === 'disable' || mode === 'change') {
       if (!currentPwd) {
         setError('Enter your current password');
         return;
       }
-      const valid = await verifyPassword(
-        currentPwd,
-        passwordHash!,
-        passwordSalt!,
-      );
+      if (!passwordHash || !passwordSalt) {
+        setError('Password not set');
+        return;
+      }
+      const valid = await verifyPassword(currentPwd, passwordHash, passwordSalt);
       if (!valid) {
         setError('Incorrect password');
         return;
       }
-      onConfirm(null, null);
-      return;
-    }
-
-    if (mode === 'change') {
-      if (!currentPwd) {
-        setError('Enter your current password');
-        return;
-      }
-      const valid = await verifyPassword(
-        currentPwd,
-        passwordHash!,
-        passwordSalt!,
-      );
-      if (!valid) {
-        setError('Incorrect password');
+      if (mode === 'disable') {
+        onConfirm(null, null);
         return;
       }
     }
@@ -245,9 +235,7 @@ export function PasswordPage({ state, onUpdateState }: PasswordPageProps) {
         </div>
       )}
 
-      {message && (
-        <div className="mt-3 text-xs text-success">{message}</div>
-      )}
+      {message && <div className="mt-3 text-xs text-success">{message}</div>}
 
       <p className="mt-6 text-[11px] text-text-muted">
         Forgot password? Reset by reinstalling the extension.
