@@ -12,6 +12,7 @@ interface BlockListProps {
 
 export function BlockList({ state, onUpdateState }: BlockListProps) {
   const [showAddModal, setShowAddModal] = useState(false);
+  const [editingRule, setEditingRule] = useState<BlockRule | null>(null);
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const confirmTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -44,6 +45,16 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
     };
     onUpdateState({ rules: [...state.rules, newRule] });
     setShowAddModal(false);
+  };
+
+  const updateRule = (ruleData: Omit<BlockRule, 'id' | 'createdAt'>) => {
+    if (!editingRule) return;
+    onUpdateState({
+      rules: state.rules.map((r) =>
+        r.id === editingRule.id ? { ...r, ...ruleData } : r,
+      ),
+    });
+    setEditingRule(null);
   };
 
   const deleteRule = (id: string) => {
@@ -190,6 +201,19 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
                   }}
                 >
                   <button
+                    onClick={() => setEditingRule(rule)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--color-text-muted)',
+                      fontSize: 14,
+                      cursor: 'pointer',
+                      padding: '4px 8px',
+                    }}
+                  >
+                    ✏️
+                  </button>
+                  <button
                     onClick={(e) => {
                       e.stopPropagation();
                       if (isConfirming) return;
@@ -282,6 +306,15 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
           existingPatterns={state.rules.map((r) => r.pattern)}
           onAdd={addRule}
           onClose={() => setShowAddModal(false)}
+        />
+      )}
+
+      {editingRule && (
+        <AddRuleModal
+          existingPatterns={state.rules.map((r) => r.pattern)}
+          editRule={editingRule}
+          onAdd={updateRule}
+          onClose={() => setEditingRule(null)}
         />
       )}
     </div>

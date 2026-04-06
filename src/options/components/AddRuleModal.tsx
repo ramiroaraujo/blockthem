@@ -6,20 +6,22 @@ import { ScheduleEditor } from './ScheduleEditor';
 
 interface AddRuleModalProps {
   existingPatterns: string[];
+  editRule?: BlockRule;
   onAdd: (rule: Omit<BlockRule, 'id' | 'createdAt'>) => void;
   onClose: () => void;
 }
 
 export function AddRuleModal({
   existingPatterns,
+  editRule,
   onAdd,
   onClose,
 }: AddRuleModalProps) {
-  const [type, setType] = useState<'url' | 'regex'>('url');
-  const [pattern, setPattern] = useState('');
-  const [useCustomSchedule, setUseCustomSchedule] = useState(false);
+  const [type, setType] = useState<'url' | 'regex'>(editRule?.type ?? 'url');
+  const [pattern, setPattern] = useState(editRule?.pattern ?? '');
+  const [useCustomSchedule, setUseCustomSchedule] = useState(editRule?.schedule !== null && editRule?.schedule !== undefined);
   const [error, setError] = useState('');
-  const [schedule, setSchedule] = useState<Schedule>({
+  const [schedule, setSchedule] = useState<Schedule>(editRule?.schedule ?? {
     days: [1, 2, 3, 4, 5],
     startTime: '09:00',
     endTime: '17:00',
@@ -28,7 +30,7 @@ export function AddRuleModal({
   const handleSubmit = () => {
     const trimmed = pattern.trim();
     if (!trimmed) return;
-    if (existingPatterns.includes(trimmed)) {
+    if (existingPatterns.includes(trimmed) && trimmed !== editRule?.pattern) {
       setError('This pattern is already in your block list');
       return;
     }
@@ -69,7 +71,7 @@ export function AddRuleModal({
           overflowY: 'auto',
         }}
       >
-        <h2 style={{ fontSize: 16, marginBottom: 20 }}>Add Block Rule</h2>
+        <h2 style={{ fontSize: 16, marginBottom: 20 }}>{editRule ? 'Edit Block Rule' : 'Add Block Rule'}</h2>
 
         {/* Type selector */}
         <div style={{ marginBottom: 16 }}>
@@ -236,7 +238,7 @@ export function AddRuleModal({
               fontSize: 13,
             }}
           >
-            Add Rule
+            {editRule ? 'Save Changes' : 'Add Rule'}
           </button>
         </div>
       </div>
