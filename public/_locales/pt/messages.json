@@ -231,9 +231,6 @@
   "password_empty": {
     "message": "Nenhuma senha definida. Ative a opção acima para proteger suas configurações."
   },
-  "password_forgot_help": {
-    "message": "Esqueceu a senha? Reinstale a extensão para redefinir."
-  },
   "password_msg_disabled": {
     "message": "Proteção por senha desativada"
   },

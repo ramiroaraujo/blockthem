@@ -299,10 +299,6 @@
     "message": "No password set. Enable the toggle above to protect your settings.",
     "description": "Empty state on the password page"
   },
-  "password_forgot_help": {
-    "message": "Forgot password? Reset by reinstalling the extension.",
-    "description": "Recovery instructions at the bottom of the password page"
-  },
   "password_msg_disabled": {
     "message": "Password protection disabled",
     "description": "Success message after disabling password protection"

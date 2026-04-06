@@ -231,9 +231,6 @@
   "password_empty": {
     "message": "Aucun mot de passe défini. Activez l’interrupteur ci-dessus pour protéger vos paramètres."
   },
-  "password_forgot_help": {
-    "message": "Mot de passe oublié ? Réinstallez l’extension pour le réinitialiser."
-  },
   "password_msg_disabled": {
     "message": "Protection par mot de passe désactivée"
   },

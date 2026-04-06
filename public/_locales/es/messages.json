@@ -231,9 +231,6 @@
   "password_empty": {
     "message": "No hay contraseña configurada. Activa el interruptor para proteger tus ajustes."
   },
-  "password_forgot_help": {
-    "message": "¿Olvidaste la contraseña? Reinstala la extensión para restablecerla."
-  },
   "password_msg_disabled": {
     "message": "Protección por contraseña desactivada"
   },

@@ -233,16 +233,12 @@ export function PasswordPage({ state, onUpdateState }: PasswordPageProps) {
       )}
 
       {!isEnabled && !message && (
-        <div className="p-6 text-center text-sm text-text-muted">
+        <div className="py-6 text-sm text-text-muted">
           {t('password_empty')}
         </div>
       )}
 
       {message && <div className="mt-3 text-xs text-success">{message}</div>}
-
-      <p className="mt-6 text-[11px] text-text-muted">
-        {t('password_forgot_help')}
-      </p>
 
       {dialogMode && (
         <PasswordDialog
