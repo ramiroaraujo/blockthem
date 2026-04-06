@@ -3,3 +3,5 @@ dist/
 .claude/
 .superpowers/
 .idea
+.DS_Store
+blockthem-*.zip
