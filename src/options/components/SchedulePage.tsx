@@ -1,5 +1,6 @@
 import type { Schedule, StorageState } from '../../shared/types';
 import { formatSchedule } from '../../shared/schedule';
+import { ToggleSwitch } from '../../shared/components/ToggleSwitch';
 import { ScheduleEditor } from './ScheduleEditor';
 
 interface SchedulePageProps {
@@ -19,58 +20,16 @@ export function SchedulePage({ state, onUpdateState }: SchedulePageProps) {
   };
 
   return (
-    <div style={{ maxWidth: 500 }}>
-      <h1 style={{ fontSize: 24, marginBottom: 4 }}>Global Schedule</h1>
-      <p
-        style={{
-          color: 'var(--color-text-muted)',
-          fontSize: 14,
-          marginBottom: 24,
-        }}
-      >
+    <div className="max-w-[500px]">
+      <h1 className="mb-1 text-2xl">Global Schedule</h1>
+      <p className="mb-6 text-sm text-text-muted">
         Applies to all rules without a custom schedule
       </p>
 
       {/* Enable toggle */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '12px 16px',
-          background: 'var(--color-surface)',
-          borderRadius: 8,
-          marginBottom: 24,
-        }}
-      >
-        <div style={{ fontSize: 13 }}>Enable global schedule</div>
-        <div
-          onClick={toggleEnabled}
-          style={{
-            width: 40,
-            height: 22,
-            borderRadius: 11,
-            background: enabled
-              ? 'var(--color-primary)'
-              : 'var(--color-border)',
-            position: 'relative',
-            cursor: 'pointer',
-            transition: 'background 0.2s',
-          }}
-        >
-          <div
-            style={{
-              width: 18,
-              height: 18,
-              borderRadius: '50%',
-              background: enabled ? 'white' : '#666',
-              position: 'absolute',
-              top: 2,
-              left: enabled ? 20 : 2,
-              transition: 'left 0.2s',
-            }}
-          />
-        </div>
+      <div className="mb-6 flex items-center justify-between rounded-lg bg-surface px-4 py-3">
+        <div className="text-[13px]">Enable global schedule</div>
+        <ToggleSwitch enabled={enabled} onClick={toggleEnabled} />
       </div>
 
       {enabled && (
@@ -81,19 +40,9 @@ export function SchedulePage({ state, onUpdateState }: SchedulePageProps) {
           />
 
           {/* Summary */}
-          <div
-            style={{
-              background: 'var(--color-surface)',
-              borderRadius: 8,
-              padding: '12px 16px',
-              borderLeft: '3px solid var(--color-primary)',
-              marginTop: 24,
-            }}
-          >
-            <div style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>
-              Schedule summary
-            </div>
-            <div style={{ fontSize: 13, marginTop: 4 }}>
+          <div className="mt-6 rounded-lg border-l-3 border-l-primary bg-surface px-4 py-3">
+            <div className="text-xs text-text-secondary">Schedule summary</div>
+            <div className="mt-1 text-[13px]">
               Blocking {formatSchedule(state.globalSchedule)}
             </div>
           </div>
@@ -101,14 +50,7 @@ export function SchedulePage({ state, onUpdateState }: SchedulePageProps) {
       )}
 
       {!enabled && (
-        <div
-          style={{
-            padding: 24,
-            textAlign: 'center',
-            color: 'var(--color-text-muted)',
-            fontSize: 14,
-          }}
-        >
+        <div className="p-6 text-center text-sm text-text-muted">
           No global schedule — all enabled rules are always active.
         </div>
       )}

@@ -1,3 +1,5 @@
+import { ToggleSwitch } from '../../shared/components/ToggleSwitch';
+
 interface SidebarProps {
   activePage: string;
   onNavigate: (page: string) => void;
@@ -18,99 +20,33 @@ export function Sidebar({
   onToggleBlocking,
 }: SidebarProps) {
   return (
-    <div
-      style={{
-        width: 220,
-        background: 'var(--color-sidebar)',
-        borderRight: '1px solid var(--color-border)',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '20px 0',
-        flexShrink: 0,
-      }}
-    >
-      <div
-        style={{
-          padding: '0 20px',
-          marginBottom: 16,
-          fontSize: 18,
-          fontWeight: 'bold',
-          color: 'var(--color-primary)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 8,
-        }}
-      >
+    <div className="flex w-[220px] shrink-0 flex-col border-r border-border bg-sidebar py-5">
+      <div className="mb-4 flex items-center gap-2 px-5 text-lg font-bold text-primary">
         🛡️ BlockThem
       </div>
 
-      {/* Blocking toggle — right below the title */}
-      <div style={{ padding: '0 20px', marginBottom: 24 }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '8px 12px',
-            background: 'var(--color-surface)',
-            borderRadius: 8,
-            fontSize: 12,
-            color: 'var(--color-text-secondary)',
-          }}
-        >
+      {/* Blocking toggle */}
+      <div className="mb-6 px-5">
+        <div className="flex items-center justify-between rounded-lg bg-surface p-2 px-3 text-xs text-text-secondary">
           <span>Blocking {blockingEnabled ? 'ON' : 'OFF'}</span>
-          <div
+          <ToggleSwitch
+            enabled={blockingEnabled}
             onClick={onToggleBlocking}
-            style={{
-              width: 36,
-              height: 20,
-              borderRadius: 10,
-              background: blockingEnabled
-                ? 'var(--color-primary)'
-                : 'var(--color-border)',
-              position: 'relative',
-              cursor: 'pointer',
-              transition: 'background 0.2s',
-            }}
-          >
-            <div
-              style={{
-                width: 16,
-                height: 16,
-                borderRadius: '50%',
-                background: blockingEnabled ? 'white' : '#666',
-                position: 'absolute',
-                top: 2,
-                left: blockingEnabled ? 18 : 2,
-                transition: 'left 0.2s',
-              }}
-            />
-          </div>
+            size="sm"
+          />
         </div>
       </div>
 
-      <nav style={{ flex: 1 }}>
+      <nav className="flex-1">
         {NAV_ITEMS.map((item) => (
           <button
             key={item.id}
             onClick={() => onNavigate(item.id)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 10,
-              width: '100%',
-              padding: '10px 20px',
-              border: 'none',
-              background:
-                activePage === item.id ? 'var(--color-primary)' : 'transparent',
-              color:
-                activePage === item.id
-                  ? 'white'
-                  : 'var(--color-text-secondary)',
-              fontSize: 14,
-              textAlign: 'left',
-              borderRadius: 0,
-            }}
+            className={`flex w-full items-center gap-2.5 border-none px-5 py-2.5 text-left text-sm ${
+              activePage === item.id
+                ? 'bg-primary text-white'
+                : 'bg-transparent text-text-secondary'
+            }`}
           >
             <span>{item.icon}</span>
             {item.label}

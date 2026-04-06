@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import type { BlockRule, Schedule } from '../../shared/types';
+import { ToggleSwitch } from '../../shared/components/ToggleSwitch';
 import { validateRulePattern } from '../../shared/schemas';
 import { ScheduleEditor } from './ScheduleEditor';
 
@@ -19,13 +20,17 @@ export function AddRuleModal({
 }: AddRuleModalProps) {
   const [type, setType] = useState<'url' | 'regex'>(editRule?.type ?? 'url');
   const [pattern, setPattern] = useState(editRule?.pattern ?? '');
-  const [useCustomSchedule, setUseCustomSchedule] = useState(editRule?.schedule !== null && editRule?.schedule !== undefined);
+  const [useCustomSchedule, setUseCustomSchedule] = useState(
+    editRule?.schedule !== null && editRule?.schedule !== undefined,
+  );
   const [error, setError] = useState('');
-  const [schedule, setSchedule] = useState<Schedule>(editRule?.schedule ?? {
-    days: [1, 2, 3, 4, 5],
-    startTime: '09:00',
-    endTime: '17:00',
-  });
+  const [schedule, setSchedule] = useState<Schedule>(
+    editRule?.schedule ?? {
+      days: [1, 2, 3, 4, 5],
+      startTime: '09:00',
+      endTime: '17:00',
+    },
+  );
 
   const handleSubmit = () => {
     const trimmed = pattern.trim();
@@ -50,58 +55,29 @@ export function AddRuleModal({
   return (
     <div
       onClick={onClose}
-      style={{
-        position: 'fixed',
-        inset: 0,
-        background: 'rgba(0,0,0,0.6)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1000,
-      }}
+      className="fixed inset-0 z-[1000] flex items-center justify-center bg-overlay"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        style={{
-          background: 'var(--color-sidebar)',
-          borderRadius: 12,
-          padding: 24,
-          width: 440,
-          maxHeight: '80vh',
-          overflowY: 'auto',
-        }}
+        className="max-h-[80vh] w-[440px] overflow-y-auto rounded-xl bg-sidebar p-6"
       >
-        <h2 style={{ fontSize: 16, marginBottom: 20 }}>{editRule ? 'Edit Block Rule' : 'Add Block Rule'}</h2>
+        <h2 className="mb-5 text-base">
+          {editRule ? 'Edit Block Rule' : 'Add Block Rule'}
+        </h2>
 
         {/* Type selector */}
-        <div style={{ marginBottom: 16 }}>
-          <div
-            style={{
-              fontSize: 12,
-              color: 'var(--color-text-secondary)',
-              marginBottom: 6,
-            }}
-          >
-            Type
-          </div>
-          <div style={{ display: 'flex', gap: 8 }}>
+        <div className="mb-4">
+          <div className="mb-1.5 text-xs text-text-secondary">Type</div>
+          <div className="flex gap-2">
             {(['url', 'regex'] as const).map((t) => (
               <button
                 key={t}
                 onClick={() => setType(t)}
-                style={{
-                  flex: 1,
-                  padding: 8,
-                  border: type === t ? 'none' : '1px solid var(--color-border)',
-                  borderRadius: 6,
-                  background:
-                    type === t
-                      ? 'var(--color-primary)'
-                      : 'var(--color-surface)',
-                  color: type === t ? 'white' : 'var(--color-text-secondary)',
-                  fontSize: 13,
-                  textTransform: 'uppercase',
-                }}
+                className={`flex-1 rounded-md p-2 text-[13px] uppercase ${
+                  type === t
+                    ? 'border-none bg-primary text-white'
+                    : 'border border-border bg-surface text-text-secondary'
+                }`}
               >
                 {t}
               </button>
@@ -110,14 +86,8 @@ export function AddRuleModal({
         </div>
 
         {/* Pattern input */}
-        <div style={{ marginBottom: 16 }}>
-          <div
-            style={{
-              fontSize: 12,
-              color: 'var(--color-text-secondary)',
-              marginBottom: 6,
-            }}
-          >
+        <div className="mb-4">
+          <div className="mb-1.5 text-xs text-text-secondary">
             {type === 'url' ? 'URL to block' : 'Regex pattern'}
           </div>
           <input
@@ -132,111 +102,47 @@ export function AddRuleModal({
               type === 'url' ? 'e.g. facebook.com' : 'e.g. .*social.*'
             }
             autoFocus
-            style={{
-              width: '100%',
-              background: 'var(--color-bg)',
-              border: `1px solid ${error ? '#e74c3c' : 'var(--color-border)'}`,
-              borderRadius: 6,
-              padding: '10px 12px',
-              color: 'var(--color-text)',
-              fontSize: 13,
-            }}
+            className={`w-full rounded-md border bg-bg px-3 py-2.5 text-[13px] text-text ${
+              error ? 'border-error' : 'border-border'
+            }`}
           />
           {error && (
-            <div style={{ color: '#e74c3c', fontSize: 11, marginTop: 4 }}>
-              {error}
-            </div>
+            <div className="mt-1 text-[11px] text-error">{error}</div>
           )}
         </div>
 
         {/* Custom schedule toggle */}
-        <div style={{ marginBottom: 16 }}>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <div style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>
-              Custom schedule
-            </div>
-            <div
+        <div className="mb-4">
+          <div className="flex items-center justify-between">
+            <div className="text-xs text-text-secondary">Custom schedule</div>
+            <ToggleSwitch
+              enabled={useCustomSchedule}
               onClick={() => setUseCustomSchedule(!useCustomSchedule)}
-              style={{
-                width: 36,
-                height: 20,
-                borderRadius: 10,
-                background: useCustomSchedule
-                  ? 'var(--color-primary)'
-                  : 'var(--color-border)',
-                position: 'relative',
-                cursor: 'pointer',
-              }}
-            >
-              <div
-                style={{
-                  width: 16,
-                  height: 16,
-                  borderRadius: '50%',
-                  background: useCustomSchedule ? 'white' : '#666',
-                  position: 'absolute',
-                  top: 2,
-                  left: useCustomSchedule ? 18 : 2,
-                  transition: 'left 0.2s',
-                }}
-              />
-            </div>
+              size="sm"
+            />
           </div>
-          <div
-            style={{
-              fontSize: 11,
-              color: 'var(--color-text-muted)',
-              marginTop: 4,
-            }}
-          >
+          <div className="mt-1 text-[11px] text-text-muted">
             Uses global schedule when off
           </div>
         </div>
 
         {useCustomSchedule && (
-          <div style={{ marginBottom: 16 }}>
+          <div className="mb-4">
             <ScheduleEditor schedule={schedule} onChange={setSchedule} />
           </div>
         )}
 
         {/* Buttons */}
-        <div
-          style={{
-            display: 'flex',
-            gap: 8,
-            justifyContent: 'flex-end',
-            marginTop: 20,
-          }}
-        >
+        <div className="mt-5 flex justify-end gap-2">
           <button
             onClick={onClose}
-            style={{
-              background: 'transparent',
-              color: 'var(--color-text-secondary)',
-              border: '1px solid var(--color-border)',
-              padding: '8px 16px',
-              borderRadius: 6,
-              fontSize: 13,
-            }}
+            className="rounded-md border border-border bg-transparent px-4 py-2 text-[13px] text-text-secondary"
           >
             Cancel
           </button>
           <button
             onClick={handleSubmit}
-            style={{
-              background: 'var(--color-primary)',
-              color: 'white',
-              border: 'none',
-              padding: '8px 16px',
-              borderRadius: 6,
-              fontSize: 13,
-            }}
+            className="rounded-md border-none bg-primary px-4 py-2 text-[13px] text-white"
           >
             {editRule ? 'Save Changes' : 'Add Rule'}
           </button>

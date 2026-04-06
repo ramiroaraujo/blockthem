@@ -43,7 +43,7 @@ export function App() {
   }
 
   return (
-    <>
+    <div className="flex min-h-screen">
       <Sidebar
         activePage={activePage}
         onNavigate={setActivePage}
@@ -52,7 +52,7 @@ export function App() {
           handleUpdateState({ blockingEnabled: !state.blockingEnabled })
         }
       />
-      <main style={{ flex: 1, padding: 32, overflowY: 'auto' }}>
+      <main className="flex-1 overflow-y-auto p-8">
         {activePage === 'blocklist' && (
           <BlockList state={state} onUpdateState={handleUpdateState} />
         )}
@@ -63,6 +63,6 @@ export function App() {
           <PasswordPage state={state} onUpdateState={handleUpdateState} />
         )}
       </main>
-    </>
+    </div>
   );
 }

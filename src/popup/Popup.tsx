@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import type { StorageState } from '../shared/types';
+import { getState, setState } from '../shared/storage';
+import { ToggleSwitch } from '../shared/components/ToggleSwitch';
 import { verifyPassword } from '../shared/password';
-import { getState, onStateChange, updateState } from '../shared/storage';
+import type { StorageState } from '../shared/types';
 import { DEFAULT_STATE } from '../shared/types';
 
 export function Popup() {
@@ -13,12 +14,9 @@ export function Popup() {
   const [passwordError, setPasswordError] = useState('');
 
   useEffect(() => {
-    void getState().then((s) => {
+    getState().then((s) => {
       setLocalState(s);
       setLoaded(true);
-    });
-    onStateChange((newState) => {
-      setLocalState(newState);
     });
   }, []);
 
@@ -31,20 +29,18 @@ export function Popup() {
   };
 
   const doToggle = async () => {
-    const newState = await updateState({
-      blockingEnabled: !state.blockingEnabled,
-    });
+    const newState = { ...state, blockingEnabled: !state.blockingEnabled };
     setLocalState(newState);
+    await setState(newState);
     setShowPasswordInput(false);
     setPassword('');
   };
 
   const handlePasswordSubmit = async () => {
-    if (!state.passwordHash || !state.passwordSalt) return;
     const valid = await verifyPassword(
       password,
-      state.passwordHash,
-      state.passwordSalt,
+      state.passwordHash!,
+      state.passwordSalt!,
     );
     if (valid) {
       await doToggle();
@@ -55,86 +51,35 @@ export function Popup() {
   };
 
   const openOptions = () => {
-    void chrome.runtime.openOptionsPage();
+    chrome.runtime.openOptionsPage();
   };
 
   if (!loaded) return null;
 
   return (
-    <div
-      style={{
-        width: 280,
-        padding: 20,
-        boxSizing: 'border-box',
-        fontFamily:
-          '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-        background: '#0d1117',
-        color: '#e6e6e6',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 8,
-          marginBottom: 16,
-          fontSize: 16,
-          fontWeight: 'bold',
-          color: '#6c5ce7',
-        }}
-      >
+    <div className="box-border w-[280px] bg-bg p-5 font-sans text-text">
+      <div className="mb-4 flex items-center gap-2 text-base font-bold text-primary">
         🛡️ BlockThem
       </div>
 
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '12px 16px',
-          background: '#161b22',
-          borderRadius: 8,
-          marginBottom: 12,
-        }}
-      >
+      <div className="mb-3 flex items-center justify-between rounded-lg bg-surface px-4 py-3">
         <div>
-          <div style={{ fontSize: 13 }}>
+          <div className="text-[13px]">
             Blocking is {state.blockingEnabled ? 'ON' : 'OFF'}
           </div>
-          <div style={{ fontSize: 11, color: '#666', marginTop: 2 }}>
+          <div className="mt-0.5 text-[11px] text-text-muted">
             {state.rules.length} rule{state.rules.length !== 1 ? 's' : ''}{' '}
             configured
           </div>
         </div>
-        <div
+        <ToggleSwitch
+          enabled={state.blockingEnabled}
           onClick={handleToggle}
-          style={{
-            width: 40,
-            height: 22,
-            borderRadius: 11,
-            background: state.blockingEnabled ? '#6c5ce7' : '#333',
-            position: 'relative',
-            cursor: 'pointer',
-            transition: 'background 0.2s',
-          }}
-        >
-          <div
-            style={{
-              width: 18,
-              height: 18,
-              borderRadius: '50%',
-              background: state.blockingEnabled ? 'white' : '#666',
-              position: 'absolute',
-              top: 2,
-              left: state.blockingEnabled ? 20 : 2,
-              transition: 'left 0.2s',
-            }}
-          />
-        </div>
+        />
       </div>
 
       {showPasswordInput && (
-        <div style={{ marginBottom: 12 }}>
+        <div className="mb-3">
           <input
             type="password"
             value={password}
@@ -142,44 +87,22 @@ export function Popup() {
               setPassword(e.target.value);
               setPasswordError('');
             }}
-            onKeyDown={(e) => e.key === 'Enter' && void handlePasswordSubmit()}
+            onKeyDown={(e) => e.key === 'Enter' && handlePasswordSubmit()}
             placeholder="Enter password to toggle"
             autoFocus
-            style={{
-              width: '100%',
-              boxSizing: 'border-box',
-              background: '#161b22',
-              border: `1px solid ${passwordError ? '#e74c3c' : '#333'}`,
-              borderRadius: 6,
-              padding: '8px 10px',
-              color: '#e6e6e6',
-              fontSize: 12,
-              marginBottom: 8,
-              fontFamily: 'inherit',
-            }}
+            className={`mb-2 box-border w-full rounded-md border bg-surface px-2.5 py-2 font-inherit text-xs text-text ${
+              passwordError ? 'border-error' : 'border-border'
+            }`}
           />
           {passwordError && (
-            <div style={{ color: '#e74c3c', fontSize: 11 }}>
-              {passwordError}
-            </div>
+            <div className="text-[11px] text-error">{passwordError}</div>
           )}
         </div>
       )}
 
       <button
         onClick={openOptions}
-        style={{
-          width: '100%',
-          boxSizing: 'border-box',
-          background: 'transparent',
-          color: '#888',
-          border: '1px solid #333',
-          padding: '8px 16px',
-          borderRadius: 6,
-          fontSize: 12,
-          cursor: 'pointer',
-          fontFamily: 'inherit',
-        }}
+        className="box-border w-full rounded-md border border-border bg-transparent px-4 py-2 font-inherit text-xs text-text-secondary"
       >
         Open Settings
       </button>

@@ -31,26 +31,11 @@ export function PasswordGate({
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
-        width: '100%',
-        background: 'var(--color-bg)',
-      }}
-    >
-      <div style={{ textAlign: 'center', maxWidth: 320, padding: 40 }}>
-        <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
-        <h1 style={{ fontSize: 20, marginBottom: 8 }}>BlockThem Settings</h1>
-        <p
-          style={{
-            fontSize: 13,
-            color: 'var(--color-text-muted)',
-            marginBottom: 24,
-          }}
-        >
+    <div className="flex min-h-screen w-full items-center justify-center bg-bg">
+      <div className="max-w-xs p-10 text-center">
+        <div className="mb-4 text-5xl">🔒</div>
+        <h1 className="mb-2 text-xl">BlockThem Settings</h1>
+        <p className="mb-6 text-[13px] text-text-muted">
           Enter your password to access settings
         </p>
 
@@ -64,35 +49,18 @@ export function PasswordGate({
           onKeyDown={handleKeyDown}
           placeholder="Password"
           autoFocus
-          style={{
-            width: '100%',
-            background: 'var(--color-surface)',
-            border: `1px solid ${error ? '#e74c3c' : 'var(--color-border)'}`,
-            borderRadius: 6,
-            padding: '10px 12px',
-            color: 'var(--color-text)',
-            fontSize: 13,
-            marginBottom: error ? 8 : 16,
-          }}
+          className={`w-full rounded-md border bg-surface px-3 py-2.5 text-[13px] text-text ${
+            error ? 'mb-2 border-error' : 'mb-4 border-border'
+          }`}
         />
 
         {error && (
-          <div style={{ color: '#e74c3c', fontSize: 12, marginBottom: 12 }}>
-            {error}
-          </div>
+          <div className="mb-3 text-xs text-error">{error}</div>
         )}
 
         <button
           onClick={handleUnlock}
-          style={{
-            width: '100%',
-            background: 'var(--color-primary)',
-            color: 'white',
-            border: 'none',
-            padding: '10px 20px',
-            borderRadius: 6,
-            fontSize: 13,
-          }}
+          className="w-full rounded-md border-none bg-primary px-5 py-2.5 text-[13px] text-white"
         >
           Unlock
         </button>

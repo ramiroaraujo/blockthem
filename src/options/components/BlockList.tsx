@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
 import type { BlockRule, StorageState } from '../../shared/types';
 import { formatSchedule } from '../../shared/schedule';
-import { ImportDataSchema } from '../../shared/schemas';
 import { AddRuleModal } from './AddRuleModal';
 
 interface BlockListProps {
@@ -12,30 +11,6 @@ interface BlockListProps {
 
 export function BlockList({ state, onUpdateState }: BlockListProps) {
   const [showAddModal, setShowAddModal] = useState(false);
-  const [editingRule, setEditingRule] = useState<BlockRule | null>(null);
-  const [confirmingId, setConfirmingId] = useState<string | null>(null);
-  const confirmTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const resetConfirm = useCallback(() => {
-    setConfirmingId(null);
-    if (confirmTimeoutRef.current) {
-      clearTimeout(confirmTimeoutRef.current);
-      confirmTimeoutRef.current = null;
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!confirmingId) return;
-    const handleClick = () => resetConfirm();
-    document.addEventListener('click', handleClick);
-    return () => document.removeEventListener('click', handleClick);
-  }, [confirmingId, resetConfirm]);
-
-  useEffect(() => {
-    return () => {
-      if (confirmTimeoutRef.current) clearTimeout(confirmTimeoutRef.current);
-    };
-  }, []);
 
   const addRule = (ruleData: Omit<BlockRule, 'id' | 'createdAt'>) => {
     const newRule: BlockRule = {
@@ -47,22 +22,12 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
     setShowAddModal(false);
   };
 
-  const updateRule = (ruleData: Omit<BlockRule, 'id' | 'createdAt'>) => {
-    if (!editingRule) return;
-    onUpdateState({
-      rules: state.rules.map((r) =>
-        r.id === editingRule.id ? { ...r, ...ruleData } : r,
-      ),
-    });
-    setEditingRule(null);
-  };
-
   const deleteRule = (id: string) => {
     onUpdateState({ rules: state.rules.filter((r) => r.id !== id) });
   };
 
   const handleExport = () => {
-    const { passwordHash: _ph, passwordSalt: _ps, ...exportData } = state;
+    const { passwordHash, passwordSalt, ...exportData } = state;
     const blob = new Blob([JSON.stringify(exportData, null, 2)], {
       type: 'application/json',
     });
@@ -83,20 +48,13 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
       if (!file) return;
       const text = await file.text();
       try {
-        const data: unknown = JSON.parse(text);
-        const parsed = ImportDataSchema.safeParse(data);
-        if (parsed.success) {
+        const data = JSON.parse(text);
+        if (Array.isArray(data.rules)) {
           onUpdateState({
-            rules: parsed.data.rules,
-            globalSchedule: parsed.data.globalSchedule ?? state.globalSchedule,
-            scheduleEnabled:
-              parsed.data.scheduleEnabled ?? state.scheduleEnabled,
-            blockingEnabled:
-              parsed.data.blockingEnabled ?? state.blockingEnabled,
+            rules: data.rules,
+            globalSchedule: data.globalSchedule ?? state.globalSchedule,
+            blockingEnabled: data.blockingEnabled ?? state.blockingEnabled,
           });
-        } else {
-          const issue = parsed.error.issues[0];
-          alert(`Import failed: ${issue.path.join('.')} — ${issue.message}`);
         }
       } catch {
         alert('Invalid JSON file');
@@ -107,17 +65,10 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
 
   return (
     <div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
-          marginBottom: 24,
-        }}
-      >
+      <div className="mb-6 flex items-start justify-between">
         <div>
-          <h1 style={{ fontSize: 24, marginBottom: 4 }}>Block List</h1>
-          <p style={{ color: 'var(--color-text-muted)', fontSize: 14 }}>
+          <h1 className="mb-1 text-2xl">Block List</h1>
+          <p className="text-sm text-text-muted">
             Block sites permanently or by schedule
           </p>
         </div>
@@ -125,177 +76,57 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
 
       <button
         onClick={() => setShowAddModal(true)}
-        style={{
-          background: 'var(--color-primary)',
-          color: 'white',
-          border: 'none',
-          padding: '10px 20px',
-          borderRadius: 6,
-          fontSize: 13,
-          marginBottom: 24,
-        }}
+        className="mb-6 rounded-md border-none bg-primary px-5 py-2.5 text-[13px] text-white"
       >
         + Add to Block List
       </button>
 
       {state.rules.length === 0 ? (
-        <div
-          style={{
-            padding: 40,
-            textAlign: 'center',
-            color: 'var(--color-text-muted)',
-            fontSize: 14,
-          }}
-        >
+        <div className="p-10 text-center text-sm text-text-muted">
           No blocked sites yet. Add a URL or regex pattern to get started.
         </div>
       ) : (
         <div>
-          <div
-            style={{
-              fontSize: 12,
-              color: 'var(--color-text-secondary)',
-              marginBottom: 8,
-            }}
-          >
+          <div className="mb-2 text-xs text-text-secondary">
             Blocked Items ({state.rules.length})
           </div>
-          {state.rules.map((rule) => {
-            const isConfirming = confirmingId === rule.id;
-            return (
-              <div
-                key={rule.id}
-                style={{
-                  background: 'var(--color-surface)',
-                  borderRadius: 8,
-                  padding: '12px 16px',
-                  marginBottom: 8,
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <div style={{ minWidth: 0, flex: 1 }}>
-                  <div style={{ fontSize: 13 }}>{rule.pattern}</div>
-                  <div
-                    style={{
-                      fontSize: 11,
-                      color: 'var(--color-text-muted)',
-                      marginTop: 2,
-                    }}
-                  >
-                    {rule.type.toUpperCase()}
-                    {rule.schedule
-                      ? ` · ${formatSchedule(rule.schedule)}`
-                      : state.scheduleEnabled
-                        ? ' · Global schedule'
-                        : ''}
-                  </div>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 4,
-                    flexShrink: 0,
-                  }}
-                >
-                  <button
-                    onClick={() => setEditingRule(rule)}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: 'var(--color-text-muted)',
-                      fontSize: 14,
-                      cursor: 'pointer',
-                      padding: '4px 8px',
-                    }}
-                  >
-                    ✏️
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (isConfirming) return;
-                      setConfirmingId(rule.id);
-                      if (confirmTimeoutRef.current)
-                        clearTimeout(confirmTimeoutRef.current);
-                      confirmTimeoutRef.current = setTimeout(
-                        () => setConfirmingId(null),
-                        3000,
-                      );
-                    }}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: 'var(--color-text-muted)',
-                      fontSize: 16,
-                      cursor: 'pointer',
-                      padding: '4px 8px',
-                    }}
-                  >
-                    🗑
-                  </button>
-                  <div
-                    style={{
-                      overflow: 'hidden',
-                      width: isConfirming ? 80 : 0,
-                      opacity: isConfirming ? 1 : 0,
-                      transition: 'width 0.25s ease, opacity 0.2s ease',
-                    }}
-                  >
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        deleteRule(rule.id);
-                        resetConfirm();
-                      }}
-                      style={{
-                        background: '#e74c3c',
-                        color: 'white',
-                        border: 'none',
-                        padding: '6px 14px',
-                        borderRadius: 4,
-                        fontSize: 12,
-                        fontWeight: 'bold',
-                        cursor: 'pointer',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      Confirm
-                    </button>
-                  </div>
+          {state.rules.map((rule) => (
+            <div
+              key={rule.id}
+              className="mb-2 flex items-center justify-between rounded-lg bg-surface px-4 py-3"
+            >
+              <div>
+                <div className="text-[13px]">{rule.pattern}</div>
+                <div className="mt-0.5 text-[11px] text-text-muted">
+                  {rule.type.toUpperCase()}
+                  {rule.schedule
+                    ? ` · ${formatSchedule(rule.schedule)}`
+                    : state.globalSchedule
+                      ? ' · Global schedule'
+                      : ''}
                 </div>
               </div>
-            );
-          })}
+              <button
+                onClick={() => deleteRule(rule.id)}
+                className="border-none bg-transparent p-1 px-2 text-base text-text-muted"
+              >
+                🗑
+              </button>
+            </div>
+          ))}
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: 8, marginTop: 24 }}>
+      <div className="mt-6 flex gap-2">
         <button
           onClick={handleExport}
-          style={{
-            background: 'var(--color-surface)',
-            color: 'var(--color-text-secondary)',
-            border: '1px solid var(--color-border)',
-            padding: '8px 16px',
-            borderRadius: 6,
-            fontSize: 13,
-          }}
+          className="rounded-md border border-border bg-surface px-4 py-2 text-[13px] text-text-secondary"
         >
           ↑ Export
         </button>
         <button
           onClick={handleImport}
-          style={{
-            background: 'var(--color-surface)',
-            color: 'var(--color-text-secondary)',
-            border: '1px solid var(--color-border)',
-            padding: '8px 16px',
-            borderRadius: 6,
-            fontSize: 13,
-          }}
+          className="rounded-md border border-border bg-surface px-4 py-2 text-[13px] text-text-secondary"
         >
           ↓ Import
         </button>
@@ -306,15 +137,6 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
           existingPatterns={state.rules.map((r) => r.pattern)}
           onAdd={addRule}
           onClose={() => setShowAddModal(false)}
-        />
-      )}
-
-      {editingRule && (
-        <AddRuleModal
-          existingPatterns={state.rules.map((r) => r.pattern)}
-          editRule={editingRule}
-          onAdd={updateRule}
-          onClose={() => setEditingRule(null)}
         />
       )}
     </div>

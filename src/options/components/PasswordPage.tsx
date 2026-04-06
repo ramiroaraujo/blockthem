@@ -1,12 +1,8 @@
 import { useState } from 'react';
 
 import type { StorageState } from '../../shared/types';
-import {
-  generateSalt,
-  hashPassword,
-  verifyPassword,
-} from '../../shared/password';
-import { PasswordSchema } from '../../shared/schemas';
+import { ToggleSwitch } from '../../shared/components/ToggleSwitch';
+import { hashPassword, verifyPassword, generateSalt } from '../../shared/password';
 
 interface PasswordPageProps {
   state: StorageState;
@@ -41,11 +37,10 @@ function PasswordDialog({
         setError('Enter your current password');
         return;
       }
-      if (!passwordHash || !passwordSalt) return;
       const valid = await verifyPassword(
         currentPwd,
-        passwordHash,
-        passwordSalt,
+        passwordHash!,
+        passwordSalt!,
       );
       if (!valid) {
         setError('Incorrect password');
@@ -60,11 +55,10 @@ function PasswordDialog({
         setError('Enter your current password');
         return;
       }
-      if (!passwordHash || !passwordSalt) return;
       const valid = await verifyPassword(
         currentPwd,
-        passwordHash,
-        passwordSalt,
+        passwordHash!,
+        passwordSalt!,
       );
       if (!valid) {
         setError('Incorrect password');
@@ -74,11 +68,6 @@ function PasswordDialog({
 
     if (!newPwd) {
       setError('Enter a new password');
-      return;
-    }
-    const pwdResult = PasswordSchema.safeParse(newPwd);
-    if (!pwdResult.success) {
-      setError(pwdResult.error.issues[0].message);
       return;
     }
     if (newPwd !== confirmPwd) {
@@ -98,53 +87,20 @@ function PasswordDialog({
         ? 'Change Password'
         : 'Disable Password Protection';
 
-  const inputStyle: React.CSSProperties = {
-    width: '100%',
-    background: 'var(--color-bg)',
-    border: '1px solid var(--color-border)',
-    borderRadius: 6,
-    padding: '10px 12px',
-    color: 'var(--color-text)',
-    fontSize: 13,
-  };
-
   return (
     <div
       onClick={onClose}
-      style={{
-        position: 'fixed',
-        inset: 0,
-        background: 'rgba(0,0,0,0.6)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1000,
-      }}
+      className="fixed inset-0 z-[1000] flex items-center justify-center bg-overlay"
     >
-      <form
+      <div
         onClick={(e) => e.stopPropagation()}
-        onSubmit={(e) => {
-          e.preventDefault();
-          void handleSubmit();
-        }}
-        style={{
-          background: 'var(--color-sidebar)',
-          borderRadius: 12,
-          padding: 24,
-          width: 400,
-        }}
+        className="w-[400px] rounded-xl bg-sidebar p-6"
       >
-        <h2 style={{ fontSize: 16, marginBottom: 20 }}>{title}</h2>
+        <h2 className="mb-5 text-base">{title}</h2>
 
         {(mode === 'change' || mode === 'disable') && (
-          <div style={{ marginBottom: 12 }}>
-            <div
-              style={{
-                fontSize: 11,
-                color: 'var(--color-text-secondary)',
-                marginBottom: 4,
-              }}
-            >
+          <div className="mb-3">
+            <div className="mb-1 text-[11px] text-text-secondary">
               Current password
             </div>
             <input
@@ -154,22 +110,20 @@ function PasswordDialog({
                 setCurrentPwd(e.target.value);
                 setError('');
               }}
+              onKeyDown={(e) =>
+                e.key === 'Enter' &&
+                (mode === 'disable' ? handleSubmit() : undefined)
+              }
               autoFocus
-              style={inputStyle}
+              className="w-full rounded-md border border-border bg-bg px-3 py-2.5 text-[13px] text-text"
             />
           </div>
         )}
 
         {(mode === 'set' || mode === 'change') && (
           <>
-            <div style={{ marginBottom: 12 }}>
-              <div
-                style={{
-                  fontSize: 11,
-                  color: 'var(--color-text-secondary)',
-                  marginBottom: 4,
-                }}
-              >
+            <div className="mb-3">
+              <div className="mb-1 text-[11px] text-text-secondary">
                 New password
               </div>
               <input
@@ -180,17 +134,11 @@ function PasswordDialog({
                   setError('');
                 }}
                 autoFocus={mode === 'set'}
-                style={inputStyle}
+                className="w-full rounded-md border border-border bg-bg px-3 py-2.5 text-[13px] text-text"
               />
             </div>
-            <div style={{ marginBottom: 12 }}>
-              <div
-                style={{
-                  fontSize: 11,
-                  color: 'var(--color-text-secondary)',
-                  marginBottom: 4,
-                }}
-              >
+            <div className="mb-3">
+              <div className="mb-1 text-[11px] text-text-secondary">
                 Confirm password
               </div>
               <input
@@ -200,51 +148,27 @@ function PasswordDialog({
                   setConfirmPwd(e.target.value);
                   setError('');
                 }}
-                style={inputStyle}
+                onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+                className="w-full rounded-md border border-border bg-bg px-3 py-2.5 text-[13px] text-text"
               />
             </div>
           </>
         )}
 
-        {error && (
-          <div style={{ color: '#e74c3c', fontSize: 12, marginBottom: 12 }}>
-            {error}
-          </div>
-        )}
+        {error && <div className="mb-3 text-xs text-error">{error}</div>}
 
-        <div
-          style={{
-            display: 'flex',
-            gap: 8,
-            justifyContent: 'flex-end',
-            marginTop: 20,
-          }}
-        >
+        <div className="mt-5 flex justify-end gap-2">
           <button
-            type="button"
             onClick={onClose}
-            style={{
-              background: 'transparent',
-              color: 'var(--color-text-secondary)',
-              border: '1px solid var(--color-border)',
-              padding: '8px 16px',
-              borderRadius: 6,
-              fontSize: 13,
-            }}
+            className="rounded-md border border-border bg-transparent px-4 py-2 text-[13px] text-text-secondary"
           >
             Cancel
           </button>
           <button
-            type="submit"
-            style={{
-              background:
-                mode === 'disable' ? '#e74c3c' : 'var(--color-primary)',
-              color: 'white',
-              border: 'none',
-              padding: '8px 16px',
-              borderRadius: 6,
-              fontSize: 13,
-            }}
+            onClick={handleSubmit}
+            className={`rounded-md border-none px-4 py-2 text-[13px] text-white ${
+              mode === 'disable' ? 'bg-error' : 'bg-primary'
+            }`}
           >
             {mode === 'disable'
               ? 'Disable'
@@ -253,7 +177,7 @@ function PasswordDialog({
                 : 'Set Password'}
           </button>
         </div>
-      </form>
+      </div>
     </div>
   );
 }
@@ -285,70 +209,21 @@ export function PasswordPage({ state, onUpdateState }: PasswordPageProps) {
   };
 
   return (
-    <div style={{ maxWidth: 500 }}>
-      <h1 style={{ fontSize: 24, marginBottom: 4 }}>Password Protection</h1>
-      <p
-        style={{
-          color: 'var(--color-text-muted)',
-          fontSize: 14,
-          marginBottom: 24,
-        }}
-      >
+    <div className="max-w-[500px]">
+      <h1 className="mb-1 text-2xl">Password Protection</h1>
+      <p className="mb-6 text-sm text-text-muted">
         Protect all settings with a password
       </p>
 
       {/* Enable toggle */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '12px 16px',
-          background: 'var(--color-surface)',
-          borderRadius: 8,
-          marginBottom: 24,
-        }}
-      >
+      <div className="mb-6 flex items-center justify-between rounded-lg bg-surface px-4 py-3">
         <div>
-          <div style={{ fontSize: 13 }}>Enable password protection</div>
-          <div
-            style={{
-              fontSize: 11,
-              color: 'var(--color-text-muted)',
-              marginTop: 2,
-            }}
-          >
+          <div className="text-[13px]">Enable password protection</div>
+          <div className="mt-0.5 text-[11px] text-text-muted">
             Requires password to access settings and toggle blocking
           </div>
         </div>
-        <div
-          onClick={handleToggle}
-          style={{
-            width: 40,
-            height: 22,
-            borderRadius: 11,
-            background: isEnabled
-              ? 'var(--color-primary)'
-              : 'var(--color-border)',
-            position: 'relative',
-            cursor: 'pointer',
-            transition: 'background 0.2s',
-            flexShrink: 0,
-          }}
-        >
-          <div
-            style={{
-              width: 18,
-              height: 18,
-              borderRadius: '50%',
-              background: isEnabled ? 'white' : '#666',
-              position: 'absolute',
-              top: 2,
-              left: isEnabled ? 20 : 2,
-              transition: 'left 0.2s',
-            }}
-          />
-        </div>
+        <ToggleSwitch enabled={isEnabled} onClick={handleToggle} />
       </div>
 
       {/* Change password button (when enabled) */}
@@ -358,37 +233,25 @@ export function PasswordPage({ state, onUpdateState }: PasswordPageProps) {
             setMessage('');
             setDialogMode('change');
           }}
-          style={{
-            background: 'var(--color-surface)',
-            color: 'var(--color-text-secondary)',
-            border: '1px solid var(--color-border)',
-            padding: '10px 16px',
-            borderRadius: 6,
-            fontSize: 13,
-          }}
+          className="rounded-md border border-border bg-surface px-4 py-2.5 text-[13px] text-text-secondary"
         >
           Change Password
         </button>
       )}
 
       {!isEnabled && !message && (
-        <div
-          style={{
-            padding: 24,
-            textAlign: 'center',
-            color: 'var(--color-text-muted)',
-            fontSize: 14,
-          }}
-        >
+        <div className="p-6 text-center text-sm text-text-muted">
           No password set. Enable the toggle above to protect your settings.
         </div>
       )}
 
       {message && (
-        <div style={{ color: '#2ecc71', fontSize: 12, marginTop: 12 }}>
-          {message}
-        </div>
+        <div className="mt-3 text-xs text-success">{message}</div>
       )}
+
+      <p className="mt-6 text-[11px] text-text-muted">
+        Forgot password? Reset by reinstalling the extension.
+      </p>
 
       {dialogMode && (
         <PasswordDialog

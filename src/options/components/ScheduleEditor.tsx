@@ -17,37 +17,18 @@ export function ScheduleEditor({ schedule, onChange }: ScheduleEditorProps) {
 
   return (
     <div>
-      <div style={{ marginBottom: 16 }}>
-        <div
-          style={{
-            fontSize: 12,
-            color: 'var(--color-text-secondary)',
-            marginBottom: 8,
-          }}
-        >
-          Active days
-        </div>
-        <div style={{ display: 'flex', gap: 6 }}>
+      <div className="mb-4">
+        <div className="mb-2 text-xs text-text-secondary">Active days</div>
+        <div className="flex gap-1.5">
           {DAYS.map((label, i) => (
             <button
               key={i}
               onClick={() => toggleDay(i)}
-              style={{
-                width: 36,
-                height: 36,
-                borderRadius: '50%',
-                border: schedule.days.includes(i)
-                  ? 'none'
-                  : '1px solid var(--color-border)',
-                background: schedule.days.includes(i)
-                  ? 'var(--color-primary)'
-                  : 'var(--color-surface)',
-                color: schedule.days.includes(i)
-                  ? 'white'
-                  : 'var(--color-text-muted)',
-                fontSize: 11,
-                cursor: 'pointer',
-              }}
+              className={`h-9 w-9 rounded-full text-[11px] ${
+                schedule.days.includes(i)
+                  ? 'border-none bg-primary text-white'
+                  : 'border border-border bg-surface text-text-muted'
+              }`}
             >
               {label}
             </button>
@@ -55,57 +36,25 @@ export function ScheduleEditor({ schedule, onChange }: ScheduleEditorProps) {
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: 16 }}>
-        <div style={{ flex: 1 }}>
-          <div
-            style={{
-              fontSize: 12,
-              color: 'var(--color-text-secondary)',
-              marginBottom: 6,
-            }}
-          >
-            Start time
-          </div>
+      <div className="flex gap-4">
+        <div className="flex-1">
+          <div className="mb-1.5 text-xs text-text-secondary">Start time</div>
           <input
             type="time"
             value={schedule.startTime}
             onChange={(e) =>
               onChange({ ...schedule, startTime: e.target.value })
             }
-            style={{
-              width: '100%',
-              background: 'var(--color-surface)',
-              border: '1px solid var(--color-border)',
-              borderRadius: 6,
-              padding: '10px 12px',
-              color: 'var(--color-text)',
-              fontSize: 13,
-            }}
+            className="w-full rounded-md border border-border bg-surface px-3 py-2.5 text-[13px] text-text"
           />
         </div>
-        <div style={{ flex: 1 }}>
-          <div
-            style={{
-              fontSize: 12,
-              color: 'var(--color-text-secondary)',
-              marginBottom: 6,
-            }}
-          >
-            End time
-          </div>
+        <div className="flex-1">
+          <div className="mb-1.5 text-xs text-text-secondary">End time</div>
           <input
             type="time"
             value={schedule.endTime}
             onChange={(e) => onChange({ ...schedule, endTime: e.target.value })}
-            style={{
-              width: '100%',
-              background: 'var(--color-surface)',
-              border: '1px solid var(--color-border)',
-              borderRadius: 6,
-              padding: '10px 12px',
-              color: 'var(--color-text)',
-              fontSize: 13,
-            }}
+            className="w-full rounded-md border border-border bg-surface px-3 py-2.5 text-[13px] text-text"
           />
         </div>
       </div>
