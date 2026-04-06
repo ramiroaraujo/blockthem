@@ -21,7 +21,7 @@ export function Popup() {
   }, []);
 
   const handleToggle = async () => {
-    if (state.passwordHash && state.passwordSalt) {
+    if (state.blockingEnabled && state.passwordHash && state.passwordSalt) {
       setShowPasswordInput(true);
       return;
     }
