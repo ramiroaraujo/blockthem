@@ -80,10 +80,6 @@ export function PasswordGate({ passwordHash, passwordSalt, onUnlock }: PasswordG
         >
           Unlock
         </button>
-
-        <p style={{ fontSize: 11, color: '#444', marginTop: 16 }}>
-          Forgot password? Reset by reinstalling the extension.
-        </p>
       </div>
     </div>
   )
