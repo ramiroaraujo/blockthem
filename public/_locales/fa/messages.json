@@ -1,0 +1,430 @@
+{
+  "extension_name": {
+    "message": "BlockThem",
+    "description": "Extension name shown in Chrome Web Store and chrome://extensions"
+  },
+  "extension_description": {
+    "message": "وب‌سایت‌های حواس‌پرت‌کن را با قوانین URL/regex و زمان‌بندی مسدود کنید",
+    "description": "Extension description shown in Chrome Web Store and chrome://extensions"
+  },
+
+  "popup_block_this": {
+    "message": "مسدود کردن",
+    "description": "Popup button to one-click-block the current tab's domain"
+  },
+  "popup_block_this_title": {
+    "message": "مسدود کردن $1",
+    "description": "Tooltip on the Block This button. $1 is the current domain.",
+    "placeholders": {
+      "1": { "content": "$1", "example": "facebook.com" }
+    }
+  },
+  "popup_blocking_on": {
+    "message": "مسدودسازی روشن",
+    "description": "Status line in the popup when blocking is enabled"
+  },
+  "popup_blocking_off": {
+    "message": "مسدودسازی خاموش",
+    "description": "Status line in the popup when blocking is disabled"
+  },
+  "popup_paused_label": {
+    "message": "متوقف‌شده",
+    "description": "Inline badge in the popup when blocking is on but paused by the global schedule"
+  },
+  "popup_paused_outside_schedule": {
+    "message": "خارج از بازه زمان‌بندی",
+    "description": "Subtitle in the popup explaining why blocking is paused"
+  },
+  "popup_rule_count_one": {
+    "message": "۱ قانون",
+    "description": "Singular rule count in the popup status line"
+  },
+  "popup_rule_count_other": {
+    "message": "$1 قانون",
+    "description": "Plural rule count in the popup status line. $1 is the count.",
+    "placeholders": {
+      "1": { "content": "$1", "example": "5" }
+    }
+  },
+  "popup_category_adult": {
+    "message": "محتوای بزرگسالان",
+    "description": "Short label for the adult category in the popup status line"
+  },
+  "popup_category_gambling": {
+    "message": "قمار",
+    "description": "Short label for the gambling category in the popup status line"
+  },
+  "popup_password_placeholder": {
+    "message": "برای تغییر، رمز عبور را وارد کنید",
+    "description": "Placeholder for the password input in the popup"
+  },
+  "popup_password_wrong": {
+    "message": "رمز عبور اشتباه است",
+    "description": "Error shown in the popup when the entered password is incorrect"
+  },
+  "popup_open_settings": {
+    "message": "باز کردن تنظیمات",
+    "description": "Popup button that opens the options page"
+  },
+
+  "sidebar_blocking_on": {
+    "message": "مسدودسازی روشن",
+    "description": "Status pill in the options sidebar when blocking is enabled"
+  },
+  "sidebar_blocking_off": {
+    "message": "مسدودسازی خاموش",
+    "description": "Status pill in the options sidebar when blocking is disabled"
+  },
+  "nav_block_list": {
+    "message": "فهرست مسدودی",
+    "description": "Sidebar nav item for the block list page"
+  },
+  "nav_schedule": {
+    "message": "زمان‌بندی",
+    "description": "Sidebar nav item for the schedule page"
+  },
+  "nav_password": {
+    "message": "رمز عبور",
+    "description": "Sidebar nav item for the password page"
+  },
+
+  "blocklist_title": {
+    "message": "فهرست مسدودی",
+    "description": "Heading on the block list page"
+  },
+  "blocklist_subtitle": {
+    "message": "سایت‌ها را به‌صورت دائمی یا طبق زمان‌بندی مسدود کنید",
+    "description": "Subheading on the block list page"
+  },
+  "blocklist_category_filters": {
+    "message": "فیلترهای دسته‌بندی",
+    "description": "Section header for the bundled category blocklists"
+  },
+  "blocklist_block_adult": {
+    "message": "مسدود کردن سایت‌های بزرگسالان",
+    "description": "Toggle label for the adult category blocklist"
+  },
+  "blocklist_block_adult_meta": {
+    "message": "~۷۷٬۰۰۰ سایت از فهرست جامعه",
+    "description": "Helper text under the Block adult sites toggle"
+  },
+  "blocklist_block_gambling": {
+    "message": "مسدود کردن سایت‌های قمار",
+    "description": "Toggle label for the gambling category blocklist"
+  },
+  "blocklist_block_gambling_meta": {
+    "message": "~۶٬۰۰۰ سایت از فهرست جامعه",
+    "description": "Helper text under the Block gambling sites toggle"
+  },
+  "blocklist_add": {
+    "message": "+ افزودن به فهرست مسدودی",
+    "description": "Primary button to open the add-rule modal"
+  },
+  "blocklist_export": {
+    "message": "↑ صدور قوانین",
+    "description": "Button to export rules as JSON"
+  },
+  "blocklist_import": {
+    "message": "↓ ورود قوانین",
+    "description": "Button to import rules from JSON"
+  },
+  "blocklist_empty": {
+    "message": "هنوز سایتی مسدود نشده. برای شروع، یک URL یا الگوی regex اضافه کنید.",
+    "description": "Empty state shown when there are no rules"
+  },
+  "blocklist_items_header": {
+    "message": "موارد مسدود ($1)",
+    "description": "Header above the list of rules. $1 is the count.",
+    "placeholders": {
+      "1": { "content": "$1", "example": "5" }
+    }
+  },
+  "blocklist_global_schedule": {
+    "message": "زمان‌بندی عمومی",
+    "description": "Label shown on a rule that uses the global schedule"
+  },
+  "blocklist_edit_rule": {
+    "message": "ویرایش قانون",
+    "description": "Tooltip for the edit-rule pencil button"
+  },
+  "blocklist_delete_rule": {
+    "message": "حذف قانون",
+    "description": "Tooltip for the delete-rule trash button"
+  },
+  "blocklist_confirm_delete": {
+    "message": "تأیید",
+    "description": "Confirmation button for deleting a rule"
+  },
+  "blocklist_invalid_json": {
+    "message": "فایل JSON نامعتبر است",
+    "description": "Alert shown when the imported JSON file is malformed"
+  },
+
+  "addrule_title_add": {
+    "message": "افزودن قانون مسدودسازی",
+    "description": "Title of the modal when adding a new rule"
+  },
+  "addrule_title_edit": {
+    "message": "ویرایش قانون مسدودسازی",
+    "description": "Title of the modal when editing an existing rule"
+  },
+  "addrule_type_label": {
+    "message": "نوع",
+    "description": "Label above the URL/regex type selector"
+  },
+  "addrule_type_url": {
+    "message": "URL",
+    "description": "Button label for the URL rule type"
+  },
+  "addrule_type_regex": {
+    "message": "REGEX",
+    "description": "Button label for the regex rule type"
+  },
+  "addrule_pattern_label_url": {
+    "message": "URL برای مسدود کردن",
+    "description": "Field label when adding a URL rule"
+  },
+  "addrule_pattern_label_regex": {
+    "message": "الگوی regex",
+    "description": "Field label when adding a regex rule"
+  },
+  "addrule_pattern_placeholder_url": {
+    "message": "مثال: facebook.com",
+    "description": "Placeholder text for the URL pattern field"
+  },
+  "addrule_pattern_placeholder_regex": {
+    "message": "مثال: .*social.*",
+    "description": "Placeholder text for the regex pattern field"
+  },
+  "addrule_custom_schedule": {
+    "message": "زمان‌بندی سفارشی",
+    "description": "Toggle label for using a per-rule schedule"
+  },
+  "addrule_custom_schedule_helper": {
+    "message": "در صورت خاموش بودن، از زمان‌بندی عمومی استفاده می‌کند",
+    "description": "Helper text under the Custom schedule toggle"
+  },
+  "addrule_duplicate": {
+    "message": "این الگو از قبل در فهرست مسدودی شما موجود است",
+    "description": "Validation error when trying to add a duplicate pattern"
+  },
+  "addrule_cancel": {
+    "message": "لغو",
+    "description": "Cancel button in the add-rule modal"
+  },
+  "addrule_save_add": {
+    "message": "افزودن قانون",
+    "description": "Submit button when adding a new rule"
+  },
+  "addrule_save_edit": {
+    "message": "ذخیره تغییرات",
+    "description": "Submit button when editing an existing rule"
+  },
+
+  "schedule_editor_active_days": {
+    "message": "روزهای فعال",
+    "description": "Label for the day-of-week toggles in the schedule editor"
+  },
+  "schedule_editor_start_time": {
+    "message": "زمان شروع",
+    "description": "Label for the start time field in the schedule editor"
+  },
+  "schedule_editor_end_time": {
+    "message": "زمان پایان",
+    "description": "Label for the end time field in the schedule editor"
+  },
+
+  "schedule_title": {
+    "message": "زمان‌بندی عمومی",
+    "description": "Heading on the schedule page"
+  },
+  "schedule_subtitle": {
+    "message": "برای تمام قوانینی که زمان‌بندی سفارشی ندارند اعمال می‌شود",
+    "description": "Subheading on the schedule page"
+  },
+  "schedule_enable": {
+    "message": "فعال‌سازی زمان‌بندی عمومی",
+    "description": "Toggle label for enabling the global schedule"
+  },
+  "schedule_summary_label": {
+    "message": "خلاصه زمان‌بندی",
+    "description": "Section label above the schedule summary line"
+  },
+  "schedule_summary_active": {
+    "message": "مسدودسازی $1",
+    "description": "Schedule summary line. $1 is the formatted schedule string.",
+    "placeholders": {
+      "1": { "content": "$1", "example": "Mon–Fri, 9:00 AM – 5:00 PM" }
+    }
+  },
+  "schedule_summary_empty": {
+    "message": "زمان‌بندی عمومی وجود ندارد — تمام قوانین فعال همیشه اعمال می‌شوند.",
+    "description": "Shown on the schedule page when the global schedule is disabled"
+  },
+  "schedule_day_range": {
+    "message": "$1–$2",
+    "description": "Format for a consecutive day range, e.g. Mon–Fri",
+    "placeholders": {
+      "1": { "content": "$1", "example": "Mon" },
+      "2": { "content": "$2", "example": "Fri" }
+    }
+  },
+  "schedule_day_separator": {
+    "message": "، ",
+    "description": "Separator between non-consecutive day names"
+  },
+  "schedule_format": {
+    "message": "$1، $2 – $3",
+    "description": "Format for a full schedule line: days, start time – end time",
+    "placeholders": {
+      "1": { "content": "$1", "example": "Mon–Fri" },
+      "2": { "content": "$2", "example": "9:00 AM" },
+      "3": { "content": "$3", "example": "5:00 PM" }
+    }
+  },
+
+  "password_title": {
+    "message": "محافظت با رمز عبور",
+    "description": "Heading on the password page"
+  },
+  "password_subtitle": {
+    "message": "تمام تنظیمات را با رمز عبور محافظت کنید",
+    "description": "Subheading on the password page"
+  },
+  "password_enable": {
+    "message": "فعال‌سازی محافظت با رمز عبور",
+    "description": "Toggle label for enabling password protection"
+  },
+  "password_enable_helper": {
+    "message": "برای دسترسی به تنظیمات و تغییر وضعیت مسدودسازی نیاز به رمز عبور است",
+    "description": "Helper text under the password protection toggle"
+  },
+  "password_change_button": {
+    "message": "تغییر رمز عبور",
+    "description": "Button on the password page that opens the change-password dialog"
+  },
+  "password_empty": {
+    "message": "رمز عبوری تنظیم نشده. برای محافظت از تنظیمات، کلید بالا را فعال کنید.",
+    "description": "Empty state on the password page"
+  },
+  "password_msg_disabled": {
+    "message": "محافظت با رمز عبور غیرفعال شد",
+    "description": "Success message after disabling password protection"
+  },
+  "password_msg_enabled": {
+    "message": "محافظت با رمز عبور فعال شد",
+    "description": "Success message after enabling password protection"
+  },
+  "password_msg_updated": {
+    "message": "رمز عبور با موفقیت به‌روزرسانی شد",
+    "description": "Success message after changing the password"
+  },
+  "password_dialog_title_set": {
+    "message": "تنظیم رمز عبور",
+    "description": "Title of the password dialog when setting a new password"
+  },
+  "password_dialog_title_change": {
+    "message": "تغییر رمز عبور",
+    "description": "Title of the password dialog when changing the password"
+  },
+  "password_dialog_title_disable": {
+    "message": "غیرفعال‌سازی محافظت با رمز عبور",
+    "description": "Title of the password dialog when disabling password protection"
+  },
+  "password_field_current": {
+    "message": "رمز عبور فعلی",
+    "description": "Label for the current password field in the password dialog"
+  },
+  "password_field_new": {
+    "message": "رمز عبور جدید",
+    "description": "Label for the new password field in the password dialog"
+  },
+  "password_field_confirm": {
+    "message": "تأیید رمز عبور",
+    "description": "Label for the confirm password field in the password dialog"
+  },
+  "password_btn_cancel": {
+    "message": "لغو",
+    "description": "Cancel button in the password dialog"
+  },
+  "password_btn_disable": {
+    "message": "غیرفعال‌سازی",
+    "description": "Confirm button when disabling password protection"
+  },
+  "password_btn_update": {
+    "message": "به‌روزرسانی رمز عبور",
+    "description": "Confirm button when changing the password"
+  },
+  "password_btn_set": {
+    "message": "تنظیم رمز عبور",
+    "description": "Confirm button when setting a new password"
+  },
+  "password_err_enter_current": {
+    "message": "رمز عبور فعلی خود را وارد کنید",
+    "description": "Validation error when the current password field is empty"
+  },
+  "password_err_not_set": {
+    "message": "رمز عبوری تنظیم نشده",
+    "description": "Error shown if the stored password hash is missing unexpectedly"
+  },
+  "password_err_incorrect": {
+    "message": "رمز عبور اشتباه است",
+    "description": "Validation error when the entered password is wrong"
+  },
+  "password_err_enter_new": {
+    "message": "رمز عبور جدید را وارد کنید",
+    "description": "Validation error when the new password field is empty"
+  },
+  "password_err_mismatch": {
+    "message": "رمزهای عبور مطابقت ندارند",
+    "description": "Validation error when new and confirm passwords differ"
+  },
+
+  "gate_title": {
+    "message": "تنظیمات BlockThem",
+    "description": "Heading on the password unlock screen"
+  },
+  "gate_subtitle": {
+    "message": "برای دسترسی به تنظیمات، رمز عبور را وارد کنید",
+    "description": "Subheading on the password unlock screen"
+  },
+  "gate_placeholder": {
+    "message": "رمز عبور",
+    "description": "Placeholder for the password input on the unlock screen"
+  },
+  "gate_unlock": {
+    "message": "بازگشایی قفل",
+    "description": "Submit button on the password unlock screen"
+  },
+
+  "options_page_title": {
+    "message": "تنظیمات BlockThem",
+    "description": "Document title for the options page"
+  },
+
+  "blocked_page_title": {
+    "message": "سایت مسدود شد — BlockThem",
+    "description": "Browser tab title for the blocked page"
+  },
+  "blocked_heading": {
+    "message": "این سایت مسدود شده است",
+    "description": "Main heading on the blocked page"
+  },
+
+  "schemas_invalid_regex": {
+    "message": "الگوی regex نامعتبر است",
+    "description": "Validation error for an invalid regex"
+  },
+  "schemas_regex_rule_invalid": {
+    "message": "قانون regex دارای الگوی نامعتبر است",
+    "description": "Validation error for a regex rule whose pattern fails to compile"
+  },
+  "schemas_password_min_length": {
+    "message": "رمز عبور باید حداقل ۶ کاراکتر داشته باشد",
+    "description": "Validation error for a too-short password"
+  },
+  "schemas_pattern_required": {
+    "message": "الگو الزامی است",
+    "description": "Validation error when the rule pattern field is empty"
+  }
+}

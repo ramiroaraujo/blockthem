@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import type { StorageState } from '../shared/types';
-import { t } from '../shared/i18n';
+import { getDir, t } from '../shared/i18n';
 import { getState, onStateChange, updateState } from '../shared/storage';
 import { DEFAULT_STATE } from '../shared/types';
 import { BlockList } from './components/BlockList';
@@ -29,6 +29,7 @@ export function App() {
   useEffect(() => {
     document.title = t('options_page_title');
     document.documentElement.lang = chrome.i18n.getUILanguage();
+    document.documentElement.dir = getDir();
     void getState().then((s) => {
       setLocalState(s);
       setLoaded(true);

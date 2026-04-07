@@ -1,0 +1,430 @@
+{
+  "extension_name": {
+    "message": "BlockThem",
+    "description": "Extension name shown in Chrome Web Store and chrome://extensions"
+  },
+  "extension_description": {
+    "message": "使用 URL/正则表达式规则和计划屏蔽干扰网站",
+    "description": "Extension description shown in Chrome Web Store and chrome://extensions"
+  },
+
+  "popup_block_this": {
+    "message": "屏蔽此站",
+    "description": "Popup button to one-click-block the current tab's domain"
+  },
+  "popup_block_this_title": {
+    "message": "屏蔽 $1",
+    "description": "Tooltip on the Block This button. $1 is the current domain.",
+    "placeholders": {
+      "1": { "content": "$1", "example": "facebook.com" }
+    }
+  },
+  "popup_blocking_on": {
+    "message": "屏蔽已开启",
+    "description": "Status line in the popup when blocking is enabled"
+  },
+  "popup_blocking_off": {
+    "message": "屏蔽已关闭",
+    "description": "Status line in the popup when blocking is disabled"
+  },
+  "popup_paused_label": {
+    "message": "已暂停",
+    "description": "Inline badge in the popup when blocking is on but paused by the global schedule"
+  },
+  "popup_paused_outside_schedule": {
+    "message": "不在计划时间段内",
+    "description": "Subtitle in the popup explaining why blocking is paused"
+  },
+  "popup_rule_count_one": {
+    "message": "1 条规则",
+    "description": "Singular rule count in the popup status line"
+  },
+  "popup_rule_count_other": {
+    "message": "$1 条规则",
+    "description": "Plural rule count in the popup status line. $1 is the count.",
+    "placeholders": {
+      "1": { "content": "$1", "example": "5" }
+    }
+  },
+  "popup_category_adult": {
+    "message": "成人",
+    "description": "Short label for the adult category in the popup status line"
+  },
+  "popup_category_gambling": {
+    "message": "赌博",
+    "description": "Short label for the gambling category in the popup status line"
+  },
+  "popup_password_placeholder": {
+    "message": "输入密码以切换",
+    "description": "Placeholder for the password input in the popup"
+  },
+  "popup_password_wrong": {
+    "message": "密码错误",
+    "description": "Error shown in the popup when the entered password is incorrect"
+  },
+  "popup_open_settings": {
+    "message": "打开设置",
+    "description": "Popup button that opens the options page"
+  },
+
+  "sidebar_blocking_on": {
+    "message": "屏蔽已开启",
+    "description": "Status pill in the options sidebar when blocking is enabled"
+  },
+  "sidebar_blocking_off": {
+    "message": "屏蔽已关闭",
+    "description": "Status pill in the options sidebar when blocking is disabled"
+  },
+  "nav_block_list": {
+    "message": "屏蔽列表",
+    "description": "Sidebar nav item for the block list page"
+  },
+  "nav_schedule": {
+    "message": "计划",
+    "description": "Sidebar nav item for the schedule page"
+  },
+  "nav_password": {
+    "message": "密码",
+    "description": "Sidebar nav item for the password page"
+  },
+
+  "blocklist_title": {
+    "message": "屏蔽列表",
+    "description": "Heading on the block list page"
+  },
+  "blocklist_subtitle": {
+    "message": "永久或按计划屏蔽网站",
+    "description": "Subheading on the block list page"
+  },
+  "blocklist_category_filters": {
+    "message": "分类过滤器",
+    "description": "Section header for the bundled category blocklists"
+  },
+  "blocklist_block_adult": {
+    "message": "屏蔽成人网站",
+    "description": "Toggle label for the adult category blocklist"
+  },
+  "blocklist_block_adult_meta": {
+    "message": "来自社区屏蔽列表的约 77,000 个网站",
+    "description": "Helper text under the Block adult sites toggle"
+  },
+  "blocklist_block_gambling": {
+    "message": "屏蔽赌博网站",
+    "description": "Toggle label for the gambling category blocklist"
+  },
+  "blocklist_block_gambling_meta": {
+    "message": "来自社区屏蔽列表的约 6,000 个网站",
+    "description": "Helper text under the Block gambling sites toggle"
+  },
+  "blocklist_add": {
+    "message": "+ 添加到屏蔽列表",
+    "description": "Primary button to open the add-rule modal"
+  },
+  "blocklist_export": {
+    "message": "↑ 导出规则",
+    "description": "Button to export rules as JSON"
+  },
+  "blocklist_import": {
+    "message": "↓ 导入规则",
+    "description": "Button to import rules from JSON"
+  },
+  "blocklist_empty": {
+    "message": "暂无屏蔽网站。添加 URL 或正则表达式模式以开始。",
+    "description": "Empty state shown when there are no rules"
+  },
+  "blocklist_items_header": {
+    "message": "已屏蔽条目（$1）",
+    "description": "Header above the list of rules. $1 is the count.",
+    "placeholders": {
+      "1": { "content": "$1", "example": "5" }
+    }
+  },
+  "blocklist_global_schedule": {
+    "message": "全局计划",
+    "description": "Label shown on a rule that uses the global schedule"
+  },
+  "blocklist_edit_rule": {
+    "message": "编辑规则",
+    "description": "Tooltip for the edit-rule pencil button"
+  },
+  "blocklist_delete_rule": {
+    "message": "删除规则",
+    "description": "Tooltip for the delete-rule trash button"
+  },
+  "blocklist_confirm_delete": {
+    "message": "确认",
+    "description": "Confirmation button for deleting a rule"
+  },
+  "blocklist_invalid_json": {
+    "message": "无效的 JSON 文件",
+    "description": "Alert shown when the imported JSON file is malformed"
+  },
+
+  "addrule_title_add": {
+    "message": "添加屏蔽规则",
+    "description": "Title of the modal when adding a new rule"
+  },
+  "addrule_title_edit": {
+    "message": "编辑屏蔽规则",
+    "description": "Title of the modal when editing an existing rule"
+  },
+  "addrule_type_label": {
+    "message": "类型",
+    "description": "Label above the URL/regex type selector"
+  },
+  "addrule_type_url": {
+    "message": "URL",
+    "description": "Button label for the URL rule type"
+  },
+  "addrule_type_regex": {
+    "message": "REGEX",
+    "description": "Button label for the regex rule type"
+  },
+  "addrule_pattern_label_url": {
+    "message": "要屏蔽的 URL",
+    "description": "Field label when adding a URL rule"
+  },
+  "addrule_pattern_label_regex": {
+    "message": "正则表达式模式",
+    "description": "Field label when adding a regex rule"
+  },
+  "addrule_pattern_placeholder_url": {
+    "message": "例如 facebook.com",
+    "description": "Placeholder text for the URL pattern field"
+  },
+  "addrule_pattern_placeholder_regex": {
+    "message": "例如 .*social.*",
+    "description": "Placeholder text for the regex pattern field"
+  },
+  "addrule_custom_schedule": {
+    "message": "自定义计划",
+    "description": "Toggle label for using a per-rule schedule"
+  },
+  "addrule_custom_schedule_helper": {
+    "message": "禁用时使用全局计划",
+    "description": "Helper text under the Custom schedule toggle"
+  },
+  "addrule_duplicate": {
+    "message": "此模式已在您的屏蔽列表中",
+    "description": "Validation error when trying to add a duplicate pattern"
+  },
+  "addrule_cancel": {
+    "message": "取消",
+    "description": "Cancel button in the add-rule modal"
+  },
+  "addrule_save_add": {
+    "message": "添加规则",
+    "description": "Submit button when adding a new rule"
+  },
+  "addrule_save_edit": {
+    "message": "保存更改",
+    "description": "Submit button when editing an existing rule"
+  },
+
+  "schedule_editor_active_days": {
+    "message": "活跃天数",
+    "description": "Label for the day-of-week toggles in the schedule editor"
+  },
+  "schedule_editor_start_time": {
+    "message": "开始时间",
+    "description": "Label for the start time field in the schedule editor"
+  },
+  "schedule_editor_end_time": {
+    "message": "结束时间",
+    "description": "Label for the end time field in the schedule editor"
+  },
+
+  "schedule_title": {
+    "message": "全局计划",
+    "description": "Heading on the schedule page"
+  },
+  "schedule_subtitle": {
+    "message": "适用于所有没有自定义计划的规则",
+    "description": "Subheading on the schedule page"
+  },
+  "schedule_enable": {
+    "message": "启用全局计划",
+    "description": "Toggle label for enabling the global schedule"
+  },
+  "schedule_summary_label": {
+    "message": "计划摘要",
+    "description": "Section label above the schedule summary line"
+  },
+  "schedule_summary_active": {
+    "message": "屏蔽 $1",
+    "description": "Schedule summary line. $1 is the formatted schedule string.",
+    "placeholders": {
+      "1": { "content": "$1", "example": "Mon–Fri, 9:00 AM – 5:00 PM" }
+    }
+  },
+  "schedule_summary_empty": {
+    "message": "无全局计划——所有已启用的规则始终生效。",
+    "description": "Shown on the schedule page when the global schedule is disabled"
+  },
+  "schedule_day_range": {
+    "message": "$1–$2",
+    "description": "Format for a consecutive day range, e.g. Mon–Fri",
+    "placeholders": {
+      "1": { "content": "$1", "example": "Mon" },
+      "2": { "content": "$2", "example": "Fri" }
+    }
+  },
+  "schedule_day_separator": {
+    "message": "、",
+    "description": "Separator between non-consecutive day names"
+  },
+  "schedule_format": {
+    "message": "$1，$2 – $3",
+    "description": "Format for a full schedule line: days, start time – end time",
+    "placeholders": {
+      "1": { "content": "$1", "example": "Mon–Fri" },
+      "2": { "content": "$2", "example": "9:00 AM" },
+      "3": { "content": "$3", "example": "5:00 PM" }
+    }
+  },
+
+  "password_title": {
+    "message": "密码保护",
+    "description": "Heading on the password page"
+  },
+  "password_subtitle": {
+    "message": "使用密码保护所有设置",
+    "description": "Subheading on the password page"
+  },
+  "password_enable": {
+    "message": "启用密码保护",
+    "description": "Toggle label for enabling password protection"
+  },
+  "password_enable_helper": {
+    "message": "访问设置和切换屏蔽需要密码",
+    "description": "Helper text under the password protection toggle"
+  },
+  "password_change_button": {
+    "message": "更改密码",
+    "description": "Button on the password page that opens the change-password dialog"
+  },
+  "password_empty": {
+    "message": "未设置密码。启用上方开关以保护您的设置。",
+    "description": "Empty state on the password page"
+  },
+  "password_msg_disabled": {
+    "message": "密码保护已禁用",
+    "description": "Success message after disabling password protection"
+  },
+  "password_msg_enabled": {
+    "message": "密码保护已启用",
+    "description": "Success message after enabling password protection"
+  },
+  "password_msg_updated": {
+    "message": "密码已成功更新",
+    "description": "Success message after changing the password"
+  },
+  "password_dialog_title_set": {
+    "message": "设置密码",
+    "description": "Title of the password dialog when setting a new password"
+  },
+  "password_dialog_title_change": {
+    "message": "更改密码",
+    "description": "Title of the password dialog when changing the password"
+  },
+  "password_dialog_title_disable": {
+    "message": "禁用密码保护",
+    "description": "Title of the password dialog when disabling password protection"
+  },
+  "password_field_current": {
+    "message": "当前密码",
+    "description": "Label for the current password field in the password dialog"
+  },
+  "password_field_new": {
+    "message": "新密码",
+    "description": "Label for the new password field in the password dialog"
+  },
+  "password_field_confirm": {
+    "message": "确认密码",
+    "description": "Label for the confirm password field in the password dialog"
+  },
+  "password_btn_cancel": {
+    "message": "取消",
+    "description": "Cancel button in the password dialog"
+  },
+  "password_btn_disable": {
+    "message": "禁用",
+    "description": "Confirm button when disabling password protection"
+  },
+  "password_btn_update": {
+    "message": "更新密码",
+    "description": "Confirm button when changing the password"
+  },
+  "password_btn_set": {
+    "message": "设置密码",
+    "description": "Confirm button when setting a new password"
+  },
+  "password_err_enter_current": {
+    "message": "请输入当前密码",
+    "description": "Validation error when the current password field is empty"
+  },
+  "password_err_not_set": {
+    "message": "未设置密码",
+    "description": "Error shown if the stored password hash is missing unexpectedly"
+  },
+  "password_err_incorrect": {
+    "message": "密码错误",
+    "description": "Validation error when the entered password is wrong"
+  },
+  "password_err_enter_new": {
+    "message": "请输入新密码",
+    "description": "Validation error when the new password field is empty"
+  },
+  "password_err_mismatch": {
+    "message": "两次密码不一致",
+    "description": "Validation error when new and confirm passwords differ"
+  },
+
+  "gate_title": {
+    "message": "BlockThem 设置",
+    "description": "Heading on the password unlock screen"
+  },
+  "gate_subtitle": {
+    "message": "输入密码以访问设置",
+    "description": "Subheading on the password unlock screen"
+  },
+  "gate_placeholder": {
+    "message": "密码",
+    "description": "Placeholder for the password input on the unlock screen"
+  },
+  "gate_unlock": {
+    "message": "解锁",
+    "description": "Submit button on the password unlock screen"
+  },
+
+  "options_page_title": {
+    "message": "BlockThem 设置",
+    "description": "Document title for the options page"
+  },
+
+  "blocked_page_title": {
+    "message": "网站已屏蔽 — BlockThem",
+    "description": "Browser tab title for the blocked page"
+  },
+  "blocked_heading": {
+    "message": "此网站已被屏蔽",
+    "description": "Main heading on the blocked page"
+  },
+
+  "schemas_invalid_regex": {
+    "message": "无效的正则表达式模式",
+    "description": "Validation error for an invalid regex"
+  },
+  "schemas_regex_rule_invalid": {
+    "message": "正则表达式规则包含无效模式",
+    "description": "Validation error for a regex rule whose pattern fails to compile"
+  },
+  "schemas_password_min_length": {
+    "message": "密码至少需要 6 个字符",
+    "description": "Validation error for a too-short password"
+  },
+  "schemas_pattern_required": {
+    "message": "模式为必填项",
+    "description": "Validation error when the rule pattern field is empty"
+  }
+}

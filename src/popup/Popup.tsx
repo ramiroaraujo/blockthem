@@ -147,7 +147,7 @@ export function Popup() {
               ? t('popup_blocking_on')
               : t('popup_blocking_off')}
             {pausedBySchedule && (
-              <span className="ml-1 text-warning">
+              <span className="ms-1 text-warning">
                 · {t('popup_paused_label')}
               </span>
             )}

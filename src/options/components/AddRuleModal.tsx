@@ -111,6 +111,7 @@ export function AddRuleModal({
                 : t('addrule_pattern_placeholder_regex')
             }
             autoFocus
+            dir="ltr"
             className={`w-full rounded-md border bg-bg px-3 py-2.5 text-[13px] text-text ${
               error ? 'border-error' : 'border-border'
             }`}

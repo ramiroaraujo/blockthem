@@ -1,0 +1,430 @@
+{
+  "extension_name": {
+    "message": "BlockThem",
+    "description": "Extension name shown in Chrome Web Store and chrome://extensions"
+  },
+  "extension_description": {
+    "message": "Blokuj rozpraszające strony za pomocą reguł URL/regex i harmonogramów",
+    "description": "Extension description shown in Chrome Web Store and chrome://extensions"
+  },
+
+  "popup_block_this": {
+    "message": "Zablokuj to",
+    "description": "Popup button to one-click-block the current tab's domain"
+  },
+  "popup_block_this_title": {
+    "message": "Zablokuj $1",
+    "description": "Tooltip on the Block This button. $1 is the current domain.",
+    "placeholders": {
+      "1": { "content": "$1", "example": "facebook.com" }
+    }
+  },
+  "popup_blocking_on": {
+    "message": "Blokowanie WŁ.",
+    "description": "Status line in the popup when blocking is enabled"
+  },
+  "popup_blocking_off": {
+    "message": "Blokowanie WYŁ.",
+    "description": "Status line in the popup when blocking is disabled"
+  },
+  "popup_paused_label": {
+    "message": "Wstrzymano",
+    "description": "Inline badge in the popup when blocking is on but paused by the global schedule"
+  },
+  "popup_paused_outside_schedule": {
+    "message": "Poza oknem harmonogramu",
+    "description": "Subtitle in the popup explaining why blocking is paused"
+  },
+  "popup_rule_count_one": {
+    "message": "1 reguła",
+    "description": "Singular rule count in the popup status line"
+  },
+  "popup_rule_count_other": {
+    "message": "$1 reguły",
+    "description": "Plural rule count in the popup status line. $1 is the count.",
+    "placeholders": {
+      "1": { "content": "$1", "example": "5" }
+    }
+  },
+  "popup_category_adult": {
+    "message": "dla dorosłych",
+    "description": "Short label for the adult category in the popup status line"
+  },
+  "popup_category_gambling": {
+    "message": "hazard",
+    "description": "Short label for the gambling category in the popup status line"
+  },
+  "popup_password_placeholder": {
+    "message": "Wpisz hasło, aby przełączyć",
+    "description": "Placeholder for the password input in the popup"
+  },
+  "popup_password_wrong": {
+    "message": "Nieprawidłowe hasło",
+    "description": "Error shown in the popup when the entered password is incorrect"
+  },
+  "popup_open_settings": {
+    "message": "Otwórz ustawienia",
+    "description": "Popup button that opens the options page"
+  },
+
+  "sidebar_blocking_on": {
+    "message": "Blokowanie WŁ.",
+    "description": "Status pill in the options sidebar when blocking is enabled"
+  },
+  "sidebar_blocking_off": {
+    "message": "Blokowanie WYŁ.",
+    "description": "Status pill in the options sidebar when blocking is disabled"
+  },
+  "nav_block_list": {
+    "message": "Lista blokad",
+    "description": "Sidebar nav item for the block list page"
+  },
+  "nav_schedule": {
+    "message": "Harmonogram",
+    "description": "Sidebar nav item for the schedule page"
+  },
+  "nav_password": {
+    "message": "Hasło",
+    "description": "Sidebar nav item for the password page"
+  },
+
+  "blocklist_title": {
+    "message": "Lista blokad",
+    "description": "Heading on the block list page"
+  },
+  "blocklist_subtitle": {
+    "message": "Blokuj strony na stałe lub według harmonogramu",
+    "description": "Subheading on the block list page"
+  },
+  "blocklist_category_filters": {
+    "message": "Filtry kategorii",
+    "description": "Section header for the bundled category blocklists"
+  },
+  "blocklist_block_adult": {
+    "message": "Blokuj strony dla dorosłych",
+    "description": "Toggle label for the adult category blocklist"
+  },
+  "blocklist_block_adult_meta": {
+    "message": "~77 tys. stron z listy społeczności",
+    "description": "Helper text under the Block adult sites toggle"
+  },
+  "blocklist_block_gambling": {
+    "message": "Blokuj strony hazardowe",
+    "description": "Toggle label for the gambling category blocklist"
+  },
+  "blocklist_block_gambling_meta": {
+    "message": "~6 tys. stron z listy społeczności",
+    "description": "Helper text under the Block gambling sites toggle"
+  },
+  "blocklist_add": {
+    "message": "+ Dodaj do listy blokad",
+    "description": "Primary button to open the add-rule modal"
+  },
+  "blocklist_export": {
+    "message": "↑ Eksportuj reguły",
+    "description": "Button to export rules as JSON"
+  },
+  "blocklist_import": {
+    "message": "↓ Importuj reguły",
+    "description": "Button to import rules from JSON"
+  },
+  "blocklist_empty": {
+    "message": "Brak zablokowanych stron. Dodaj URL lub wzorzec regex, aby rozpocząć.",
+    "description": "Empty state shown when there are no rules"
+  },
+  "blocklist_items_header": {
+    "message": "Zablokowane pozycje ($1)",
+    "description": "Header above the list of rules. $1 is the count.",
+    "placeholders": {
+      "1": { "content": "$1", "example": "5" }
+    }
+  },
+  "blocklist_global_schedule": {
+    "message": "Harmonogram globalny",
+    "description": "Label shown on a rule that uses the global schedule"
+  },
+  "blocklist_edit_rule": {
+    "message": "Edytuj regułę",
+    "description": "Tooltip for the edit-rule pencil button"
+  },
+  "blocklist_delete_rule": {
+    "message": "Usuń regułę",
+    "description": "Tooltip for the delete-rule trash button"
+  },
+  "blocklist_confirm_delete": {
+    "message": "Potwierdź",
+    "description": "Confirmation button for deleting a rule"
+  },
+  "blocklist_invalid_json": {
+    "message": "Nieprawidłowy plik JSON",
+    "description": "Alert shown when the imported JSON file is malformed"
+  },
+
+  "addrule_title_add": {
+    "message": "Dodaj regułę blokady",
+    "description": "Title of the modal when adding a new rule"
+  },
+  "addrule_title_edit": {
+    "message": "Edytuj regułę blokady",
+    "description": "Title of the modal when editing an existing rule"
+  },
+  "addrule_type_label": {
+    "message": "Typ",
+    "description": "Label above the URL/regex type selector"
+  },
+  "addrule_type_url": {
+    "message": "URL",
+    "description": "Button label for the URL rule type"
+  },
+  "addrule_type_regex": {
+    "message": "REGEX",
+    "description": "Button label for the regex rule type"
+  },
+  "addrule_pattern_label_url": {
+    "message": "URL do zablokowania",
+    "description": "Field label when adding a URL rule"
+  },
+  "addrule_pattern_label_regex": {
+    "message": "Wzorzec regex",
+    "description": "Field label when adding a regex rule"
+  },
+  "addrule_pattern_placeholder_url": {
+    "message": "np. facebook.com",
+    "description": "Placeholder text for the URL pattern field"
+  },
+  "addrule_pattern_placeholder_regex": {
+    "message": "np. .*social.*",
+    "description": "Placeholder text for the regex pattern field"
+  },
+  "addrule_custom_schedule": {
+    "message": "Niestandardowy harmonogram",
+    "description": "Toggle label for using a per-rule schedule"
+  },
+  "addrule_custom_schedule_helper": {
+    "message": "Używa harmonogramu globalnego, gdy wyłączone",
+    "description": "Helper text under the Custom schedule toggle"
+  },
+  "addrule_duplicate": {
+    "message": "Ten wzorzec już istnieje na liście blokad",
+    "description": "Validation error when trying to add a duplicate pattern"
+  },
+  "addrule_cancel": {
+    "message": "Anuluj",
+    "description": "Cancel button in the add-rule modal"
+  },
+  "addrule_save_add": {
+    "message": "Dodaj regułę",
+    "description": "Submit button when adding a new rule"
+  },
+  "addrule_save_edit": {
+    "message": "Zapisz zmiany",
+    "description": "Submit button when editing an existing rule"
+  },
+
+  "schedule_editor_active_days": {
+    "message": "Aktywne dni",
+    "description": "Label for the day-of-week toggles in the schedule editor"
+  },
+  "schedule_editor_start_time": {
+    "message": "Godzina rozpoczęcia",
+    "description": "Label for the start time field in the schedule editor"
+  },
+  "schedule_editor_end_time": {
+    "message": "Godzina zakończenia",
+    "description": "Label for the end time field in the schedule editor"
+  },
+
+  "schedule_title": {
+    "message": "Harmonogram globalny",
+    "description": "Heading on the schedule page"
+  },
+  "schedule_subtitle": {
+    "message": "Dotyczy wszystkich reguł bez niestandardowego harmonogramu",
+    "description": "Subheading on the schedule page"
+  },
+  "schedule_enable": {
+    "message": "Włącz harmonogram globalny",
+    "description": "Toggle label for enabling the global schedule"
+  },
+  "schedule_summary_label": {
+    "message": "Podsumowanie harmonogramu",
+    "description": "Section label above the schedule summary line"
+  },
+  "schedule_summary_active": {
+    "message": "Blokowanie $1",
+    "description": "Schedule summary line. $1 is the formatted schedule string.",
+    "placeholders": {
+      "1": { "content": "$1", "example": "Mon–Fri, 9:00 AM – 5:00 PM" }
+    }
+  },
+  "schedule_summary_empty": {
+    "message": "Brak harmonogramu globalnego — wszystkie aktywne reguły są zawsze stosowane.",
+    "description": "Shown on the schedule page when the global schedule is disabled"
+  },
+  "schedule_day_range": {
+    "message": "$1–$2",
+    "description": "Format for a consecutive day range, e.g. Mon–Fri",
+    "placeholders": {
+      "1": { "content": "$1", "example": "Mon" },
+      "2": { "content": "$2", "example": "Fri" }
+    }
+  },
+  "schedule_day_separator": {
+    "message": ", ",
+    "description": "Separator between non-consecutive day names"
+  },
+  "schedule_format": {
+    "message": "$1, $2 – $3",
+    "description": "Format for a full schedule line: days, start time – end time",
+    "placeholders": {
+      "1": { "content": "$1", "example": "Mon–Fri" },
+      "2": { "content": "$2", "example": "9:00 AM" },
+      "3": { "content": "$3", "example": "5:00 PM" }
+    }
+  },
+
+  "password_title": {
+    "message": "Ochrona hasłem",
+    "description": "Heading on the password page"
+  },
+  "password_subtitle": {
+    "message": "Chroń wszystkie ustawienia hasłem",
+    "description": "Subheading on the password page"
+  },
+  "password_enable": {
+    "message": "Włącz ochronę hasłem",
+    "description": "Toggle label for enabling password protection"
+  },
+  "password_enable_helper": {
+    "message": "Wymaga hasła do dostępu do ustawień i przełączania blokowania",
+    "description": "Helper text under the password protection toggle"
+  },
+  "password_change_button": {
+    "message": "Zmień hasło",
+    "description": "Button on the password page that opens the change-password dialog"
+  },
+  "password_empty": {
+    "message": "Nie ustawiono hasła. Włącz przełącznik powyżej, aby chronić ustawienia.",
+    "description": "Empty state on the password page"
+  },
+  "password_msg_disabled": {
+    "message": "Ochrona hasłem wyłączona",
+    "description": "Success message after disabling password protection"
+  },
+  "password_msg_enabled": {
+    "message": "Ochrona hasłem włączona",
+    "description": "Success message after enabling password protection"
+  },
+  "password_msg_updated": {
+    "message": "Hasło zostało pomyślnie zaktualizowane",
+    "description": "Success message after changing the password"
+  },
+  "password_dialog_title_set": {
+    "message": "Ustaw hasło",
+    "description": "Title of the password dialog when setting a new password"
+  },
+  "password_dialog_title_change": {
+    "message": "Zmień hasło",
+    "description": "Title of the password dialog when changing the password"
+  },
+  "password_dialog_title_disable": {
+    "message": "Wyłącz ochronę hasłem",
+    "description": "Title of the password dialog when disabling password protection"
+  },
+  "password_field_current": {
+    "message": "Aktualne hasło",
+    "description": "Label for the current password field in the password dialog"
+  },
+  "password_field_new": {
+    "message": "Nowe hasło",
+    "description": "Label for the new password field in the password dialog"
+  },
+  "password_field_confirm": {
+    "message": "Potwierdź hasło",
+    "description": "Label for the confirm password field in the password dialog"
+  },
+  "password_btn_cancel": {
+    "message": "Anuluj",
+    "description": "Cancel button in the password dialog"
+  },
+  "password_btn_disable": {
+    "message": "Wyłącz",
+    "description": "Confirm button when disabling password protection"
+  },
+  "password_btn_update": {
+    "message": "Zaktualizuj hasło",
+    "description": "Confirm button when changing the password"
+  },
+  "password_btn_set": {
+    "message": "Ustaw hasło",
+    "description": "Confirm button when setting a new password"
+  },
+  "password_err_enter_current": {
+    "message": "Wprowadź aktualne hasło",
+    "description": "Validation error when the current password field is empty"
+  },
+  "password_err_not_set": {
+    "message": "Nie ustawiono hasła",
+    "description": "Error shown if the stored password hash is missing unexpectedly"
+  },
+  "password_err_incorrect": {
+    "message": "Nieprawidłowe hasło",
+    "description": "Validation error when the entered password is wrong"
+  },
+  "password_err_enter_new": {
+    "message": "Wprowadź nowe hasło",
+    "description": "Validation error when the new password field is empty"
+  },
+  "password_err_mismatch": {
+    "message": "Hasła nie są zgodne",
+    "description": "Validation error when new and confirm passwords differ"
+  },
+
+  "gate_title": {
+    "message": "Ustawienia BlockThem",
+    "description": "Heading on the password unlock screen"
+  },
+  "gate_subtitle": {
+    "message": "Wpisz hasło, aby uzyskać dostęp do ustawień",
+    "description": "Subheading on the password unlock screen"
+  },
+  "gate_placeholder": {
+    "message": "Hasło",
+    "description": "Placeholder for the password input on the unlock screen"
+  },
+  "gate_unlock": {
+    "message": "Odblokuj",
+    "description": "Submit button on the password unlock screen"
+  },
+
+  "options_page_title": {
+    "message": "Ustawienia BlockThem",
+    "description": "Document title for the options page"
+  },
+
+  "blocked_page_title": {
+    "message": "Strona zablokowana — BlockThem",
+    "description": "Browser tab title for the blocked page"
+  },
+  "blocked_heading": {
+    "message": "Ta strona jest zablokowana",
+    "description": "Main heading on the blocked page"
+  },
+
+  "schemas_invalid_regex": {
+    "message": "Nieprawidłowy wzorzec regex",
+    "description": "Validation error for an invalid regex"
+  },
+  "schemas_regex_rule_invalid": {
+    "message": "Reguła regex zawiera nieprawidłowy wzorzec",
+    "description": "Validation error for a regex rule whose pattern fails to compile"
+  },
+  "schemas_password_min_length": {
+    "message": "Hasło musi mieć co najmniej 6 znaków",
+    "description": "Validation error for a too-short password"
+  },
+  "schemas_pattern_required": {
+    "message": "Wzorzec jest wymagany",
+    "description": "Validation error when the rule pattern field is empty"
+  }
+}

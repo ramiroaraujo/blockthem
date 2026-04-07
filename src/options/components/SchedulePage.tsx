@@ -39,7 +39,7 @@ export function SchedulePage({ state, onUpdateState }: SchedulePageProps) {
           />
 
           {/* Summary */}
-          <div className="mt-6 rounded-lg border-l-3 border-l-primary bg-surface px-4 py-3">
+          <div className="mt-6 rounded-lg border-s-3 border-s-primary bg-surface px-4 py-3">
             <div className="text-xs text-text-secondary">
               {t('schedule_summary_label')}
             </div>

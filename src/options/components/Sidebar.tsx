@@ -22,7 +22,7 @@ export function Sidebar({
   onToggleBlocking,
 }: SidebarProps) {
   return (
-    <div className="flex w-[220px] shrink-0 flex-col border-r border-border bg-sidebar py-5">
+    <div className="flex w-[220px] shrink-0 flex-col border-e border-border bg-sidebar py-5">
       <div className="mb-4 flex items-center gap-2 px-5 text-lg font-bold text-primary">
         <img src="/icons/icon-48.png" alt="" className="h-6 w-6" />
         BlockThem
@@ -49,7 +49,7 @@ export function Sidebar({
           <button
             key={item.id}
             onClick={() => onNavigate(item.id)}
-            className={`flex w-full items-center gap-2.5 border-none px-5 py-2.5 text-left text-sm ${
+            className={`flex w-full items-center gap-2.5 border-none px-5 py-2.5 text-start text-sm ${
               activePage === item.id
                 ? 'bg-primary text-white'
                 : 'bg-transparent text-text-secondary'

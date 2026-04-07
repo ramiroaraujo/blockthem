@@ -18,12 +18,12 @@ export function ToggleSwitch({
       } ${enabled ? 'bg-primary' : 'bg-border'}`}
     >
       <div
-        className={`absolute top-0.5 rounded-full transition-[left] duration-200 ${
+        className={`absolute top-0.5 rounded-full transition-[inset-inline-start] duration-200 ${
           isSmall ? 'h-4 w-4' : 'h-[18px] w-[18px]'
         } ${
           enabled
-            ? `bg-white ${isSmall ? 'left-[18px]' : 'left-5'}`
-            : `bg-text-muted ${isSmall ? 'left-0.5' : 'left-0.5'}`
+            ? `bg-white ${isSmall ? 'start-[18px]' : 'start-5'}`
+            : `bg-text-muted ${isSmall ? 'start-0.5' : 'start-0.5'}`
         }`}
       />
     </div>
