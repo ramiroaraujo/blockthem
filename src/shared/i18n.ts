@@ -10,9 +10,10 @@ export function getUILocale(): string {
   return chrome.i18n.getUILanguage();
 }
 
-const RTL_BASE_LANGS = new Set(['ar', 'fa', 'he', 'ur']);
-
 export function getDir(): 'ltr' | 'rtl' {
-  const baseLang = chrome.i18n.getUILanguage().toLowerCase().split('-')[0];
-  return RTL_BASE_LANGS.has(baseLang) ? 'rtl' : 'ltr';
+  try {
+    return new Intl.Locale(chrome.i18n.getUILanguage()).getTextInfo().direction ?? 'ltr';
+  } catch {
+    return 'ltr';
+  }
 }

@@ -11,7 +11,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ES2020", "ESNext.Intl", "DOM", "DOM.Iterable"],
     "types": ["chrome", "vitest/globals"]
   },
   "include": ["src/**/*"],
