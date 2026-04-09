@@ -5,14 +5,16 @@
   "extension_description": {
     "message": "Bloqueie sites que distraem com regras de URL/regex e horários"
   },
-
   "popup_block_this": {
     "message": "Bloquear este site"
   },
   "popup_block_this_title": {
     "message": "Bloquear $1",
     "placeholders": {
-      "1": { "content": "$1", "example": "facebook.com" }
+      "1": {
+        "content": "$1",
+        "example": "facebook.com"
+      }
     }
   },
   "popup_blocking_on": {
@@ -33,7 +35,10 @@
   "popup_rule_count_other": {
     "message": "$1 regras",
     "placeholders": {
-      "1": { "content": "$1", "example": "5" }
+      "1": {
+        "content": "$1",
+        "example": "5"
+      }
     }
   },
   "popup_category_adult": {
@@ -51,7 +56,6 @@
   "popup_open_settings": {
     "message": "Abrir configurações"
   },
-
   "sidebar_blocking_on": {
     "message": "Bloqueio ATIVO"
   },
@@ -67,7 +71,6 @@
   "nav_password": {
     "message": "Senha"
   },
-
   "blocklist_title": {
     "message": "Lista de bloqueio"
   },
@@ -104,7 +107,10 @@
   "blocklist_items_header": {
     "message": "Itens bloqueados ($1)",
     "placeholders": {
-      "1": { "content": "$1", "example": "5" }
+      "1": {
+        "content": "$1",
+        "example": "5"
+      }
     }
   },
   "blocklist_global_schedule": {
@@ -122,7 +128,6 @@
   "blocklist_invalid_json": {
     "message": "Arquivo JSON inválido"
   },
-
   "addrule_title_add": {
     "message": "Adicionar regra de bloqueio"
   },
@@ -168,7 +173,6 @@
   "addrule_save_edit": {
     "message": "Salvar alterações"
   },
-
   "schedule_editor_active_days": {
     "message": "Dias ativos"
   },
@@ -178,7 +182,6 @@
   "schedule_editor_end_time": {
     "message": "Hora de término"
   },
-
   "schedule_title": {
     "message": "Horário global"
   },
@@ -194,7 +197,10 @@
   "schedule_summary_active": {
     "message": "Bloqueando $1",
     "placeholders": {
-      "1": { "content": "$1", "example": "seg.–sex., 09:00 – 17:00" }
+      "1": {
+        "content": "$1",
+        "example": "seg.–sex., 09:00 – 17:00"
+      }
     }
   },
   "schedule_summary_empty": {
@@ -203,8 +209,14 @@
   "schedule_day_range": {
     "message": "$1–$2",
     "placeholders": {
-      "1": { "content": "$1", "example": "seg." },
-      "2": { "content": "$2", "example": "sex." }
+      "1": {
+        "content": "$1",
+        "example": "seg."
+      },
+      "2": {
+        "content": "$2",
+        "example": "sex."
+      }
     }
   },
   "schedule_day_separator": {
@@ -213,12 +225,20 @@
   "schedule_format": {
     "message": "$1, $2 – $3",
     "placeholders": {
-      "1": { "content": "$1", "example": "seg.–sex." },
-      "2": { "content": "$2", "example": "09:00" },
-      "3": { "content": "$3", "example": "17:00" }
+      "1": {
+        "content": "$1",
+        "example": "seg.–sex."
+      },
+      "2": {
+        "content": "$2",
+        "example": "09:00"
+      },
+      "3": {
+        "content": "$3",
+        "example": "17:00"
+      }
     }
   },
-
   "password_title": {
     "message": "Proteção por senha"
   },
@@ -291,7 +311,6 @@
   "password_err_mismatch": {
     "message": "As senhas não coincidem"
   },
-
   "gate_title": {
     "message": "Configurações do BlockThem"
   },
@@ -304,18 +323,15 @@
   "gate_unlock": {
     "message": "Desbloquear"
   },
-
   "options_page_title": {
     "message": "Configurações do BlockThem"
   },
-
   "blocked_page_title": {
     "message": "Site bloqueado — BlockThem"
   },
   "blocked_heading": {
     "message": "Este site está bloqueado"
   },
-
   "schemas_invalid_regex": {
     "message": "Padrão regex inválido"
   },
@@ -327,5 +343,20 @@
   },
   "schemas_pattern_required": {
     "message": "O padrão é obrigatório"
+  },
+  "stat_label_today": {
+    "message": "vezes hoje"
+  },
+  "stat_label_month": {
+    "message": "vezes este mês"
+  },
+  "stat_label_total": {
+    "message": "vezes no total"
+  },
+  "stat_label_week": {
+    "message": "vezes esta semana"
+  },
+  "stat_header_blocked": {
+    "message": "Bloqueado"
   }
 }

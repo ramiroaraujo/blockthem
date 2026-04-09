@@ -5,14 +5,16 @@
   "extension_description": {
     "message": "Bloquea sitios web que distraen mediante reglas de URL/regex y horarios"
   },
-
   "popup_block_this": {
     "message": "Bloquear este sitio"
   },
   "popup_block_this_title": {
     "message": "Bloquear $1",
     "placeholders": {
-      "1": { "content": "$1", "example": "facebook.com" }
+      "1": {
+        "content": "$1",
+        "example": "facebook.com"
+      }
     }
   },
   "popup_blocking_on": {
@@ -33,7 +35,10 @@
   "popup_rule_count_other": {
     "message": "$1 reglas",
     "placeholders": {
-      "1": { "content": "$1", "example": "5" }
+      "1": {
+        "content": "$1",
+        "example": "5"
+      }
     }
   },
   "popup_category_adult": {
@@ -51,7 +56,6 @@
   "popup_open_settings": {
     "message": "Abrir ajustes"
   },
-
   "sidebar_blocking_on": {
     "message": "Bloqueo ACTIVO"
   },
@@ -67,7 +71,6 @@
   "nav_password": {
     "message": "Contraseña"
   },
-
   "blocklist_title": {
     "message": "Lista de bloqueo"
   },
@@ -104,7 +107,10 @@
   "blocklist_items_header": {
     "message": "Elementos bloqueados ($1)",
     "placeholders": {
-      "1": { "content": "$1", "example": "5" }
+      "1": {
+        "content": "$1",
+        "example": "5"
+      }
     }
   },
   "blocklist_global_schedule": {
@@ -122,7 +128,6 @@
   "blocklist_invalid_json": {
     "message": "Archivo JSON no válido"
   },
-
   "addrule_title_add": {
     "message": "Añadir regla de bloqueo"
   },
@@ -168,7 +173,6 @@
   "addrule_save_edit": {
     "message": "Guardar cambios"
   },
-
   "schedule_editor_active_days": {
     "message": "Días activos"
   },
@@ -178,7 +182,6 @@
   "schedule_editor_end_time": {
     "message": "Hora de fin"
   },
-
   "schedule_title": {
     "message": "Horario global"
   },
@@ -194,7 +197,10 @@
   "schedule_summary_active": {
     "message": "Bloqueando $1",
     "placeholders": {
-      "1": { "content": "$1", "example": "lun.–vie., 9:00 – 17:00" }
+      "1": {
+        "content": "$1",
+        "example": "lun.–vie., 9:00 – 17:00"
+      }
     }
   },
   "schedule_summary_empty": {
@@ -203,8 +209,14 @@
   "schedule_day_range": {
     "message": "$1–$2",
     "placeholders": {
-      "1": { "content": "$1", "example": "lun." },
-      "2": { "content": "$2", "example": "vie." }
+      "1": {
+        "content": "$1",
+        "example": "lun."
+      },
+      "2": {
+        "content": "$2",
+        "example": "vie."
+      }
     }
   },
   "schedule_day_separator": {
@@ -213,12 +225,20 @@
   "schedule_format": {
     "message": "$1, $2 – $3",
     "placeholders": {
-      "1": { "content": "$1", "example": "lun.–vie." },
-      "2": { "content": "$2", "example": "9:00" },
-      "3": { "content": "$3", "example": "17:00" }
+      "1": {
+        "content": "$1",
+        "example": "lun.–vie."
+      },
+      "2": {
+        "content": "$2",
+        "example": "9:00"
+      },
+      "3": {
+        "content": "$3",
+        "example": "17:00"
+      }
     }
   },
-
   "password_title": {
     "message": "Protección por contraseña"
   },
@@ -291,7 +311,6 @@
   "password_err_mismatch": {
     "message": "Las contraseñas no coinciden"
   },
-
   "gate_title": {
     "message": "Ajustes de BlockThem"
   },
@@ -304,18 +323,15 @@
   "gate_unlock": {
     "message": "Desbloquear"
   },
-
   "options_page_title": {
     "message": "Ajustes de BlockThem"
   },
-
   "blocked_page_title": {
     "message": "Sitio bloqueado — BlockThem"
   },
   "blocked_heading": {
     "message": "Este sitio está bloqueado"
   },
-
   "schemas_invalid_regex": {
     "message": "Patrón regex no válido"
   },
@@ -327,5 +343,20 @@
   },
   "schemas_pattern_required": {
     "message": "El patrón es obligatorio"
+  },
+  "stat_label_today": {
+    "message": "veces hoy"
+  },
+  "stat_label_month": {
+    "message": "veces este mes"
+  },
+  "stat_label_total": {
+    "message": "veces en total"
+  },
+  "stat_label_week": {
+    "message": "veces esta semana"
+  },
+  "stat_header_blocked": {
+    "message": "Bloqueado"
   }
 }

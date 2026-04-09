@@ -7,7 +7,6 @@
     "message": "URL/正規表現ルールとスケジュールで気になるサイトをブロック",
     "description": "Extension description shown in Chrome Web Store and chrome://extensions"
   },
-
   "popup_block_this": {
     "message": "このサイトをブロック",
     "description": "Popup button to one-click-block the current tab's domain"
@@ -16,7 +15,10 @@
     "message": "$1 をブロック",
     "description": "Tooltip on the Block This button. $1 is the current domain.",
     "placeholders": {
-      "1": { "content": "$1", "example": "facebook.com" }
+      "1": {
+        "content": "$1",
+        "example": "facebook.com"
+      }
     }
   },
   "popup_blocking_on": {
@@ -43,7 +45,10 @@
     "message": "$1 件のルール",
     "description": "Plural rule count in the popup status line. $1 is the count.",
     "placeholders": {
-      "1": { "content": "$1", "example": "5" }
+      "1": {
+        "content": "$1",
+        "example": "5"
+      }
     }
   },
   "popup_category_adult": {
@@ -66,7 +71,6 @@
     "message": "設定を開く",
     "description": "Popup button that opens the options page"
   },
-
   "sidebar_blocking_on": {
     "message": "ブロック: 有効",
     "description": "Status pill in the options sidebar when blocking is enabled"
@@ -87,7 +91,6 @@
     "message": "パスワード",
     "description": "Sidebar nav item for the password page"
   },
-
   "blocklist_title": {
     "message": "ブロックリスト",
     "description": "Heading on the block list page"
@@ -136,7 +139,10 @@
     "message": "ブロック済み ($1)",
     "description": "Header above the list of rules. $1 is the count.",
     "placeholders": {
-      "1": { "content": "$1", "example": "5" }
+      "1": {
+        "content": "$1",
+        "example": "5"
+      }
     }
   },
   "blocklist_global_schedule": {
@@ -159,7 +165,6 @@
     "message": "無効なJSONファイルです",
     "description": "Alert shown when the imported JSON file is malformed"
   },
-
   "addrule_title_add": {
     "message": "ブロックルールを追加",
     "description": "Title of the modal when adding a new rule"
@@ -220,7 +225,6 @@
     "message": "変更を保存",
     "description": "Submit button when editing an existing rule"
   },
-
   "schedule_editor_active_days": {
     "message": "有効な曜日",
     "description": "Label for the day-of-week toggles in the schedule editor"
@@ -233,7 +237,6 @@
     "message": "終了時刻",
     "description": "Label for the end time field in the schedule editor"
   },
-
   "schedule_title": {
     "message": "グローバルスケジュール",
     "description": "Heading on the schedule page"
@@ -254,7 +257,10 @@
     "message": "$1 にブロック中",
     "description": "Schedule summary line. $1 is the formatted schedule string.",
     "placeholders": {
-      "1": { "content": "$1", "example": "Mon–Fri, 9:00 AM – 5:00 PM" }
+      "1": {
+        "content": "$1",
+        "example": "Mon–Fri, 9:00 AM – 5:00 PM"
+      }
     }
   },
   "schedule_summary_empty": {
@@ -265,8 +271,14 @@
     "message": "$1–$2",
     "description": "Format for a consecutive day range, e.g. Mon–Fri",
     "placeholders": {
-      "1": { "content": "$1", "example": "Mon" },
-      "2": { "content": "$2", "example": "Fri" }
+      "1": {
+        "content": "$1",
+        "example": "Mon"
+      },
+      "2": {
+        "content": "$2",
+        "example": "Fri"
+      }
     }
   },
   "schedule_day_separator": {
@@ -277,12 +289,20 @@
     "message": "$1, $2 – $3",
     "description": "Format for a full schedule line: days, start time – end time",
     "placeholders": {
-      "1": { "content": "$1", "example": "Mon–Fri" },
-      "2": { "content": "$2", "example": "9:00 AM" },
-      "3": { "content": "$3", "example": "5:00 PM" }
+      "1": {
+        "content": "$1",
+        "example": "Mon–Fri"
+      },
+      "2": {
+        "content": "$2",
+        "example": "9:00 AM"
+      },
+      "3": {
+        "content": "$3",
+        "example": "5:00 PM"
+      }
     }
   },
-
   "password_title": {
     "message": "パスワード保護",
     "description": "Heading on the password page"
@@ -379,7 +399,6 @@
     "message": "パスワードが一致しません",
     "description": "Validation error when new and confirm passwords differ"
   },
-
   "gate_title": {
     "message": "BlockThem 設定",
     "description": "Heading on the password unlock screen"
@@ -396,12 +415,10 @@
     "message": "ロック解除",
     "description": "Submit button on the password unlock screen"
   },
-
   "options_page_title": {
     "message": "BlockThem 設定",
     "description": "Document title for the options page"
   },
-
   "blocked_page_title": {
     "message": "サイトがブロックされました — BlockThem",
     "description": "Browser tab title for the blocked page"
@@ -410,7 +427,6 @@
     "message": "このサイトはブロックされています",
     "description": "Main heading on the blocked page"
   },
-
   "schemas_invalid_regex": {
     "message": "無効な正規表現パターンです",
     "description": "Validation error for an invalid regex"
@@ -426,5 +442,25 @@
   "schemas_pattern_required": {
     "message": "パターンは必須です",
     "description": "Validation error when the rule pattern field is empty"
+  },
+  "stat_label_today": {
+    "message": "回 今日",
+    "description": "Label for daily block count on the blocked page"
+  },
+  "stat_label_month": {
+    "message": "回 今月",
+    "description": "Label for monthly block count on the blocked page"
+  },
+  "stat_label_total": {
+    "message": "回 合計",
+    "description": "Label for total block count on the blocked page"
+  },
+  "stat_label_week": {
+    "message": "回 今週",
+    "description": "Label for weekly block count on the blocked page"
+  },
+  "stat_header_blocked": {
+    "message": "ブロック",
+    "description": "Header label above block stats on the blocked page"
   }
 }

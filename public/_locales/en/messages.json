@@ -410,6 +410,26 @@
     "message": "This site is blocked",
     "description": "Main heading on the blocked page"
   },
+  "stat_header_blocked": {
+    "message": "Blocked",
+    "description": "Header label above block stats on the blocked page"
+  },
+  "stat_label_today": {
+    "message": "times today",
+    "description": "Label for daily block count on the blocked page"
+  },
+  "stat_label_week": {
+    "message": "times this week",
+    "description": "Label for weekly block count on the blocked page"
+  },
+  "stat_label_month": {
+    "message": "times this month",
+    "description": "Label for monthly block count on the blocked page"
+  },
+  "stat_label_total": {
+    "message": "times total",
+    "description": "Label for total block count on the blocked page"
+  },
 
   "schemas_invalid_regex": {
     "message": "Invalid regex pattern",

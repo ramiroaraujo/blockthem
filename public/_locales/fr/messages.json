@@ -5,14 +5,16 @@
   "extension_description": {
     "message": "Bloquez les sites distrayants avec des règles URL/regex et des plages horaires"
   },
-
   "popup_block_this": {
     "message": "Bloquer ce site"
   },
   "popup_block_this_title": {
     "message": "Bloquer $1",
     "placeholders": {
-      "1": { "content": "$1", "example": "facebook.com" }
+      "1": {
+        "content": "$1",
+        "example": "facebook.com"
+      }
     }
   },
   "popup_blocking_on": {
@@ -33,7 +35,10 @@
   "popup_rule_count_other": {
     "message": "$1 règles",
     "placeholders": {
-      "1": { "content": "$1", "example": "5" }
+      "1": {
+        "content": "$1",
+        "example": "5"
+      }
     }
   },
   "popup_category_adult": {
@@ -51,7 +56,6 @@
   "popup_open_settings": {
     "message": "Ouvrir les paramètres"
   },
-
   "sidebar_blocking_on": {
     "message": "Blocage ACTIF"
   },
@@ -67,7 +71,6 @@
   "nav_password": {
     "message": "Mot de passe"
   },
-
   "blocklist_title": {
     "message": "Liste de blocage"
   },
@@ -104,7 +107,10 @@
   "blocklist_items_header": {
     "message": "Éléments bloqués ($1)",
     "placeholders": {
-      "1": { "content": "$1", "example": "5" }
+      "1": {
+        "content": "$1",
+        "example": "5"
+      }
     }
   },
   "blocklist_global_schedule": {
@@ -122,7 +128,6 @@
   "blocklist_invalid_json": {
     "message": "Fichier JSON invalide"
   },
-
   "addrule_title_add": {
     "message": "Ajouter une règle de blocage"
   },
@@ -168,7 +173,6 @@
   "addrule_save_edit": {
     "message": "Enregistrer"
   },
-
   "schedule_editor_active_days": {
     "message": "Jours actifs"
   },
@@ -178,7 +182,6 @@
   "schedule_editor_end_time": {
     "message": "Heure de fin"
   },
-
   "schedule_title": {
     "message": "Horaire global"
   },
@@ -194,7 +197,10 @@
   "schedule_summary_active": {
     "message": "Blocage $1",
     "placeholders": {
-      "1": { "content": "$1", "example": "lun.–ven., 09:00 – 17:00" }
+      "1": {
+        "content": "$1",
+        "example": "lun.–ven., 09:00 – 17:00"
+      }
     }
   },
   "schedule_summary_empty": {
@@ -203,8 +209,14 @@
   "schedule_day_range": {
     "message": "$1–$2",
     "placeholders": {
-      "1": { "content": "$1", "example": "lun." },
-      "2": { "content": "$2", "example": "ven." }
+      "1": {
+        "content": "$1",
+        "example": "lun."
+      },
+      "2": {
+        "content": "$2",
+        "example": "ven."
+      }
     }
   },
   "schedule_day_separator": {
@@ -213,12 +225,20 @@
   "schedule_format": {
     "message": "$1, $2 – $3",
     "placeholders": {
-      "1": { "content": "$1", "example": "lun.–ven." },
-      "2": { "content": "$2", "example": "09:00" },
-      "3": { "content": "$3", "example": "17:00" }
+      "1": {
+        "content": "$1",
+        "example": "lun.–ven."
+      },
+      "2": {
+        "content": "$2",
+        "example": "09:00"
+      },
+      "3": {
+        "content": "$3",
+        "example": "17:00"
+      }
     }
   },
-
   "password_title": {
     "message": "Protection par mot de passe"
   },
@@ -291,7 +311,6 @@
   "password_err_mismatch": {
     "message": "Les mots de passe ne correspondent pas"
   },
-
   "gate_title": {
     "message": "Paramètres BlockThem"
   },
@@ -304,18 +323,15 @@
   "gate_unlock": {
     "message": "Déverrouiller"
   },
-
   "options_page_title": {
     "message": "Paramètres BlockThem"
   },
-
   "blocked_page_title": {
     "message": "Site bloqué — BlockThem"
   },
   "blocked_heading": {
     "message": "Ce site est bloqué"
   },
-
   "schemas_invalid_regex": {
     "message": "Motif regex invalide"
   },
@@ -327,5 +343,20 @@
   },
   "schemas_pattern_required": {
     "message": "Le motif est obligatoire"
+  },
+  "stat_label_today": {
+    "message": "fois aujourd'hui"
+  },
+  "stat_label_month": {
+    "message": "fois ce mois"
+  },
+  "stat_label_total": {
+    "message": "fois au total"
+  },
+  "stat_label_week": {
+    "message": "fois cette semaine"
+  },
+  "stat_header_blocked": {
+    "message": "Bloqué"
   }
 }

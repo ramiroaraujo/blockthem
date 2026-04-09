@@ -7,7 +7,6 @@
     "message": "وب‌سایت‌های حواس‌پرت‌کن را با قوانین URL/regex و زمان‌بندی مسدود کنید",
     "description": "Extension description shown in Chrome Web Store and chrome://extensions"
   },
-
   "popup_block_this": {
     "message": "مسدود کردن",
     "description": "Popup button to one-click-block the current tab's domain"
@@ -16,7 +15,10 @@
     "message": "مسدود کردن $1",
     "description": "Tooltip on the Block This button. $1 is the current domain.",
     "placeholders": {
-      "1": { "content": "$1", "example": "facebook.com" }
+      "1": {
+        "content": "$1",
+        "example": "facebook.com"
+      }
     }
   },
   "popup_blocking_on": {
@@ -43,7 +45,10 @@
     "message": "$1 قانون",
     "description": "Plural rule count in the popup status line. $1 is the count.",
     "placeholders": {
-      "1": { "content": "$1", "example": "5" }
+      "1": {
+        "content": "$1",
+        "example": "5"
+      }
     }
   },
   "popup_category_adult": {
@@ -66,7 +71,6 @@
     "message": "باز کردن تنظیمات",
     "description": "Popup button that opens the options page"
   },
-
   "sidebar_blocking_on": {
     "message": "مسدودسازی روشن",
     "description": "Status pill in the options sidebar when blocking is enabled"
@@ -87,7 +91,6 @@
     "message": "رمز عبور",
     "description": "Sidebar nav item for the password page"
   },
-
   "blocklist_title": {
     "message": "فهرست مسدودی",
     "description": "Heading on the block list page"
@@ -136,7 +139,10 @@
     "message": "موارد مسدود ($1)",
     "description": "Header above the list of rules. $1 is the count.",
     "placeholders": {
-      "1": { "content": "$1", "example": "5" }
+      "1": {
+        "content": "$1",
+        "example": "5"
+      }
     }
   },
   "blocklist_global_schedule": {
@@ -159,7 +165,6 @@
     "message": "فایل JSON نامعتبر است",
     "description": "Alert shown when the imported JSON file is malformed"
   },
-
   "addrule_title_add": {
     "message": "افزودن قانون مسدودسازی",
     "description": "Title of the modal when adding a new rule"
@@ -220,7 +225,6 @@
     "message": "ذخیره تغییرات",
     "description": "Submit button when editing an existing rule"
   },
-
   "schedule_editor_active_days": {
     "message": "روزهای فعال",
     "description": "Label for the day-of-week toggles in the schedule editor"
@@ -233,7 +237,6 @@
     "message": "زمان پایان",
     "description": "Label for the end time field in the schedule editor"
   },
-
   "schedule_title": {
     "message": "زمان‌بندی عمومی",
     "description": "Heading on the schedule page"
@@ -254,7 +257,10 @@
     "message": "مسدودسازی $1",
     "description": "Schedule summary line. $1 is the formatted schedule string.",
     "placeholders": {
-      "1": { "content": "$1", "example": "Mon–Fri, 9:00 AM – 5:00 PM" }
+      "1": {
+        "content": "$1",
+        "example": "Mon–Fri, 9:00 AM – 5:00 PM"
+      }
     }
   },
   "schedule_summary_empty": {
@@ -265,8 +271,14 @@
     "message": "$1–$2",
     "description": "Format for a consecutive day range, e.g. Mon–Fri",
     "placeholders": {
-      "1": { "content": "$1", "example": "Mon" },
-      "2": { "content": "$2", "example": "Fri" }
+      "1": {
+        "content": "$1",
+        "example": "Mon"
+      },
+      "2": {
+        "content": "$2",
+        "example": "Fri"
+      }
     }
   },
   "schedule_day_separator": {
@@ -277,12 +289,20 @@
     "message": "$1، $2 – $3",
     "description": "Format for a full schedule line: days, start time – end time",
     "placeholders": {
-      "1": { "content": "$1", "example": "Mon–Fri" },
-      "2": { "content": "$2", "example": "9:00 AM" },
-      "3": { "content": "$3", "example": "5:00 PM" }
+      "1": {
+        "content": "$1",
+        "example": "Mon–Fri"
+      },
+      "2": {
+        "content": "$2",
+        "example": "9:00 AM"
+      },
+      "3": {
+        "content": "$3",
+        "example": "5:00 PM"
+      }
     }
   },
-
   "password_title": {
     "message": "محافظت با رمز عبور",
     "description": "Heading on the password page"
@@ -379,7 +399,6 @@
     "message": "رمزهای عبور مطابقت ندارند",
     "description": "Validation error when new and confirm passwords differ"
   },
-
   "gate_title": {
     "message": "تنظیمات BlockThem",
     "description": "Heading on the password unlock screen"
@@ -396,12 +415,10 @@
     "message": "بازگشایی قفل",
     "description": "Submit button on the password unlock screen"
   },
-
   "options_page_title": {
     "message": "تنظیمات BlockThem",
     "description": "Document title for the options page"
   },
-
   "blocked_page_title": {
     "message": "سایت مسدود شد — BlockThem",
     "description": "Browser tab title for the blocked page"
@@ -410,7 +427,6 @@
     "message": "این سایت مسدود شده است",
     "description": "Main heading on the blocked page"
   },
-
   "schemas_invalid_regex": {
     "message": "الگوی regex نامعتبر است",
     "description": "Validation error for an invalid regex"
@@ -426,5 +442,25 @@
   "schemas_pattern_required": {
     "message": "الگو الزامی است",
     "description": "Validation error when the rule pattern field is empty"
+  },
+  "stat_label_today": {
+    "message": "بار امروز",
+    "description": "Label for daily block count on the blocked page"
+  },
+  "stat_label_month": {
+    "message": "بار این ماه",
+    "description": "Label for monthly block count on the blocked page"
+  },
+  "stat_label_total": {
+    "message": "بار کل",
+    "description": "Label for total block count on the blocked page"
+  },
+  "stat_label_week": {
+    "message": "بار این هفته",
+    "description": "Label for weekly block count on the blocked page"
+  },
+  "stat_header_blocked": {
+    "message": "مسدود شده",
+    "description": "Header label above block stats on the blocked page"
   }
 }

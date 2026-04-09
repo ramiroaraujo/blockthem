@@ -7,7 +7,6 @@
     "message": "Blocca siti distraenti con regole URL/regex e pianificazione",
     "description": "Extension description shown in Chrome Web Store and chrome://extensions"
   },
-
   "popup_block_this": {
     "message": "Blocca questo",
     "description": "Popup button to one-click-block the current tab's domain"
@@ -16,7 +15,10 @@
     "message": "Blocca $1",
     "description": "Tooltip on the Block This button. $1 is the current domain.",
     "placeholders": {
-      "1": { "content": "$1", "example": "facebook.com" }
+      "1": {
+        "content": "$1",
+        "example": "facebook.com"
+      }
     }
   },
   "popup_blocking_on": {
@@ -43,7 +45,10 @@
     "message": "$1 regole",
     "description": "Plural rule count in the popup status line. $1 is the count.",
     "placeholders": {
-      "1": { "content": "$1", "example": "5" }
+      "1": {
+        "content": "$1",
+        "example": "5"
+      }
     }
   },
   "popup_category_adult": {
@@ -66,7 +71,6 @@
     "message": "Apri impostazioni",
     "description": "Popup button that opens the options page"
   },
-
   "sidebar_blocking_on": {
     "message": "Blocco ATTIVO",
     "description": "Status pill in the options sidebar when blocking is enabled"
@@ -87,7 +91,6 @@
     "message": "Password",
     "description": "Sidebar nav item for the password page"
   },
-
   "blocklist_title": {
     "message": "Lista di blocco",
     "description": "Heading on the block list page"
@@ -136,7 +139,10 @@
     "message": "Elementi bloccati ($1)",
     "description": "Header above the list of rules. $1 is the count.",
     "placeholders": {
-      "1": { "content": "$1", "example": "5" }
+      "1": {
+        "content": "$1",
+        "example": "5"
+      }
     }
   },
   "blocklist_global_schedule": {
@@ -159,7 +165,6 @@
     "message": "File JSON non valido",
     "description": "Alert shown when the imported JSON file is malformed"
   },
-
   "addrule_title_add": {
     "message": "Aggiungi regola di blocco",
     "description": "Title of the modal when adding a new rule"
@@ -220,7 +225,6 @@
     "message": "Salva modifiche",
     "description": "Submit button when editing an existing rule"
   },
-
   "schedule_editor_active_days": {
     "message": "Giorni attivi",
     "description": "Label for the day-of-week toggles in the schedule editor"
@@ -233,7 +237,6 @@
     "message": "Ora di fine",
     "description": "Label for the end time field in the schedule editor"
   },
-
   "schedule_title": {
     "message": "Pianificazione globale",
     "description": "Heading on the schedule page"
@@ -254,7 +257,10 @@
     "message": "Blocco $1",
     "description": "Schedule summary line. $1 is the formatted schedule string.",
     "placeholders": {
-      "1": { "content": "$1", "example": "Mon–Fri, 9:00 AM – 5:00 PM" }
+      "1": {
+        "content": "$1",
+        "example": "Mon–Fri, 9:00 AM – 5:00 PM"
+      }
     }
   },
   "schedule_summary_empty": {
@@ -265,8 +271,14 @@
     "message": "$1–$2",
     "description": "Format for a consecutive day range, e.g. Mon–Fri",
     "placeholders": {
-      "1": { "content": "$1", "example": "Mon" },
-      "2": { "content": "$2", "example": "Fri" }
+      "1": {
+        "content": "$1",
+        "example": "Mon"
+      },
+      "2": {
+        "content": "$2",
+        "example": "Fri"
+      }
     }
   },
   "schedule_day_separator": {
@@ -277,12 +289,20 @@
     "message": "$1, $2 – $3",
     "description": "Format for a full schedule line: days, start time – end time",
     "placeholders": {
-      "1": { "content": "$1", "example": "Mon–Fri" },
-      "2": { "content": "$2", "example": "9:00 AM" },
-      "3": { "content": "$3", "example": "5:00 PM" }
+      "1": {
+        "content": "$1",
+        "example": "Mon–Fri"
+      },
+      "2": {
+        "content": "$2",
+        "example": "9:00 AM"
+      },
+      "3": {
+        "content": "$3",
+        "example": "5:00 PM"
+      }
     }
   },
-
   "password_title": {
     "message": "Protezione con password",
     "description": "Heading on the password page"
@@ -379,7 +399,6 @@
     "message": "Le password non corrispondono",
     "description": "Validation error when new and confirm passwords differ"
   },
-
   "gate_title": {
     "message": "Impostazioni BlockThem",
     "description": "Heading on the password unlock screen"
@@ -396,12 +415,10 @@
     "message": "Sblocca",
     "description": "Submit button on the password unlock screen"
   },
-
   "options_page_title": {
     "message": "Impostazioni BlockThem",
     "description": "Document title for the options page"
   },
-
   "blocked_page_title": {
     "message": "Sito bloccato — BlockThem",
     "description": "Browser tab title for the blocked page"
@@ -410,7 +427,6 @@
     "message": "Questo sito è bloccato",
     "description": "Main heading on the blocked page"
   },
-
   "schemas_invalid_regex": {
     "message": "Pattern regex non valido",
     "description": "Validation error for an invalid regex"
@@ -426,5 +442,25 @@
   "schemas_pattern_required": {
     "message": "Il pattern è obbligatorio",
     "description": "Validation error when the rule pattern field is empty"
+  },
+  "stat_label_today": {
+    "message": "volte oggi",
+    "description": "Label for daily block count on the blocked page"
+  },
+  "stat_label_month": {
+    "message": "volte questo mese",
+    "description": "Label for monthly block count on the blocked page"
+  },
+  "stat_label_total": {
+    "message": "volte in totale",
+    "description": "Label for total block count on the blocked page"
+  },
+  "stat_label_week": {
+    "message": "volte questa settimana",
+    "description": "Label for weekly block count on the blocked page"
+  },
+  "stat_header_blocked": {
+    "message": "Bloccato",
+    "description": "Header label above block stats on the blocked page"
   }
 }
