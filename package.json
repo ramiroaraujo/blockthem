@@ -1,6 +1,6 @@
 {
   "name": "blockthem",
-  "version": "1.3.1",
+  "version": "1.4.0",
   "description": "Block distracting websites with URL/regex rules and scheduling",
   "main": "index.js",
   "directories": {
