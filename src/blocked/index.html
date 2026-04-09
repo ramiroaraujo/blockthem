@@ -31,7 +31,48 @@
       h1 {
         font-size: 28px;
         font-weight: 600;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
+      }
+      .domain {
+        font-size: 14px;
+        color: #8b949e;
+        margin-top: 6px;
+      }
+      .stats-header {
+        font-size: 11px;
+        color: #8b949e;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-align: center;
+        margin-top: 32px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        margin-bottom: 16px;
+      }
+      .stats-row {
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+      }
+      .stat-item {
+        text-align: center;
+        padding: 0 22px;
+      }
+      .stat-item + .stat-item {
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .stat-value {
+        font-size: 26px;
+        font-weight: 700;
+        color: #58a6ff;
+        line-height: 1.2;
+      }
+      .stat-label {
+        font-size: 11px;
+        color: #8b949e;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-top: 16px;
       }
     </style>
   </head>
@@ -41,6 +82,11 @@
         <img src="/icons/icon-128.png" alt="" width="64" height="64" />
       </div>
       <h1 id="heading">This site is blocked</h1>
+      <p id="domain" class="domain"></p>
+      <div id="stats-container" style="display: none">
+        <div id="stats-header" class="stats-header">Blocked</div>
+        <div id="stats" class="stats-row"></div>
+      </div>
     </div>
     <script type="module" src="./main.ts"></script>
   </body>
