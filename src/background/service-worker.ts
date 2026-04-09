@@ -60,7 +60,7 @@ async function syncRulesInternal(): Promise<void> {
     const tabs = await chrome.tabs.query({});
     for (const tab of tabs) {
       if (tab.id && tab.url) {
-        checkAndBlock(tab.id, tab.url);
+        void checkAndBlock(tab.id, tab.url);
       }
     }
   }
@@ -75,14 +75,39 @@ function syncRules(): void {
     .catch((err) => console.error('[BlockThem] syncRules error:', err));
 }
 
-function getBlockedUrl(rule: BlockRule): string {
+function getBlockedUrl(rule: BlockRule, domain: string): string {
   const ruleParam = encodeURIComponent(rule.pattern);
+  const domainParam = encodeURIComponent(domain);
   return chrome.runtime.getURL(
-    `src/blocked/index.html?rule=${ruleParam}&type=${rule.type}`,
+    `src/blocked/index.html?rule=${ruleParam}&type=${rule.type}&domain=${domainParam}`,
   );
 }
 
-function checkAndBlock(tabId: number, url: string): void {
+const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
+
+async function recordBlockEvent(hostname: string): Promise<void> {
+  const result = await chrome.storage.local.get('blockStats');
+  const stats: Record<string, { timestamps: number[] }> =
+    (result as { blockStats?: Record<string, { timestamps: number[] }> })
+      .blockStats ?? {};
+
+  if (!stats[hostname]) {
+    stats[hostname] = { timestamps: [] };
+  }
+
+  const now = Date.now();
+  stats[hostname].timestamps.push(now);
+
+  // Prune timestamps older than 1 year
+  const cutoff = now - ONE_YEAR_MS;
+  stats[hostname].timestamps = stats[hostname].timestamps.filter(
+    (ts) => ts >= cutoff,
+  );
+
+  await chrome.storage.local.set({ blockStats: stats });
+}
+
+async function checkAndBlock(tabId: number, url: string): Promise<void> {
   if (!url?.startsWith('http')) return;
 
   // Don't block our own block page
@@ -91,7 +116,9 @@ function checkAndBlock(tabId: number, url: string): void {
 
   for (const rule of cachedActiveRules) {
     if (matchesBlockRule(url, rule)) {
-      void chrome.tabs.update(tabId, { url: getBlockedUrl(rule) });
+      const domain = new URL(url).hostname;
+      await recordBlockEvent(domain);
+      void chrome.tabs.update(tabId, { url: getBlockedUrl(rule, domain) });
       return;
     }
   }
@@ -120,11 +147,11 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 // Fallback: catch navigations that DNR might miss (e.g. server-side redirects)
 chrome.webNavigation.onBeforeNavigate.addListener((details) => {
   if (details.frameId !== 0) return; // Only top-level frame
-  checkAndBlock(details.tabId, details.url);
+  void checkAndBlock(details.tabId, details.url);
 });
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
   if (changeInfo.url) {
-    checkAndBlock(tabId, changeInfo.url);
+    void checkAndBlock(tabId, changeInfo.url);
   }
 });
