@@ -54,8 +54,19 @@ async function syncRulesInternal(): Promise<void> {
   });
 
   await syncStaticRulesets(state);
+
+  if (shouldScanTabs) {
+    shouldScanTabs = false;
+    const tabs = await chrome.tabs.query({});
+    for (const tab of tabs) {
+      if (tab.id && tab.url) {
+        checkAndBlock(tab.id, tab.url);
+      }
+    }
+  }
 }
 
+let shouldScanTabs = false;
 let syncChain: Promise<void> = Promise.resolve();
 
 function syncRules(): void {
@@ -90,7 +101,10 @@ function checkAndBlock(tabId: number, url: string): void {
 syncRules();
 
 // Sync rules when storage changes
-onStateChange(() => {
+onStateChange((newState, oldState) => {
+  if (newState.blockingEnabled && !oldState.blockingEnabled) {
+    shouldScanTabs = true;
+  }
   syncRules();
 });
 
