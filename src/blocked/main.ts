@@ -1,3 +1,5 @@
+import type { BlockStats } from '../shared/block-stats';
+import { computeStatCounts } from '../shared/block-stats';
 import { getDir, t } from '../shared/i18n';
 
 document.documentElement.lang = chrome.i18n.getUILanguage();
@@ -16,66 +18,28 @@ if (domain) {
   if (domainEl) domainEl.textContent = domain;
 
   void chrome.storage.local.get('blockStats').then((result) => {
-    const stats = (
-      result as {
-        blockStats?: Record<string, { timestamps: number[] }>;
-      }
-    ).blockStats;
+    const stats = (result as { blockStats?: BlockStats }).blockStats;
     const entry = stats?.[domain];
-    const timestamps = entry?.timestamps ?? [];
-    if (timestamps.length === 0) return;
+    if (!entry) return;
 
-    const now = new Date();
-    const todayStr = now.toDateString();
-    const currentYear = now.getFullYear();
-    const currentMonth = now.getMonth();
-
-    // Start of current week (Monday)
-    const startOfWeek = new Date(now);
-    const dayOfWeek = now.getDay();
-    const mondayOffset = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-    startOfWeek.setDate(now.getDate() - mondayOffset);
-    startOfWeek.setHours(0, 0, 0, 0);
-
-    let today = 0;
-    let week = 0;
-    let month = 0;
-    let hasMultipleDays = false;
-    let hasMultipleWeeks = false;
-    let hasMultipleMonths = false;
-
-    for (const ts of timestamps) {
-      const d = new Date(ts);
-      const isToday = d.toDateString() === todayStr;
-      const isThisWeek = ts >= startOfWeek.getTime();
-      const isThisMonth =
-        d.getFullYear() === currentYear && d.getMonth() === currentMonth;
-
-      if (isToday) today++;
-      if (isThisWeek) week++;
-      if (isThisMonth) month++;
-
-      if (!isToday) hasMultipleDays = true;
-      if (!isThisWeek) hasMultipleWeeks = true;
-      if (!isThisMonth) hasMultipleMonths = true;
-    }
+    const counts = computeStatCounts(entry);
 
     // Build columns progressively based on history depth
     const columns: { value: number; label: string }[] = [
-      { value: today, label: t('stat_label_today') },
+      { value: counts.today, label: t('stat_label_today') },
     ];
 
-    if (hasMultipleDays) {
-      columns.push({ value: week, label: t('stat_label_week') });
+    if (counts.hasMultipleDays) {
+      columns.push({ value: counts.week, label: t('stat_label_week') });
     }
 
-    if (hasMultipleWeeks) {
-      columns.push({ value: month, label: t('stat_label_month') });
+    if (counts.hasMultipleWeeks) {
+      columns.push({ value: counts.month, label: t('stat_label_month') });
     }
 
-    if (hasMultipleMonths) {
+    if (counts.hasMultipleMonths) {
       columns.push({
-        value: timestamps.length,
+        value: counts.total,
         label: t('stat_label_total'),
       });
     }

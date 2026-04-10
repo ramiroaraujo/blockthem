@@ -1,4 +1,6 @@
 import type { BlockRule, StorageState } from '../shared/types';
+import type { BlockStats } from '../shared/block-stats';
+import { recordEvent } from '../shared/block-stats';
 import { buildDNRRules, matchesBlockRule } from '../shared/rules';
 import { isScheduleActive } from '../shared/schedule';
 import { getState, onStateChange } from '../shared/storage';
@@ -83,29 +85,18 @@ function getBlockedUrl(rule: BlockRule, domain: string): string {
   );
 }
 
-const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
-
 async function recordBlockEvent(hostname: string): Promise<void> {
   const result = await chrome.storage.local.get('blockStats');
-  const stats: Record<string, { timestamps: number[] }> =
-    (result as { blockStats?: Record<string, { timestamps: number[] }> })
-      .blockStats ?? {};
-
-  if (!stats[hostname]) {
-    stats[hostname] = { timestamps: [] };
-  }
-
-  const now = Date.now();
-  stats[hostname].timestamps.push(now);
-
-  // Prune timestamps older than 1 year
-  const cutoff = now - ONE_YEAR_MS;
-  stats[hostname].timestamps = stats[hostname].timestamps.filter(
-    (ts) => ts >= cutoff,
-  );
-
-  await chrome.storage.local.set({ blockStats: stats });
+  const stats: BlockStats =
+    (result as { blockStats?: BlockStats }).blockStats ?? {};
+  const updated = recordEvent(stats, hostname);
+  await chrome.storage.local.set({ blockStats: updated });
 }
+
+// Debounce per tab to avoid double-counting from redirect chains
+// (e.g. x.com → x.com/home triggers both webNavigation and tabs.onUpdated)
+const recentBlocks = new Map<number, number>();
+const DEBOUNCE_MS = 2000;
 
 async function checkAndBlock(tabId: number, url: string): Promise<void> {
   if (!url?.startsWith('http')) return;
@@ -117,6 +108,16 @@ async function checkAndBlock(tabId: number, url: string): Promise<void> {
   for (const rule of cachedActiveRules) {
     if (matchesBlockRule(url, rule)) {
       const domain = new URL(url).hostname;
+
+      const now = Date.now();
+      const lastBlock = recentBlocks.get(tabId);
+      if (lastBlock && now - lastBlock < DEBOUNCE_MS) {
+        // Still redirect, but don't record a duplicate stat
+        void chrome.tabs.update(tabId, { url: getBlockedUrl(rule, domain) });
+        return;
+      }
+      recentBlocks.set(tabId, now);
+
       await recordBlockEvent(domain);
       void chrome.tabs.update(tabId, { url: getBlockedUrl(rule, domain) });
       return;
