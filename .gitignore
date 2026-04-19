@@ -7,3 +7,4 @@ dist/
 blockthem*.zip
 rulesets/
 docs/superpowers/
+.mcp.json
