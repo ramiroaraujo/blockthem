@@ -82,7 +82,15 @@ export function recordEvent(
   const existing = stats[hostname];
   const entry: DomainStats = existing
     ? { ...existing }
-    : { today: 0, todayDate: currentDay, week: 0, weekStart: currentWeek, month: 0, monthKey: currentMonth, total: 0 };
+    : {
+        today: 0,
+        todayDate: currentDay,
+        week: 0,
+        weekStart: currentWeek,
+        month: 0,
+        monthKey: currentMonth,
+        total: 0,
+      };
 
   // Reset stale periods
   if (entry.todayDate !== currentDay) {

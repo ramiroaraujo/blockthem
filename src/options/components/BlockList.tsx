@@ -172,7 +172,9 @@ export function BlockList({ state, onUpdateState }: BlockListProps) {
                     setEditingRule(rule);
                   }}
                 >
-                  <div className="text-[13px]" dir="ltr">{rule.pattern}</div>
+                  <div className="text-[13px]" dir="ltr">
+                    {rule.pattern}
+                  </div>
                   <div className="mt-0.5 text-[11px] text-text-muted">
                     {rule.type.toUpperCase()}
                     {rule.schedule

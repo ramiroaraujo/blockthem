@@ -12,7 +12,10 @@ export function getUILocale(): string {
 
 export function getDir(): 'ltr' | 'rtl' {
   try {
-    return new Intl.Locale(chrome.i18n.getUILanguage()).getTextInfo().direction ?? 'ltr';
+    return (
+      new Intl.Locale(chrome.i18n.getUILanguage()).getTextInfo().direction ??
+      'ltr'
+    );
   } catch {
     return 'ltr';
   }
