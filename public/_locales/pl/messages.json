@@ -21,6 +21,34 @@
       }
     }
   },
+  "popup_temp_unblock": {
+    "message": "Tymczasowo odblokuj na 1 godzinę",
+    "description": "Popup button shown on a blocked page to temporarily unblock the current domain for 1 hour"
+  },
+  "popup_temp_unblock_title": {
+    "message": "Odblokuj $1 na 1 godzinę",
+    "description": "Tooltip on the temporary unblock button. $1 is the blocked domain.",
+    "placeholders": {
+      "1": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_revoke_temp_unblock": {
+    "message": "Zablokuj ponownie teraz",
+    "description": "Popup button shown on a temporarily-unblocked domain to revoke the temporary unblock before the hour expires"
+  },
+  "popup_revoke_temp_unblock_title": {
+    "message": "Cofnij tymczasowe odblokowanie $1",
+    "description": "Tooltip on the revoke temporary unblock button. $1 is the current domain.",
+    "placeholders": {
+      "1": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
   "popup_blocking_on": {
     "message": "Blokowanie WŁ.",
     "description": "Status line in the popup when blocking is enabled"

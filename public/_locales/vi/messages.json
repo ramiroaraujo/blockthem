@@ -21,6 +21,34 @@
       }
     }
   },
+  "popup_temp_unblock": {
+    "message": "Tạm thời bỏ chặn trong 1 giờ",
+    "description": "Popup button shown on a blocked page to temporarily unblock the current domain for 1 hour"
+  },
+  "popup_temp_unblock_title": {
+    "message": "Bỏ chặn $1 trong 1 giờ",
+    "description": "Tooltip on the temporary unblock button. $1 is the blocked domain.",
+    "placeholders": {
+      "1": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_revoke_temp_unblock": {
+    "message": "Chặn lại ngay",
+    "description": "Popup button shown on a temporarily-unblocked domain to revoke the temporary unblock before the hour expires"
+  },
+  "popup_revoke_temp_unblock_title": {
+    "message": "Hủy bỏ chặn tạm thời cho $1",
+    "description": "Tooltip on the revoke temporary unblock button. $1 is the current domain.",
+    "placeholders": {
+      "1": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
   "popup_blocking_on": {
     "message": "Chặn BẬT",
     "description": "Status line in the popup when blocking is enabled"

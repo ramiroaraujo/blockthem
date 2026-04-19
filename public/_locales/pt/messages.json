@@ -17,6 +17,30 @@
       }
     }
   },
+  "popup_temp_unblock": {
+    "message": "Desbloquear temporariamente por 1 hora"
+  },
+  "popup_temp_unblock_title": {
+    "message": "Desbloquear $1 por 1 hora",
+    "placeholders": {
+      "1": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_revoke_temp_unblock": {
+    "message": "Bloquear novamente agora"
+  },
+  "popup_revoke_temp_unblock_title": {
+    "message": "Revogar desbloqueio temporário de $1",
+    "placeholders": {
+      "1": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
   "popup_blocking_on": {
     "message": "Bloqueio ATIVADO"
   },
