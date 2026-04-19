@@ -9,7 +9,8 @@
     "declarativeNetRequest",
     "declarativeNetRequestWithHostAccess",
     "alarms",
-    "webNavigation"
+    "webNavigation",
+    "tabs"
   ],
   "host_permissions": [
     "<all_urls>"

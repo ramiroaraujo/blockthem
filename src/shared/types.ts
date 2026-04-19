@@ -13,6 +13,11 @@ export interface BlockRule {
   createdAt: number;
 }
 
+export interface TemporaryUnblock {
+  domain: string;
+  expiresAt: number;
+}
+
 export interface StorageState {
   rules: BlockRule[];
   globalSchedule: Schedule;
@@ -22,6 +27,7 @@ export interface StorageState {
   passwordSalt: string | null;
   blockAdultSites: boolean;
   blockGamblingSites: boolean;
+  temporaryUnblocks: TemporaryUnblock[];
 }
 
 export const DEFAULT_STATE: StorageState = {
@@ -37,4 +43,5 @@ export const DEFAULT_STATE: StorageState = {
   passwordSalt: null,
   blockAdultSites: false,
   blockGamblingSites: false,
+  temporaryUnblocks: [],
 };

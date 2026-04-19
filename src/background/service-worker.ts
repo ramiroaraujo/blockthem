@@ -1,14 +1,21 @@
-import type { BlockRule, StorageState } from '../shared/types';
 import type { BlockStats } from '../shared/block-stats';
+import type {
+  BlockRule,
+  StorageState,
+  TemporaryUnblock,
+} from '../shared/types';
 import { recordEvent } from '../shared/block-stats';
+import { normalizeDomain } from '../shared/domain';
 import { buildDNRRules, matchesBlockRule } from '../shared/rules';
 import { isScheduleActive } from '../shared/schedule';
-import { getState, onStateChange } from '../shared/storage';
+import { getState, onStateChange, setState } from '../shared/storage';
+import { isTempUnblocked, pruneExpired } from '../shared/temporary-unblocks';
 
 const ALARM_NAME = 'blockthem-schedule-check';
 
 // In-memory cache for fast URL checks in navigation listeners
 let cachedActiveRules: BlockRule[] = [];
+let cachedTempUnblocks: TemporaryUnblock[] = [];
 
 function getActiveRules(state: StorageState): BlockRule[] {
   if (!state.blockingEnabled) return [];
@@ -44,8 +51,21 @@ async function syncRulesInternal(): Promise<void> {
   const state = await getState();
   const activeRules = getActiveRules(state);
   cachedActiveRules = activeRules;
+
+  const liveUnblocks = pruneExpired(state.temporaryUnblocks);
+  if (liveUnblocks.length !== state.temporaryUnblocks.length) {
+    await setState({ ...state, temporaryUnblocks: liveUnblocks });
+  }
+  cachedTempUnblocks = liveUnblocks;
+
   const extensionId = chrome.runtime.id;
-  const newRules = buildDNRRules(activeRules, extensionId);
+  const newRules = buildDNRRules(activeRules, liveUnblocks, extensionId);
+
+  console.log('[BlockThem sync]', {
+    activeRuleCount: activeRules.length,
+    tempUnblocks: liveUnblocks,
+    newRulePreview: newRules,
+  });
 
   const existingRules = await chrome.declarativeNetRequest.getDynamicRules();
   const removeRuleIds = existingRules.map((r) => r.id);
@@ -54,6 +74,9 @@ async function syncRulesInternal(): Promise<void> {
     removeRuleIds,
     addRules: newRules,
   });
+
+  const postRules = await chrome.declarativeNetRequest.getDynamicRules();
+  console.log('[BlockThem sync] dynamic rules after update:', postRules);
 
   await syncStaticRulesets(state);
 
@@ -76,6 +99,36 @@ function syncRules(): void {
     .then(() => syncRulesInternal())
     .catch((err) => console.error('[BlockThem] syncRules error:', err));
 }
+
+function waitForSync(): Promise<void> {
+  return syncChain.catch(() => undefined);
+}
+
+interface AwaitSyncMessage {
+  type: 'await-sync';
+}
+
+function isAwaitSyncMessage(m: unknown): m is AwaitSyncMessage {
+  return (
+    typeof m === 'object' &&
+    m !== null &&
+    (m as { type?: unknown }).type === 'await-sync'
+  );
+}
+
+chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+  if (isAwaitSyncMessage(message)) {
+    console.log('[BlockThem] await-sync received');
+    // Schedule a sync unconditionally; storage.onChanged may not have fired yet
+    syncRules();
+    void waitForSync().then(() => {
+      console.log('[BlockThem] await-sync responding ok');
+      sendResponse({ ok: true });
+    });
+    return true; // keep channel open for async response
+  }
+  return undefined;
+});
 
 function getBlockedUrl(rule: BlockRule, domain: string): string {
   const ruleParam = encodeURIComponent(rule.pattern);
@@ -104,6 +157,16 @@ async function checkAndBlock(tabId: number, url: string): Promise<void> {
   // Don't block our own block page
   const extensionOrigin = chrome.runtime.getURL('');
   if (url.startsWith(extensionOrigin)) return;
+
+  const host = normalizeDomain(url);
+  console.log('[BlockThem checkAndBlock]', {
+    tabId,
+    url,
+    host,
+    cachedTempUnblocks,
+    tempUnblocked: host ? isTempUnblocked(host, cachedTempUnblocks) : null,
+  });
+  if (host && isTempUnblocked(host, cachedTempUnblocks)) return;
 
   for (const rule of cachedActiveRules) {
     if (matchesBlockRule(url, rule)) {

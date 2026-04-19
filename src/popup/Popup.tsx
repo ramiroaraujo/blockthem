@@ -2,20 +2,18 @@ import { useEffect, useState } from 'react';
 
 import type { BlockRule, StorageState } from '../shared/types';
 import { ToggleSwitch } from '../shared/components/ToggleSwitch';
+import { normalizeDomain } from '../shared/domain';
 import { t } from '../shared/i18n';
 import { verifyPassword } from '../shared/password';
 import { isScheduleActive } from '../shared/schedule';
 import { getState, setState } from '../shared/storage';
+import {
+  isTempUnblocked,
+  UNBLOCK_DURATION_MS,
+} from '../shared/temporary-unblocks';
 import { DEFAULT_STATE } from '../shared/types';
 
-function getBaseDomain(url: string): string | null {
-  try {
-    const hostname = new URL(url).hostname;
-    return hostname.replace(/^www\./, '');
-  } catch {
-    return null;
-  }
-}
+type PendingAction = 'toggle' | 'tempUnblock' | null;
 
 export function Popup() {
   const [state, setLocalState] = useState<StorageState>(DEFAULT_STATE);
@@ -24,6 +22,7 @@ export function Popup() {
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [activeTab, setActiveTab] = useState<chrome.tabs.Tab | null>(null);
+  const [pendingAction, setPendingAction] = useState<PendingAction>(null);
 
   useEffect(() => {
     void getState().then((s) => {
@@ -35,8 +34,11 @@ export function Popup() {
       .then((tabs) => setActiveTab(tabs[0] ?? null));
   }, []);
 
+  const hasPassword = Boolean(state.passwordHash && state.passwordSalt);
+
   const handleToggle = async () => {
-    if (state.blockingEnabled && state.passwordHash && state.passwordSalt) {
+    if (state.blockingEnabled && hasPassword) {
+      setPendingAction('toggle');
       setShowPasswordInput(true);
       return;
     }
@@ -47,8 +49,14 @@ export function Popup() {
     const newState = { ...state, blockingEnabled: !state.blockingEnabled };
     setLocalState(newState);
     await setState(newState);
+    resetPasswordInput();
+  };
+
+  const resetPasswordInput = () => {
     setShowPasswordInput(false);
     setPassword('');
+    setPasswordError('');
+    setPendingAction(null);
   };
 
   const handlePasswordSubmit = async () => {
@@ -58,11 +66,15 @@ export function Popup() {
       state.passwordHash,
       state.passwordSalt,
     );
-    if (valid) {
-      await doToggle();
-    } else {
+    if (!valid) {
       setPasswordError(t('popup_password_wrong'));
       setPassword('');
+      return;
+    }
+    if (pendingAction === 'toggle') {
+      await doToggle();
+    } else if (pendingAction === 'tempUnblock' && blockedDomain) {
+      await doTempUnblock(blockedDomain);
     }
   };
 
@@ -71,7 +83,7 @@ export function Popup() {
   };
 
   const tabUrl = activeTab?.url ?? '';
-  const currentDomain = tabUrl ? getBaseDomain(tabUrl) : null;
+  const currentDomain = tabUrl ? normalizeDomain(tabUrl) : null;
   const isHttp = tabUrl.startsWith('http://') || tabUrl.startsWith('https://');
   const isExtensionPage = tabUrl.startsWith(chrome.runtime.getURL(''));
   const alreadyBlocked =
@@ -79,6 +91,27 @@ export function Popup() {
     state.rules.some((r) => r.type === 'url' && tabUrl.includes(r.pattern));
   const canBlock =
     isHttp && !isExtensionPage && currentDomain !== null && !alreadyBlocked;
+
+  let blockedDomain: string | null = null;
+  let onBlockedPage = false;
+  try {
+    const u = new URL(tabUrl);
+    if (
+      u.protocol === 'chrome-extension:' &&
+      u.pathname.endsWith('/src/blocked/index.html')
+    ) {
+      onBlockedPage = true;
+      blockedDomain = u.searchParams.get('domain');
+    }
+  } catch {
+    onBlockedPage = false;
+  }
+  const canTempUnblock = onBlockedPage && blockedDomain !== null;
+
+  const currentlyTempUnblocked =
+    isHttp &&
+    currentDomain !== null &&
+    isTempUnblocked(currentDomain, state.temporaryUnblocks);
 
   const handleBlockThis = async () => {
     if (!canBlock || !currentDomain || !activeTab?.id) return;
@@ -103,6 +136,64 @@ export function Popup() {
         `src/blocked/index.html?rule=${ruleParam}&type=url`,
       ),
     });
+    window.close();
+  };
+
+  const handleTempUnblockClick = async () => {
+    if (!canTempUnblock || !blockedDomain) return;
+    if (hasPassword) {
+      setPendingAction('tempUnblock');
+      setShowPasswordInput(true);
+      return;
+    }
+    await doTempUnblock(blockedDomain);
+  };
+
+  const handleRevokeTempUnblock = async () => {
+    if (!currentlyTempUnblocked || !currentDomain || !activeTab?.id) return;
+    const newState: StorageState = {
+      ...state,
+      temporaryUnblocks: state.temporaryUnblocks.filter(
+        (u) => u.domain !== currentDomain,
+      ),
+    };
+    await setState(newState);
+    try {
+      await chrome.runtime.sendMessage({ type: 'await-sync' });
+    } catch {
+      // best-effort; sync will still run via storage.onChanged
+    }
+    await chrome.tabs.reload(activeTab.id);
+    window.close();
+  };
+
+  const doTempUnblock = async (domain: string) => {
+    if (!activeTab?.id) return;
+    const normalized = normalizeDomain(domain) ?? domain;
+    const filtered = state.temporaryUnblocks.filter(
+      (u) => u.domain !== normalized,
+    );
+    // eslint-disable-next-line react-hooks/purity -- Date.now() is fine inside an event handler
+    const expiresAt = Date.now() + UNBLOCK_DURATION_MS;
+    const newState: StorageState = {
+      ...state,
+      temporaryUnblocks: [...filtered, { domain: normalized, expiresAt }],
+    };
+    console.log('[BlockThem popup] applying temp unblock', {
+      normalized,
+      expiresAt,
+    });
+    await setState(newState);
+    try {
+      const resp: unknown = await chrome.runtime.sendMessage({
+        type: 'await-sync',
+      });
+      console.log('[BlockThem popup] await-sync response', resp);
+    } catch (e) {
+      console.warn('[BlockThem popup] await-sync failed', e);
+    }
+    console.log('[BlockThem popup] navigating to', `https://${normalized}/`);
+    await chrome.tabs.update(activeTab.id, { url: `https://${normalized}/` });
     window.close();
   };
 
@@ -137,6 +228,26 @@ export function Popup() {
           title={t('popup_block_this_title', [currentDomain])}
         >
           {t('popup_block_this')}
+        </button>
+      )}
+
+      {canTempUnblock && blockedDomain && (
+        <button
+          onClick={handleTempUnblockClick}
+          className="mb-3 box-border w-full rounded-md border-none bg-primary px-4 py-2.5 font-inherit text-[13px] font-semibold text-white"
+          title={t('popup_temp_unblock_title', [blockedDomain])}
+        >
+          {t('popup_temp_unblock')}
+        </button>
+      )}
+
+      {currentlyTempUnblocked && currentDomain && (
+        <button
+          onClick={handleRevokeTempUnblock}
+          className="mb-3 box-border w-full rounded-md border-none bg-primary px-4 py-2.5 font-inherit text-[13px] font-semibold text-white"
+          title={t('popup_revoke_temp_unblock_title', [currentDomain])}
+        >
+          {t('popup_revoke_temp_unblock')}
         </button>
       )}
 

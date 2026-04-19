@@ -39,6 +39,11 @@ export const BlockRuleSchema = z
     { message: t('schemas_regex_rule_invalid') },
   );
 
+export const TemporaryUnblockSchema = z.object({
+  domain: z.string().min(1),
+  expiresAt: z.number(),
+});
+
 export const ImportDataSchema = z.object({
   rules: z.array(BlockRuleSchema),
   globalSchedule: ScheduleSchema.nullable().optional(),

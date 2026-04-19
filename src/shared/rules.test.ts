@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import type { BlockRule } from './types';
+import type { BlockRule, TemporaryUnblock } from './types';
 import { buildDNRRules, matchesBlockRule } from './rules';
 
 describe('matchesBlockRule', () => {
@@ -61,7 +61,7 @@ describe('buildDNRRules', () => {
         createdAt: 1000,
       },
     ];
-    const result = buildDNRRules(rules, extensionId);
+    const result = buildDNRRules(rules, [], extensionId);
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual({
       id: 1,
@@ -90,7 +90,7 @@ describe('buildDNRRules', () => {
         createdAt: 1000,
       },
     ];
-    const result = buildDNRRules(rules, extensionId);
+    const result = buildDNRRules(rules, [], extensionId);
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual({
       id: 1,
@@ -120,7 +120,7 @@ describe('buildDNRRules', () => {
         createdAt: 1000,
       },
     ];
-    const result = buildDNRRules(rules, extensionId);
+    const result = buildDNRRules(rules, [], extensionId);
     expect(result).toHaveLength(0);
   });
 
@@ -143,8 +143,71 @@ describe('buildDNRRules', () => {
         createdAt: 2000,
       },
     ];
-    const result = buildDNRRules(rules, extensionId);
+    const result = buildDNRRules(rules, [], extensionId);
     expect(result[0].id).toBe(1);
     expect(result[1].id).toBe(2);
+  });
+
+  it('appends an allow rule for each temporary unblock', () => {
+    const rules: BlockRule[] = [
+      {
+        id: 'r1',
+        pattern: 'facebook.com',
+        type: 'url',
+        enabled: true,
+        schedule: null,
+        createdAt: 1000,
+      },
+    ];
+    const tempUnblocks: TemporaryUnblock[] = [
+      { domain: 'example.com', expiresAt: Date.now() + 60_000 },
+    ];
+    const result = buildDNRRules(rules, tempUnblocks, extensionId);
+    expect(result).toHaveLength(2);
+    expect(result[1]).toEqual({
+      id: 100_001,
+      priority: 2,
+      action: { type: 'allow' },
+      condition: {
+        requestDomains: ['example.com'],
+        resourceTypes: ['main_frame'],
+      },
+    });
+  });
+
+  it('gives allow rules IDs disjoint from block rules', () => {
+    const rules: BlockRule[] = [
+      {
+        id: 'r1',
+        pattern: 'a.com',
+        type: 'url',
+        enabled: true,
+        schedule: null,
+        createdAt: 1,
+      },
+      {
+        id: 'r2',
+        pattern: 'b.com',
+        type: 'url',
+        enabled: true,
+        schedule: null,
+        createdAt: 2,
+      },
+    ];
+    const tempUnblocks: TemporaryUnblock[] = [
+      { domain: 'c.com', expiresAt: Date.now() + 60_000 },
+      { domain: 'd.com', expiresAt: Date.now() + 60_000 },
+    ];
+    const result = buildDNRRules(rules, tempUnblocks, extensionId);
+    expect(result.map((r) => r.id)).toEqual([1, 2, 100_001, 100_002]);
+  });
+
+  it('does not filter expired entries itself (caller prunes)', () => {
+    const tempUnblocks: TemporaryUnblock[] = [
+      { domain: 'expired.com', expiresAt: Date.now() - 60_000 },
+    ];
+    const result = buildDNRRules([], tempUnblocks, extensionId);
+    expect(result).toHaveLength(1);
+    expect(result[0].condition.requestDomains).toEqual(['expired.com']);
   });
 });

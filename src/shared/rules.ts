@@ -1,4 +1,4 @@
-import type { BlockRule } from './types';
+import type { BlockRule, TemporaryUnblock } from './types';
 
 export function matchesBlockRule(url: string, rule: BlockRule): boolean {
   if (rule.type === 'url') {
@@ -11,12 +11,15 @@ export function matchesBlockRule(url: string, rule: BlockRule): boolean {
   }
 }
 
+const ALLOW_RULE_ID_BASE = 100_001;
+
 export function buildDNRRules(
   rules: BlockRule[],
+  tempUnblocks: TemporaryUnblock[],
   _extensionId: string,
 ): chrome.declarativeNetRequest.Rule[] {
   const enabledRules = rules.filter((r) => r.enabled);
-  return enabledRules.map((rule, index) => {
+  const blockRules = enabledRules.map((rule, index) => {
     const ruleParam = encodeURIComponent(rule.pattern);
     const redirectPath = `/src/blocked/index.html?rule=${ruleParam}&type=${rule.type}`;
 
@@ -42,4 +45,22 @@ export function buildDNRRules(
 
     return dnrRule;
   });
+
+  const allowRules: chrome.declarativeNetRequest.Rule[] = tempUnblocks.map(
+    (unblock, index) => ({
+      id: ALLOW_RULE_ID_BASE + index,
+      priority: 2,
+      action: {
+        type: 'allow' as chrome.declarativeNetRequest.RuleActionType,
+      },
+      condition: {
+        requestDomains: [unblock.domain],
+        resourceTypes: [
+          'main_frame' as chrome.declarativeNetRequest.ResourceType,
+        ],
+      },
+    }),
+  );
+
+  return [...blockRules, ...allowRules];
 }
