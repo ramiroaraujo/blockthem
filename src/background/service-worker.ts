@@ -61,12 +61,6 @@ async function syncRulesInternal(): Promise<void> {
   const extensionId = chrome.runtime.id;
   const newRules = buildDNRRules(activeRules, liveUnblocks, extensionId);
 
-  console.log('[BlockThem sync]', {
-    activeRuleCount: activeRules.length,
-    tempUnblocks: liveUnblocks,
-    newRulePreview: newRules,
-  });
-
   const existingRules = await chrome.declarativeNetRequest.getDynamicRules();
   const removeRuleIds = existingRules.map((r) => r.id);
 
@@ -74,9 +68,6 @@ async function syncRulesInternal(): Promise<void> {
     removeRuleIds,
     addRules: newRules,
   });
-
-  const postRules = await chrome.declarativeNetRequest.getDynamicRules();
-  console.log('[BlockThem sync] dynamic rules after update:', postRules);
 
   await syncStaticRulesets(state);
 
@@ -118,11 +109,9 @@ function isAwaitSyncMessage(m: unknown): m is AwaitSyncMessage {
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (isAwaitSyncMessage(message)) {
-    console.log('[BlockThem] await-sync received');
     // Schedule a sync unconditionally; storage.onChanged may not have fired yet
     syncRules();
     void waitForSync().then(() => {
-      console.log('[BlockThem] await-sync responding ok');
       sendResponse({ ok: true });
     });
     return true; // keep channel open for async response
@@ -159,13 +148,6 @@ async function checkAndBlock(tabId: number, url: string): Promise<void> {
   if (url.startsWith(extensionOrigin)) return;
 
   const host = normalizeDomain(url);
-  console.log('[BlockThem checkAndBlock]', {
-    tabId,
-    url,
-    host,
-    cachedTempUnblocks,
-    tempUnblocked: host ? isTempUnblocked(host, cachedTempUnblocks) : null,
-  });
   if (host && isTempUnblocked(host, cachedTempUnblocks)) return;
 
   for (const rule of cachedActiveRules) {

@@ -179,20 +179,12 @@ export function Popup() {
       ...state,
       temporaryUnblocks: [...filtered, { domain: normalized, expiresAt }],
     };
-    console.log('[BlockThem popup] applying temp unblock', {
-      normalized,
-      expiresAt,
-    });
     await setState(newState);
     try {
-      const resp: unknown = await chrome.runtime.sendMessage({
-        type: 'await-sync',
-      });
-      console.log('[BlockThem popup] await-sync response', resp);
-    } catch (e) {
-      console.warn('[BlockThem popup] await-sync failed', e);
+      await chrome.runtime.sendMessage({ type: 'await-sync' });
+    } catch {
+      // best-effort; sync will still run via storage.onChanged
     }
-    console.log('[BlockThem popup] navigating to', `https://${normalized}/`);
     await chrome.tabs.update(activeTab.id, { url: `https://${normalized}/` });
     window.close();
   };
