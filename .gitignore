@@ -2,6 +2,7 @@ node_modules/
 dist/
 .claude/
 .superpowers/
+.serena/
 .idea
 .DS_Store
 blockthem*.zip
